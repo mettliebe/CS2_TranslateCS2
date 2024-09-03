@@ -1,3 +1,6 @@
+TODO: change/split Readme into Readme and Guide; something is wrong with it; at least the modpublisher does not like it as long description and it took that long to figure out
+
+
 # 1. TranslateCS2.Mod
 
 This mod is intended to sideload custom localizations/translations from JSONs.
