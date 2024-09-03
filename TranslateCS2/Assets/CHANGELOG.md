@@ -1,8 +1,8 @@
 # Changelog
-[releases](https://github.com/suluknumoh/TranslateCS2/releases)
+[releases](https://github.com/mettliebe/TranslateCS2/releases)
 
 ## Version 2.0.4.0
-- [i286-1](https://github.com/i286-1) thankfully shared some information about [XBoxGames](https://github.com/suluknumoh/TranslateCS2/issues/10)
+- [i286-1](https://github.com/i286-1) thankfully shared some information about [XBoxGames](https://github.com/mettliebe/TranslateCS2/issues/10)
     - the App is not limited to the [STEAM](https://store.steampowered.com)-Version anymore
     - at startup this app tries to detect [Cities: Skylines II](https://www.paradoxinteractive.com/games/cities-skylines-ii) installation location
         - [STEAM](https://store.steampowered.com) location
@@ -110,7 +110,7 @@
 - modularization
 - translator module
     - ability to implement and realize an external translator module that calls a translator-api (depends on modularization)
-    - see also: [TranslateCS2.TranslatorsExample readme.md](https://github.com/suluknumoh/TranslateCS2/blob/main/TranslateCS2.TranslatorsExample/readme.md)
+    - see also: [TranslateCS2.TranslatorsExample readme.md](https://github.com/mettliebe/TranslateCS2/blob/main/TranslateCS2.TranslatorsExample/readme.md)
     - translator module(s) is/are only hooked into the 'large edit entry window/dialog'
 
 ## Version 0.3.1 (Patch for texts with many rows)

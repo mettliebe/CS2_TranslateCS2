@@ -1,7 +1,7 @@
 # Disclaimer
 This is an unofficial tool provided as is to use at your own risk.
 
-Please see also: [MIT-License](https://github.com/suluknumoh/TranslateCS2?tab=MIT-1-ov-file)
+Please see also: [MIT-License](https://github.com/mettliebe/TranslateCS2?tab=MIT-1-ov-file)
 
 # Intention
 - this thread [Convert .loc file to .csv and vice versa](https://forum.paradoxplaza.com/forum/threads/convert-loc-file-to-csv-and-vice-versa.1627477/)
@@ -47,7 +47,7 @@ Solution: close this tool, close [STEAM](https://store.steampowered.com) and ope
 Solution: close this tool, close [STEAM](https://store.steampowered.com) and open this tool again
 
 # Kown Issues
-please take a look at [Issues](https://github.com/suluknumoh/TranslateCS2/issues)
+please take a look at [Issues](https://github.com/mettliebe/TranslateCS2/issues)
 
 # Documentation (somewhat like that)
 ## First-Start
@@ -120,7 +120,7 @@ please take a look at [Issues](https://github.com/suluknumoh/TranslateCS2/issues
         - and like to have the untranslated part in 'fr-FR', for example
 - to use with [TranslateCS2.Mod](https://mods.paradoxplaza.com/mods/79187/Windows)
     - https://forum.paradoxplaza.com/forum/threads/translatecs2-translatecs2-mod.1669371/
-    - https://github.com/suluknumoh/TranslateCS2/tree/main/TranslateCS2.Mod
+    - https://github.com/mettliebe/TranslateCS2/tree/main/TranslateCS2.Mod
 
 ##### I18NEverywhere
 - compatibility is not guaranteed
@@ -160,10 +160,10 @@ please take a look at [Issues](https://github.com/suluknumoh/TranslateCS2/issues
 # Recommendations/Suggestions
 - To re-export the translation(s) after [Cities: Skylines II](https://www.paradoxinteractive.com/games/cities-skylines-ii) is updated
 # Changelog
-[releases](https://github.com/suluknumoh/TranslateCS2/releases)
+[releases](https://github.com/mettliebe/TranslateCS2/releases)
 
 ## Version 2.0.4.0
-- [i286-1](https://github.com/i286-1) thankfully shared some information about [XBoxGames](https://github.com/suluknumoh/TranslateCS2/issues/10)
+- [i286-1](https://github.com/i286-1) thankfully shared some information about [XBoxGames](https://github.com/mettliebe/TranslateCS2/issues/10)
     - the App is not limited to the [STEAM](https://store.steampowered.com)-Version anymore
     - at startup this app tries to detect [Cities: Skylines II](https://www.paradoxinteractive.com/games/cities-skylines-ii) installation location
         - [STEAM](https://store.steampowered.com) location
@@ -271,7 +271,7 @@ please take a look at [Issues](https://github.com/suluknumoh/TranslateCS2/issues
 - modularization
 - translator module
     - ability to implement and realize an external translator module that calls a translator-api (depends on modularization)
-    - see also: [TranslateCS2.TranslatorsExample readme.md](https://github.com/suluknumoh/TranslateCS2/blob/main/TranslateCS2.TranslatorsExample/readme.md)
+    - see also: [TranslateCS2.TranslatorsExample readme.md](https://github.com/mettliebe/TranslateCS2/blob/main/TranslateCS2.TranslatorsExample/readme.md)
     - translator module(s) is/are only hooked into the 'large edit entry window/dialog'
 
 ## Version 0.3.1 (Patch for texts with many rows)
@@ -334,9 +334,9 @@ please take a look at [Issues](https://github.com/suluknumoh/TranslateCS2/issues
 - https://github.com/i286-1
 - for:
     - sharing information
-        - https://github.com/suluknumoh/TranslateCS2/issues/10
+        - https://github.com/mettliebe/TranslateCS2/issues/10
     - testing and giving feedback
-        - https://github.com/suluknumoh/TranslateCS2/issues/14
+        - https://github.com/mettliebe/TranslateCS2/issues/14
 ---
 ## grotaclas
 - https://github.com/grotaclas

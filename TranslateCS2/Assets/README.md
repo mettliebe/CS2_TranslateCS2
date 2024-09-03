@@ -1,7 +1,7 @@
 # Disclaimer
 This is an unofficial tool provided as is to use at your own risk.
 
-Please see also: [MIT-License](https://github.com/suluknumoh/TranslateCS2?tab=MIT-1-ov-file)
+Please see also: [MIT-License](https://github.com/mettliebe/TranslateCS2?tab=MIT-1-ov-file)
 
 # Intention
 - this thread [Convert .loc file to .csv and vice versa](https://forum.paradoxplaza.com/forum/threads/convert-loc-file-to-csv-and-vice-versa.1627477/)
@@ -47,7 +47,7 @@ Solution: close this tool, close [STEAM](https://store.steampowered.com) and ope
 Solution: close this tool, close [STEAM](https://store.steampowered.com) and open this tool again
 
 # Kown Issues
-please take a look at [Issues](https://github.com/suluknumoh/TranslateCS2/issues)
+please take a look at [Issues](https://github.com/mettliebe/TranslateCS2/issues)
 
 # Documentation (somewhat like that)
 ## First-Start
@@ -120,7 +120,7 @@ please take a look at [Issues](https://github.com/suluknumoh/TranslateCS2/issues
         - and like to have the untranslated part in 'fr-FR', for example
 - to use with [TranslateCS2.Mod](https://mods.paradoxplaza.com/mods/79187/Windows)
     - https://forum.paradoxplaza.com/forum/threads/translatecs2-translatecs2-mod.1669371/
-    - https://github.com/suluknumoh/TranslateCS2/tree/main/TranslateCS2.Mod
+    - https://github.com/mettliebe/TranslateCS2/tree/main/TranslateCS2.Mod
 
 ##### I18NEverywhere
 - compatibility is not guaranteed
