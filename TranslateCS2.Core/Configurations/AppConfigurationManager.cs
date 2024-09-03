@@ -39,7 +39,7 @@ public static class AppConfigurationManager {
     public static string LeadingLocLanguageCode { get; } = LeadingLocFileName.Split(".")[0];
     // INFO: dont translate! this value gets written into the database
     public static string NoneOverwrite { get; } = "none";
-    public static string CheckLatestURL { get; } = "https://raw.githubusercontent.com/mettliebe/TranslateCS2/main/latest";
+    public static string CheckLatestURL { get; } = "https://raw.githubusercontent.com/mettliebe/CS2_TranslateCS2/main/latest";
     public static string ImExportDefaultFileName { get; } = $"translations{ModConstants.JsonExtension}";
     public static string ImExportFilter { get; } = $"JSON-File ({ModConstants.JsonExtension})|{ModConstants.JsonSearchPattern}";
     public static uint DatabaseMaxBackUpCount { get; private set; }

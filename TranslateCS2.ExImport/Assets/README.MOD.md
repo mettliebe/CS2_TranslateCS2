@@ -9,7 +9,7 @@ Users have to pro-actively select a different flavor, especially for built-in la
 # 2. Disclaimer
 This mod is provided as is to use at your own risk.
 
-Please see also: [MIT-License](https://github.com/mettliebe/TranslateCS2?tab=MIT-1-ov-file)
+Please see also: [MIT-License](https://github.com/mettliebe/CS2_TranslateCS2?tab=MIT-1-ov-file)
 
 
 
@@ -140,7 +140,7 @@ Please take a look at section '3.1.3. more how it works explanation' within this
 # 4. Supported language and language-region-codes with their English names
 * the following languages are supported with the listed country and/or country-region code
 * due to technical limitations, country and/or country-region codes are limited
-* full list can be found over there: https://github.com/mettliebe/TranslateCS2/blob/main/TranslateCS2.Mod/LANGUAGES.SUPPORTED.md
+* full list can be found over there: https://github.com/mettliebe/CS2_TranslateCS2/blob/main/TranslateCS2.Mod/LANGUAGES.SUPPORTED.md
 
 # 5. Support for this Mod
 you are welcome to leave concerns, issues, feedback and/or suggestions on the following platforms
@@ -150,7 +150,7 @@ you are welcome to leave concerns, issues, feedback and/or suggestions on the fo
 * this mod has a channel within it (https://discord.com/channels/1024242828114673724/1256524100462055445)
 
 ## 5.2. GitHub
-* [TranslateCS2 - Issues](https://github.com/mettliebe/TranslateCS2/issues)
+* [TranslateCS2 - Issues](https://github.com/mettliebe/CS2_TranslateCS2/issues)
 
 # 6. Credits
 
@@ -158,7 +158,6 @@ you are welcome to leave concerns, issues, feedback and/or suggestions on the fo
 - https://github.com/i286-1
 - for:
     - testing and giving feedback
-        - https://github.com/mettliebe/TranslateCS2/issues/17
 
 ## yenyang
 - https://github.com/yenyang

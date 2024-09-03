@@ -10,9 +10,7 @@
 - https://github.com/i286-1
 - for:
     - sharing information
-        - https://github.com/mettliebe/TranslateCS2/issues/10
     - testing and giving feedback
-        - https://github.com/mettliebe/TranslateCS2/issues/14
 ---
 ## grotaclas
 - https://github.com/grotaclas
