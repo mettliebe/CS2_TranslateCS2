@@ -140,7 +140,7 @@ Please take a look at section '3.1.3. more how it works explanation' within this
 # 4. Supported language and language-region-codes with their English names
 * the following languages are supported with the listed country and/or country-region code
 * due to technical limitations, country and/or country-region codes are limited
-* full list can be found over there: https://github.com/mettliebe/CS2_TranslateCS2/blob/main/TranslateCS2.Mod/LANGUAGES.SUPPORTED.md
+* full list can be found over there: https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/LANGUAGES.SUPPORTED.md
 
 # 5. Support for this Mod
 you are welcome to leave concerns, issues, feedback and/or suggestions on the following platforms

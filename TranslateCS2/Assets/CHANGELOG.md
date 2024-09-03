@@ -110,7 +110,7 @@
 - modularization
 - translator module
     - ability to implement and realize an external translator module that calls a translator-api (depends on modularization)
-    - see also: [TranslateCS2.TranslatorsExample readme.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/main/TranslateCS2.TranslatorsExample/readme.md)
+    - see also: [TranslateCS2.TranslatorsExample readme.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.TranslatorsExample/readme.md)
     - translator module(s) is/are only hooked into the 'large edit entry window/dialog'
 
 ## Version 0.3.1 (Patch for texts with many rows)
