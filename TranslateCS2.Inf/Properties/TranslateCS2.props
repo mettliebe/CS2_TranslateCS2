@@ -1,0 +1,11 @@
+<Project>
+
+
+    <Import Project="General.props"/>
+
+
+    <PropertyGroup>
+        <ProjectAssetsDir>$(ProjectDir)Assets</ProjectAssetsDir>
+        <AssemblyVersion>2.0.9.0</AssemblyVersion>
+    </PropertyGroup>
+</Project>

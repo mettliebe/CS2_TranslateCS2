@@ -1,0 +1,113 @@
+<Project>
+    <!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
+    <PropertyGroup>
+        <!--
+            AppendTargetFrameworkToOutputPath has to be 'false'
+            the output directory structures are as follows
+            \bin\Debug
+            \bin\Release
+        -->
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+        <!--
+            AppendRuntimeIdentifierToOutputPath has to be 'false'
+            the output directory structures are as follows
+            \bin\Debug
+            \bin\Release
+        -->
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <!--
+            to copy nuget dll-files
+            has to be true
+        -->
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+
+
+    <ItemGroup>
+        <FilesToDelete Include="e_sqlite3.dll"/>
+        <FilesToDelete Include="Markdig.dll"/>
+        <FilesToDelete Include="Markdig.Wpf.dll"/>
+        <FilesToDelete Include="Microsoft.Data.Sqlite.dll"/>
+        <FilesToDelete Include="Microsoft.Extensions.DependencyInjection.Abstractions.dll"/>
+        <FilesToDelete Include="Microsoft.Extensions.DependencyInjection.dll"/>
+        <FilesToDelete Include="Microsoft.Extensions.Http.dll"/>
+        <FilesToDelete Include="Microsoft.Extensions.Http.Polly.dll"/>
+        <FilesToDelete Include="Microsoft.Extensions.Logging.Abstractions.dll"/>
+        <FilesToDelete Include="Microsoft.Extensions.Logging.dll"/>
+        <FilesToDelete Include="Microsoft.Extensions.Options.dll"/>
+        <FilesToDelete Include="Microsoft.Extensions.Primitives.dll"/>
+        <FilesToDelete Include="Microsoft.Xaml.Behaviors.dll"/>
+        <FilesToDelete Include="Polly.dll"/>
+        <FilesToDelete Include="Polly.Extensions.Http.dll"/>
+        <FilesToDelete Include="Prism.dll"/>
+        <FilesToDelete Include="Prism.Unity.Wpf.dll"/>
+        <FilesToDelete Include="Prism.Wpf.dll"/>
+        <FilesToDelete Include="SQLitePCLRaw.batteries_v2.dll"/>
+        <FilesToDelete Include="SQLitePCLRaw.core.dll"/>
+        <FilesToDelete Include="SQLitePCLRaw.provider.e_sqlite3.dll"/>
+        <FilesToDelete Include="System.Drawing.Common.dll"/>
+        <FilesToDelete Include="TranslateCS2.Core.dll"/>
+        <FilesToDelete Include="TranslateCS2.Core.pdb"/>
+        <FilesToDelete Include="TranslateCS2.Inf.dll"/>
+        <FilesToDelete Include="TranslateCS2.Inf.pdb"/>
+        <FilesToDelete Include="TranslateCS2.ModBridge.dll"/>
+        <FilesToDelete Include="TranslateCS2.ModBridge.pdb"/>
+        <FilesToDelete Include="Unity.Abstractions.dll"/>
+        <FilesToDelete Include="Unity.Container.dll"/>
+    </ItemGroup>
+
+
+
+    <Target
+        Name="CleanUpModules"
+        AfterTargets="BeforeClean;BeforeBuild;BeforeRebuild;BeforePublish"
+        Condition="'$(CleanUpModules)'=='true'">
+        <RemoveDir Directories="$(SolutionDir)TranslateCS2\bin\$(Configuration)\modules"/>
+    </Target>
+
+
+
+    <Target
+        Name="DeleteUnnecessaryBuild"
+        AfterTargets="Build">
+        <!--
+            to delete unnecessary files that are copied via CopyLocalLockFileAssemblies
+            https://learn.microsoft.com/de-de/visualstudio/msbuild/delete-task?view=vs-2022
+        -->
+        <Delete Files="$(OutDir)%(FilesToDelete.Identity)"/>
+        <RemoveDir Directories="$(OutDir)runtimes"/>
+        <CallTarget
+            Targets="CopyToModules"
+            Condition="'$(IsCopyToModules)'=='true'"/>
+    </Target>
+
+
+
+    <Target
+        Name="CopyToModules">
+        <ItemGroup>
+            <FilesToCopy Include="$(OutDir)*.*"/>
+        </ItemGroup>
+        <Copy
+            SourceFiles="@(FilesToCopy)"
+            DestinationFolder="$(SolutionDir)TranslateCS2\bin\$(Configuration)\modules"/>
+    </Target>
+
+
+
+    <Target
+        Name="DeleteUnnecessaryPublish"
+        AfterTargets="Publish">
+        <!--
+            to delete unnecessary files that are copied via CopyLocalLockFileAssemblies
+            https://learn.microsoft.com/de-de/visualstudio/msbuild/delete-task?view=vs-2022
+        -->
+        <Delete Files="$(PublishDir)%(FilesToDelete.Identity)"/>
+        <RemoveDir Directories="$(PublishDir)runtimes"/>
+    </Target>
+
+
+
+</Project>

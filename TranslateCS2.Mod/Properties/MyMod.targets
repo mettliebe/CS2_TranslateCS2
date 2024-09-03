@@ -1,0 +1,84 @@
+<Project>
+    <!--
+        to copy the template PublishConfiguration.xml (PublishConfigurationPathFrom) to
+        the ones (PublishConfigurationPath) that is used by Colossal Orders Mod.targets
+        
+        to fill the ones that is used by Colossal Orders Mod.targets with:
+        - ModVersion (this projects assemblyversion)
+        - LongDescription (is read from project-dir/README.md)
+        - ChangeLog (is read from project-dir/CHANGELOG.CURRENT.md)
+        
+        if the mod got published
+            to prepend the changelog-history (project-dir/CHANGELOG.md) with CHANGELOG.CURRENT.md
+        
+    -->
+    <Target Name="CopyPublishConfiguration" BeforeTargets="BeforeBuild">
+        <!-- copy template publishconfiguration to the publishconfiguration path used within Mod.targets -->
+        <Copy SourceFiles="$(PublishConfigurationPathFrom)" DestinationFiles="$(PublishConfigurationPath)" />
+    </Target>
+
+
+
+    <Target
+        Name="PokeInfosToPublishConfiguration"
+        AfterTargets="CopyPublishConfiguration">
+        <!-- fill copied publishconfiguration with required values -->
+
+        <!-- https://learn.microsoft.com/dotnet/api/microsoft.build.tasks.xmlpeek?view=msbuild-17-netcore -->
+        <!-- https://learn.microsoft.com/dotnet/api/microsoft.build.tasks.xmlpoke?view=msbuild-17-netcore -->
+
+
+        <!-- assemblyversion to modversion -->
+        <XmlPoke
+            Value="$(AssemblyVersion)"
+            XmlInputPath="$(PublishConfigurationPath)"
+            Query=".//Publish/ModVersion/@Value" />
+
+
+        <XmlPoke
+            Value="$([System.IO.File]::ReadAllText('$(ProjectDir)\README.md'))"
+            XmlInputPath="$(PublishConfigurationPath)"
+            Query=".//Publish/LongDescription" />
+
+
+        <XmlPoke
+            Value="$([System.IO.File]::ReadAllText('$(ProjectDir)\CHANGELOG.CURRENT.md'))"
+            XmlInputPath="$(PublishConfigurationPath)"
+            Query=".//Publish/ChangeLog" />
+    </Target>
+
+
+    <Target
+        Name="WriteNewChangeLog"
+        BeforeTargets="BeforeBuild"
+        DependsOnTargets="PokeInfosToPublishConfiguration">
+        <!-- beforetarget 'Publish' indicates final publish -->
+        <!-- prepend changelog-history with current changelogs lines -->
+        <!-- uses items from depend-target -->
+        <PropertyGroup>
+            <ModChangeLogHistory>$(ProjectDir)\Properties\CHANGELOG.HISTORY.md</ModChangeLogHistory>
+            <ModChangeLog>$(ProjectDir)\CHANGELOG.md</ModChangeLog>
+        </PropertyGroup>
+        <ItemGroup>
+            <ChangeLogContent
+                Include="$([System.IO.File]::ReadAllText('$(ProjectDir)\CHANGELOG.CURRENT.md'))" />
+            <ChangeLogContent
+                Include="$([System.IO.File]::ReadAllText('$(ModChangeLogHistory)'))" />
+        </ItemGroup>
+        <WriteLinesToFile
+            File="$(ModChangeLog)"
+            Lines="@(ChangeLogContent)"
+            Overwrite="true"
+            />
+    </Target>
+
+
+    <Target
+        Name="CopyChangeLogToHistory"
+        AfterTargets="RunModPublisher">
+        <!-- aftertarget 'RunModPublisher' indicates final publish -->
+        <Copy
+            SourceFiles="$(ModChangeLog)"
+            DestinationFiles="$(ModChangeLogHistory)"/>
+    </Target>
+</Project>
