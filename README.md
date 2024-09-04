@@ -120,7 +120,7 @@ please take a look at [Issues](https://github.com/mettliebe/CS2_TranslateCS2/iss
         - and like to have the untranslated part in 'fr-FR', for example
 - to use with [TranslateCS2.Mod](https://mods.paradoxplaza.com/mods/79187/Windows)
     - https://forum.paradoxplaza.com/forum/threads/translatecs2-translatecs2-mod.1669371/
-    - https://github.com/mettliebe/CS2_TranslateCS2/tree/main/CS2_TranslateCS2.Mod
+    - https://github.com/mettliebe/CS2_TranslateCS2/tree/main/TranslateCS2.Mod
 
 ##### I18NEverywhere
 - compatibility is not guaranteed
