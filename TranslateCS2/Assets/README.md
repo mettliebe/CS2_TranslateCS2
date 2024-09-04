@@ -112,7 +112,7 @@ please take a look at [Issues](https://github.com/mettliebe/CS2_TranslateCS2/iss
 - select a json-file to export to
 - click export
 
-##### TranslateCS2Mod
+##### TranslateCS2.Mod
 - you should check 'add key'
 - you may check 'add merge values'
     - especially for those who like to:
