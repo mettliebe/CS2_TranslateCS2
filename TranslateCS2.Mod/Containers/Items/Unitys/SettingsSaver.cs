@@ -10,7 +10,7 @@ internal class SettingsSaver : ISettingsSaver {
     public SettingsSaver(AssetDatabase assetDatabase) {
         this.assetDatabase = assetDatabase;
     }
-    public void SaveSettingsNow() {
-        this.assetDatabase.SaveSettingsNow();
+    public void SaveSettings() {
+        this.assetDatabase.SaveSettings();
     }
 }

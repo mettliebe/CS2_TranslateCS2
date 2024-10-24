@@ -102,7 +102,7 @@ internal partial class ModSettings : ModSetting {
             if (!this.runtimeContainer.Locales.IsBuiltIn(this.Locale)
                 || !this.runtimeContainer.Locales.IsBuiltIn(intSettingsCurrentLocale)) {
                 this.runtimeContainer.IntSettings.CurrentLocale = this.PreviousLocale ?? LocalizationManager.kOsLanguage;
-                this.runtimeContainer.SettingsSaver?.SaveSettingsNow();
+                this.runtimeContainer.SettingsSaver?.SaveSettings();
             }
         } catch (Exception ex) {
             this.runtimeContainer.Logger.LogCritical(this.GetType(),
