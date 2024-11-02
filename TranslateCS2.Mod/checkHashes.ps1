@@ -1,9 +1,9 @@
-$lines = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/mettliebe/CS2_TranslateCS2/refs/heads/master/TranslateCS2.Mod/TranslateCS2.Mod.hashes").Content
+$lines = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/mettliebe/CS2_TranslateCS2/refs/heads/master/TranslateCS2.Mod/TranslateCS2.Mod.hashes" -ContentType "text/plain; charset=utf8").Content.Split("`n")
 $isCorrupt = 0
 foreach ($line in $lines) {
     $expectedHash = $line.Split(" ")[1];
     $expectedFileName = $line.Split(":")[0];
-
+    
     $currentFile = Get-Item "$($Env:LOCALAPPDATA)Low\Colossal Order\Cities Skylines II\.cache\Mods\mods_subscribed\79187_*\$($expectedFileName)"
     $currentHash = (Get-FileHash $currentFile -Algorithm SHA512).Hash
     if ($currentHash -ne $expectedHash) {
