@@ -92,7 +92,7 @@
                 Include="$(OutDir)TranslateCS2.*"
                 Exclude="$(OutDir)*.pdb"/>
             <FileWithHashesProject
-                Include="$(ProjectDir)TranslateCS2.hashes" />
+                Include="$(ProjectDir)TranslateCS2.Mod.hashes" />
             <FileWithHashesOut
                 Include="$(OutDir)TranslateCS2.hashes" />
         </ItemGroup>

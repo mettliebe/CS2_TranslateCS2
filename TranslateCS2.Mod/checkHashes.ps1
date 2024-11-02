@@ -1,4 +1,4 @@
-$lines = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/mettliebe/CS2_TranslateCS2/refs/heads/master/TranslateCS2.hashes").Content
+$lines = (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/mettliebe/CS2_TranslateCS2/refs/heads/master/TranslateCS2.Mod.hashes").Content
 $isCorrupt = 0
 foreach ($line in $lines) {
     $expectedHash = $line.Split(" ")[1];
