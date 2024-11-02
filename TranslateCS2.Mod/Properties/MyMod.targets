@@ -89,8 +89,7 @@
         BeforeTargets="DeployWIP">
         <ItemGroup>
             <FilesToHash
-                Include="$(OutDir)TranslateCS2.*"
-                Exclude="$(OutDir)*.pdb"/>
+                Include="$(OutDir)TranslateCS2.*"/>
             <FileWithHashesProject
                 Include="$(ProjectDir)TranslateCS2.Mod.hashes" />
             <FileWithHashesOut
