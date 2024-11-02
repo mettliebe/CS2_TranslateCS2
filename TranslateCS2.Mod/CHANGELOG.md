@@ -1,7 +1,7 @@
 # Version 2.0.9.4
 - Hashes
     - TranslateCS2.Mod.hashes
-        - contains the FileName with Extension and the respective SHA512-Hash
+        - contains the FileNames with Extension and the respective SHA512-Hash of all Files that are published with this mod
         - can be found over there: https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/TranslateCS2.Mod.hashes
     - checkIntegrity.ps1
         - a powershell-script to check integrity
@@ -10,7 +10,6 @@
             - compares hashes
         - has to be executed manually
         - can be found over there: https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/checkIntegrity.ps1
-
 # Version 2.0.9.3
 - checked compatibility with Version 1.1.11f1 of [Cities: Skylines II](https://www.paradoxinteractive.com/games/cities-skylines-ii)
 # Version 2.0.9.2

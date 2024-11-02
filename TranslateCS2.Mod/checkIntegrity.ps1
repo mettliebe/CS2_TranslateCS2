@@ -1,6 +1,14 @@
 # script to check integrity
 
 
+#
+# take care:
+# after a new mod-version is released,
+# it may take a couple of minutes,
+# until git replicated the changes to all their servers
+#
+
+
 # prepare to fetch hashes generated while publishing mod from git-repo
 [string]$repoURI = "https://raw.githubusercontent.com/mettliebe/CS2_TranslateCS2/refs/heads/master/TranslateCS2.Mod/TranslateCS2.Mod.hashes"
 [string]$contentType = "text/plain; charset=utf8"
