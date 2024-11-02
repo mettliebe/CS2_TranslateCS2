@@ -85,117 +85,34 @@
 
     <Target
         Name="HashInf"
-        AfterTargets="RunModPostProcessor">
+        AfterTargets="RunModPostProcessor"
+        BeforeTargets="DeployWIP">
         <ItemGroup>
-            <FileToHashInf Include="$(OutDir)TranslateCS2.Inf.dll" />
-            <FileToHashInfHash Include="$(ProjectDir)TranslateCS2.Inf.dll.hash" />
+            <FilesToHash
+                Include="$(OutDir)TranslateCS2.*"
+                Exclude="$(OutDir)*.pdb"/>
+            <FileWithHashesProject
+                Include="$(ProjectDir)TranslateCS2.hashes" />
+            <FileWithHashesOut
+                Include="$(OutDir)TranslateCS2.hashes" />
         </ItemGroup>
         <GetFileHash
-            Files="@(FileToHashInf)"
+            Files="@(FilesToHash)"
             Algorithm="SHA512">
             <Output
-                TaskParameter="Hash"
-                ItemName="FileHashInf" />
+                TaskParameter="Items"
+                ItemName="FileHashes" />
         </GetFileHash>
 
-        <Message Importance="High"
-                 Text="File: @(FileToHashInf) Hash: @(FileHashInf)" />
         <WriteLinesToFile
-            File="@(FileToHashInfHash)"
-            Lines="@(FileHashInf)"
-            Overwrite="true"
-            />
-    </Target>
-    <Target
-        Name="HashMod"
-        AfterTargets="RunModPostProcessor">
-        <ItemGroup>
-            <FileToHashMod Include="$(OutDir)TranslateCS2.Mod.dll" />
-            <FileToHashModHash Include="$(ProjectDir)TranslateCS2.Mod.dll.hash" />
-        </ItemGroup>
-        <GetFileHash
-            Files="@(FileToHashMod)"
-            Algorithm="SHA512">
-            <Output
-                TaskParameter="Hash"
-                ItemName="FileHashMod" />
-        </GetFileHash>
-
-        <Message Importance="High"
-                 Text="File: @(FileToHashMod) Hash: @(FileHashMod)" />
+            File="@(FileWithHashesProject)"
+            Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
+            Overwrite="true" />
+        <!--
         <WriteLinesToFile
-            File="@(FileToHashModHash)"
-            Lines="@(FileHashMod)"
-            Overwrite="true"
-            />
-    </Target>
-    <Target
-        Name="HashSO"
-        AfterTargets="RunModPostProcessor">
-        <ItemGroup>
-            <FileToHashSO Include="$(OutDir)TranslateCS2.Mod_linux_x86_64.so" />
-            <FileToHashSOHash Include="$(ProjectDir)TranslateCS2.Mod_linux_x86_64.so.hash" />
-        </ItemGroup>
-        <GetFileHash
-            Files="@(FileToHashSO)"
-            Algorithm="SHA512">
-            <Output
-                TaskParameter="Hash"
-                ItemName="FileHashSO" />
-        </GetFileHash>
-
-        <Message Importance="High"
-                 Text="File: @(FileToHashSO) Hash: @(FileHashSO)" />
-        <WriteLinesToFile
-            File="@(FileToHashSOHash)"
-            Lines="@(FileHashSO)"
-            Overwrite="true"
-            />
-    </Target>
-    <Target
-        Name="HashBundle"
-        AfterTargets="RunModPostProcessor">
-        <ItemGroup>
-            <FileToHashBundle Include="$(OutDir)TranslateCS2.Mod_mac_x86_64.bundle" />
-            <FileToHashBundleHash Include="$(ProjectDir)TranslateCS2.Mod_mac_x86_64.bundle.hash" />
-        </ItemGroup>
-        <GetFileHash
-            Files="@(FileToHashBundle)"
-            Algorithm="SHA512">
-            <Output
-                TaskParameter="Hash"
-                ItemName="FileHashBundle" />
-        </GetFileHash>
-
-        <Message Importance="High"
-                 Text="File: @(FileToHashBundle) Hash: @(FileHashBundle)" />
-        <WriteLinesToFile
-            File="@(FileToHashBundleHash)"
-            Lines="@(FileHashBundle)"
-            Overwrite="true"
-            />
-    </Target>
-    <Target
-        Name="HashWIN"
-        AfterTargets="RunModPostProcessor">
-        <ItemGroup>
-            <FileToHashWIN Include="$(OutDir)TranslateCS2.Mod_win_x86_64.dll" />
-            <FileToHashWINHash Include="$(ProjectDir)TranslateCS2.Mod_win_x86_64.dll.hash" />
-        </ItemGroup>
-        <GetFileHash
-            Files="@(FileToHashWin)"
-            Algorithm="SHA512">
-            <Output
-                TaskParameter="Hash"
-                ItemName="FileHashWIN" />
-        </GetFileHash>
-
-        <Message Importance="High"
-                 Text="File: @(FileToHashWIN) Hash: @(FileHashWIN)" />
-        <WriteLinesToFile
-            File="@(FileToHashWINHash)"
-            Lines="@(FileHashWIN)"
-            Overwrite="true"
-            />
+            File="@(FileWithHashesOut)"
+            Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
+            Overwrite="true" />
+        -->
     </Target>
 </Project>
