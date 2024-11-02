@@ -81,4 +81,37 @@
             SourceFiles="$(ModChangeLog)"
             DestinationFiles="$(ModChangeLogHistory)"/>
     </Target>
+
+
+    <Target
+        Name="HashInf"
+        AfterTargets="RunModPostProcessor"
+        BeforeTargets="DeployWIP">
+        <ItemGroup>
+            <FilesToHash
+                Include="$(OutDir)TranslateCS2.*"/>
+            <FileWithHashesProject
+                Include="$(ProjectDir)TranslateCS2.Mod.hashes" />
+            <FileWithHashesOut
+                Include="$(OutDir)TranslateCS2.hashes" />
+        </ItemGroup>
+        <GetFileHash
+            Files="@(FilesToHash)"
+            Algorithm="SHA512">
+            <Output
+                TaskParameter="Items"
+                ItemName="FileHashes" />
+        </GetFileHash>
+
+        <WriteLinesToFile
+            File="@(FileWithHashesProject)"
+            Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
+            Overwrite="true" />
+        <!--
+        <WriteLinesToFile
+            File="@(FileWithHashesOut)"
+            Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
+            Overwrite="true" />
+        -->
+    </Target>
 </Project>
