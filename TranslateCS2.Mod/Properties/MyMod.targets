@@ -93,9 +93,9 @@
                 it also has to hash TranslateCS2.Inf
             -->
             <FilesToHash
-                Include="$(OutDir)TranslateCS2.*"/>
+                Include="$(OutputPath)TranslateCS2.*"/>
             <FileWithHashesProject
-                Include="$(ProjectDir)$(MSBuildProjectName).hashes" />
+                Include="$(MSBuildProjectDirectory)\$(MSBuildProjectName).hashes" />
         </ItemGroup>
         <GetFileHash
             Files="@(FilesToHash)"
@@ -118,7 +118,7 @@
         <!--
         <ItemGroup>
             <FileWithHashesOut
-                Include="$(OutDir)$(MSBuildProjectName).hashes" />
+                Include="$(OutputPath)$(MSBuildProjectName).hashes" />
         </ItemGroup>
         <WriteLinesToFile
             File="@(FileWithHashesOut)"

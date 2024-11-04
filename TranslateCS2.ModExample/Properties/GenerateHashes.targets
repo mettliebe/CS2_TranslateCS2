@@ -34,9 +34,9 @@
         -->
         <ItemGroup>
             <FilesToHashDlls
-                Include="$(OutDir)$(MSBuildProjectName)*"/>
+                Include="$(OutputPath)$(MSBuildProjectName)*"/>
             <FileWithHashesProject
-                Include="$(ProjectDir)$(MSBuildProjectName).hashes" />
+                Include="$(MSBuildProjectDirectory)\$(MSBuildProjectName).hashes" />
         </ItemGroup>
         <GetFileHash
             Files="@(FilesToHashDlls)"
@@ -62,7 +62,7 @@
         -->
         <ItemGroup>
             <FilesToHashUnofficialLocales
-                Include="$(OutDir)UnofficialLocales\*.*"/>
+                Include="$(OutputPath)UnofficialLocales\*.*"/>
         </ItemGroup>
         <GetFileHash
             Files="@(FilesToHashUnofficialLocales)"
