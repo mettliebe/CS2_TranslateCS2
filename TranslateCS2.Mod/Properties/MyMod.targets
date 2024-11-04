@@ -96,8 +96,6 @@
                 Include="$(OutDir)TranslateCS2.*"/>
             <FileWithHashesProject
                 Include="$(ProjectDir)$(MSBuildProjectName).hashes" />
-            <FileWithHashesOut
-                Include="$(OutDir)TranslateCS2.hashes" />
         </ItemGroup>
         <GetFileHash
             Files="@(FilesToHash)"
@@ -111,7 +109,17 @@
             File="@(FileWithHashesProject)"
             Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
             Overwrite="true" />
+
         <!--
+            it does not make sense to distribute a file with hashes
+            someone who gains control over the pdx-acc
+            would simply distribute its 'malicious' hashes file
+        -->
+        <!--
+        <ItemGroup>
+            <FileWithHashesOut
+                Include="$(OutDir)$(MSBuildProjectName).hashes" />
+        </ItemGroup>
         <WriteLinesToFile
             File="@(FileWithHashesOut)"
             Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
