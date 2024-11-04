@@ -88,6 +88,10 @@
         AfterTargets="RunModPostProcessor"
         BeforeTargets="DeployWIP">
         <ItemGroup>
+            <!--
+                dont use $(MSBuildProjectName) for FilesToHash;
+                it also has to hash TranslateCS2.Inf
+            -->
             <FilesToHash
                 Include="$(OutDir)TranslateCS2.*"/>
             <FileWithHashesProject
