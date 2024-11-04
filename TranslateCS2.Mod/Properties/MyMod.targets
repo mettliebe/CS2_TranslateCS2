@@ -86,7 +86,7 @@
     <Target
         Name="HashDistributedFiles"
         AfterTargets="RunModPostProcessor"
-        BeforeTargets="DeployWIP">
+        BeforeTargets="ZipDistributedFiles">
         <ItemGroup>
             <!--
                 dont use $(MSBuildProjectName) for FilesToHash;
@@ -110,20 +110,32 @@
             Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
             Overwrite="true" />
 
+        <!-- copy .hashes file to outdir, to zip it together with the binaries -->
+        <Copy
+            SourceFiles="@(FileWithHashesProject)"
+            DestinationFolder="$(OutputPath)"/>
+    </Target>
+    <Target
+        Name="ZipDistributedFiles"
+        AfterTargets="HashDistributedFiles"
+        BeforeTargets="DeleteFileWithHashesInOut">
+        <!-- zip the binaries and the .hashes file -->
+        <ZipDirectory
+            SourceDirectory="$(OutputPath)"
+            DestinationFile="$(MSBuildProjectDirectory)\DistributedBinaries\ModVersion_$(AssemblyVersion).zip"
+            Overwrite="true"/>
+    </Target>
+    <Target
+        Name="DeleteFileWithHashesInOut"
+        AfterTargets="ZipDistributedFiles"
+        BeforeTargets="DeployWIP">
         <!--
+            delete .hashes file
             it does not make sense to distribute a file with hashes
             someone who gains control over the pdx-acc
-            would simply distribute its 'malicious' hashes file
+            would simply distribute its own 'malicious' hashes file
         -->
-        <!--
-        <ItemGroup>
-            <FileWithHashesOut
-                Include="$(OutputPath)$(MSBuildProjectName).hashes" />
-        </ItemGroup>
-        <WriteLinesToFile
-            File="@(FileWithHashesOut)"
-            Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
-            Overwrite="true" />
-        -->
+        <Delete
+            Files="@(FileWithHashesOut)"/>
     </Target>
 </Project>
