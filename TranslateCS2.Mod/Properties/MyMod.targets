@@ -84,7 +84,7 @@
 
 
     <Target
-        Name="HashInf"
+        Name="HashDistributedFiles"
         AfterTargets="RunModPostProcessor"
         BeforeTargets="DeployWIP">
         <ItemGroup>
