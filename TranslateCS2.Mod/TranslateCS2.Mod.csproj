@@ -126,4 +126,8 @@
         <EmbeddedResource Include="Properties\I18N\*.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="DistributedBinaries\" />
+    </ItemGroup>
+
 </Project>
