@@ -135,6 +135,10 @@
             someone who gains control over the pdx-acc
             would simply distribute its own 'malicious' hashes file
         -->
+        <ItemGroup>
+            <FileWithHashesOut
+                Include="$(OutputPath)\$(MSBuildProjectName).hashes" />
+        </ItemGroup>
         <Delete
             Files="@(FileWithHashesOut)"/>
     </Target>
