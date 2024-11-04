@@ -95,7 +95,7 @@
             <FilesToHash
                 Include="$(OutDir)TranslateCS2.*"/>
             <FileWithHashesProject
-                Include="$(ProjectDir)TranslateCS2.Mod.hashes" />
+                Include="$(ProjectDir)$(MSBuildProjectName).hashes" />
             <FileWithHashesOut
                 Include="$(OutDir)TranslateCS2.hashes" />
         </ItemGroup>
