@@ -1,1 +1,13 @@
 # Version 2.0.9.5
+- updated [GUIDE.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/GUIDE.md)
+    - Section 1.3
+        - added where and how other mods are taken into account
+    - Section 1.3.1
+        - added link to ModExample
+- zipped binaries
+    - a new directory is introduced
+        - https://github.com/mettliebe/CS2_TranslateCS2/tree/master/TranslateCS2.Mod/DistributedBinaries
+    - from now on, this directory contains a .zip-file for each new ModVersion
+    - each .zip-file contains
+        - the binaries, that are build and distributed
+        - the respective .hashes-file, that is NOT distributed
