@@ -1,12 +1,17 @@
-# Version 2.0.9.4
-- Hashes
-    - TranslateCS2.Mod.hashes
-        - contains the FileNames with Extension and the respective SHA512-Hash of all Files that are published with this mod
-        - can be found over there: https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/TranslateCS2.Mod.hashes
-    - checkIntegrity.ps1
-        - a powershell-script to check integrity
-        - it
-            - counts and checks file-counts
-            - compares hashes
-        - has to be executed manually
-        - can be found over there: https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/checkIntegrity.ps1
+# Version 2.0.9.5
+- added Security Section to this Mods README.md
+- updated [GUIDE.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/GUIDE.md)
+    - Section 1.3
+        - added where and how other mods are taken into account
+    - Section 1.3.1
+        - added link to ModExample
+- DistributedBinaries
+    - is a new directory and can be found over there
+        - https://github.com/mettliebe/CS2_TranslateCS2/tree/master/TranslateCS2.Mod/DistributedBinaries
+    - from now on, for the current ModVersion, this directory contains a
+        - a general [README.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/DistributedBinaries/README.md)
+        - a .zip-file related to the current ModVersion
+            - with the binaries, that are build and distributed
+            - with the respective .hashes-file, that is NOT distributed
+        - a .hash-file related to the current ModVersion
+            - with the SHA512-Hash for the .zip-file itself

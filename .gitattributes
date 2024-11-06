@@ -62,6 +62,7 @@
 #*.sqlproj   merge=binary
 #*.wwaproj   merge=binary
 *.7z         merge=binary
+*.zip        merge=binary
 *.sqlite     merge=binary
 
 ###############################################################################
@@ -74,6 +75,7 @@
 *.png       binary
 *.gif       binary
 *.7z        binary
+*.zip       binary
 *.sqlite    binary
 
 ###############################################################################

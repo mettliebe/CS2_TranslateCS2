@@ -78,6 +78,57 @@
 
 
 ## 1.3. to create a mod
+In both cases, described below, the respective Mod is loaded by [Cities: Skylines II](https://www.paradoxinteractive.com/games/cities-skylines-ii) itself.
+
+TranslateCS2.Mod is NOT intended to sideload dll's!
+
+What TranslateCS2.Mod does with other mods can be found over there:
+
+https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/Helpers/OtherModsLocFilesHelper.cs
+
+
+In a few words:
+* a list of mods is retrieved from the games modmanager
+* the fullfillment of the following needs is checked:
+    * the mod has to be
+        * a mod
+        * valid
+        * loadable
+        * clean (not dirty)
+        * no dummy
+        * local OR enabled within the active playset
+* if the needs are NOT fullfilled
+    * the mod is skipped
+* if the needs are fullfilled
+    * TranslateCS2.Mod checks the presence of a direct subdirectory called "UnofficialLocales"
+        * if the subdirectory does NOT exist
+            * the mod is skipped
+        * if the subdirectory does exist
+            * if it does NOT contain .json-files
+                * the mod is skipped
+            * if it does contain .json-files
+                * some mod-information are collected
+                    * id
+                    * displayname
+                    * version
+                    * is it a local mod or not
+                * and the .json-files are collected
+* now we continue the green way, a mod is not skipped
+    * the collected mod-information are returned and given to the logic to read .json-files
+
+
+
+The .json files are read somewhere else (not in the class that is linked/mentioned above), but:
+
+* TranslateCS2.Mod reads the collected .json-file
+* if NO error occurs while reading the .json-file
+    * everything should be fine and the translations that are provided within the .json-file can be available within the game
+* if an error occurs while reading the .json-file
+    * the previously collected mod-information are used to display a suitable error message that is also logged
+
+
+
+
 ### 1.3.1. without logic that shares your translation with others
 * this guide/section does not cover the basics
 * therefore please visit https://cs2.paradoxwikis.com/Modding
@@ -106,6 +157,7 @@
         * users are able to deactivate this mod
         * users are able to skip this mods installation
         * i, the author of this mod, recommend to use [baka-gourd](https://github.com/baka-gourd)'s [I18NEverywhere](https://github.com/baka-gourd/I18NEveryWhere)-Mod for those purposes
+* an Example can be found over there: https://github.com/mettliebe/CS2_TranslateCS2/tree/master/TranslateCS2.ModExample
 
 
 ### 1.3.2. to use this mod for your mods translations
