@@ -13,7 +13,7 @@
             - with the binaries, that are build and distributed
             - with the respective .hashes-file, that is NOT distributed
         - a .hash-file related to the current ModVersion
-            - with the SHA512-Hash for the zip itself
+            - with the SHA512-Hash for the .zip-file itself
 # Version 2.0.9.4
 - Hashes
     - TranslateCS2.Mod.hashes
