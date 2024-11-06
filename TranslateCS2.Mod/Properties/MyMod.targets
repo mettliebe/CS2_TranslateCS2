@@ -83,10 +83,38 @@
     </Target>
 
 
+
+
+
+
+
+
+
+
+    <!--
+        Hashing and Zipping
+        after:      RunModPostProcessor
+        before:     DeployWIP
+    -->
+    <Target
+        Name="DeletePreviousDistributesBinaries"
+        DependsOnTargets="RunModPostProcessor"
+        AfterTargets="RunModPostProcessor"
+        BeforeTargets="HashDistributedFiles">
+        <!-- HASH-Step-01: delete .zip and .hash for previous distributed version(s) within DistributedBinaries -->
+        <ItemGroup>
+            <PreviousDistributedBinaries
+                Include="$(MSBuildProjectDirectory)\DistributedBinaries\ModVersion_*" />
+        </ItemGroup>
+        <Delete
+            Files="@(PreviousDistributedBinaries)"/>
+    </Target>
     <Target
         Name="HashDistributedFiles"
-        AfterTargets="RunModPostProcessor"
-        BeforeTargets="ZipDistributedFiles">
+        DependsOnTargets="DeletePreviousDistributesBinaries"
+        AfterTargets="DeletePreviousDistributesBinaries"
+        BeforeTargets="CopyHashesFileToOutDir">
+        <!-- HASH-Step-02: generate the .hashes-file for the binaries that are being distributed -->
         <ItemGroup>
             <!--
                 dont use $(MSBuildProjectName) for FilesToHash;
@@ -109,26 +137,58 @@
             File="@(FileWithHashesProject)"
             Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
             Overwrite="true" />
-
-        <!-- copy .hashes file to outdir, to zip it together with the binaries -->
+    </Target>
+    <Target
+        Name="CopyHashesFileToOutDir"
+        DependsOnTargets="HashDistributedFiles"
+        AfterTargets="HashDistributedFiles"
+        BeforeTargets="ZipDistributedFiles">
+        <!-- HASH-Step-03: copy the generated .hashes-file to outdir to zip it together with the binaries -->
         <Copy
             SourceFiles="@(FileWithHashesProject)"
             DestinationFolder="$(OutputPath)"/>
     </Target>
     <Target
         Name="ZipDistributedFiles"
-        AfterTargets="HashDistributedFiles"
-        BeforeTargets="DeleteFileWithHashesInOut">
-        <!-- zip the binaries and the .hashes file -->
+        DependsOnTargets="CopyHashesFileToOutDir"
+        AfterTargets="CopyHashesFileToOutDir"
+        BeforeTargets="GenerateHashForZip">
+        <!-- HASH-Step-04: zip the binaries and its respective .hashes-file -->
         <ZipDirectory
             SourceDirectory="$(OutputPath)"
             DestinationFile="$(MSBuildProjectDirectory)\DistributedBinaries\ModVersion_$(AssemblyVersion).zip"
             Overwrite="true"/>
     </Target>
     <Target
-        Name="DeleteFileWithHashesInOut"
+        Name="GenerateHashForZip"
+        DependsOnTargets="ZipDistributedFiles"
         AfterTargets="ZipDistributedFiles"
+        BeforeTargets="DeleteFileWithHashesInOut">
+        <!-- HASH-Step-05: generate a seperate .hash-file for the .zip-file -->
+        <ItemGroup>
+            <ZipToHash
+                Include="$(MSBuildProjectDirectory)\DistributedBinaries\ModVersion_$(AssemblyVersion).zip"/>
+            <ZipHashFile
+                Include="$(MSBuildProjectDirectory)\DistributedBinaries\ModVersion_$(AssemblyVersion).hash" />
+        </ItemGroup>
+        <GetFileHash
+            Files="@(ZipToHash)"
+            Algorithm="SHA512">
+            <Output
+                TaskParameter="Items"
+                ItemName="ZipHash" />
+        </GetFileHash>
+        <WriteLinesToFile
+            File="@(ZipHashFile)"
+            Lines="@(ZipHash->'%(Filename)%(Extension): %(FileHash)')"
+            Overwrite="true" />
+    </Target>
+    <Target
+        Name="DeleteFileWithHashesInOut"
+        DependsOnTargets="GenerateHashForZip"
+        AfterTargets="GenerateHashForZip"
         BeforeTargets="DeployWIP">
+        <!-- HASH-Step-06: delete the .hashes-file that got copied within HASH-Step-03 -->
         <!--
             delete .hashes file
             it does not make sense to distribute a file with hashes

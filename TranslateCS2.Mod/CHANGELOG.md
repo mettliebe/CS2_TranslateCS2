@@ -4,13 +4,16 @@
         - added where and how other mods are taken into account
     - Section 1.3.1
         - added link to ModExample
-- zipped binaries
-    - a new directory is introduced
+- DistributedBinaries
+    - is a new directory and can be found over there
         - https://github.com/mettliebe/CS2_TranslateCS2/tree/master/TranslateCS2.Mod/DistributedBinaries
-    - from now on, this directory contains a .zip-file for each new ModVersion
-    - each .zip-file contains
-        - the binaries, that are build and distributed
-        - the respective .hashes-file, that is NOT distributed
+    - from now on, for the current ModVersion, this directory contains a
+        - a general [README.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/DistributedBinaries/README.md)
+        - a .zip-file related to the current ModVersion
+            - with the binaries, that are build and distributed
+            - with the respective .hashes-file, that is NOT distributed
+        - a .hash-file related to the current ModVersion
+            - with the SHA512-Hash for the zip itself
 # Version 2.0.9.4
 - Hashes
     - TranslateCS2.Mod.hashes
