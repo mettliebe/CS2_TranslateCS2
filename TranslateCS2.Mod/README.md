@@ -20,7 +20,7 @@ After a a new ModVersion is released, it may take a couple of minutes, until I p
 
 In [Section 1.3. to create a mod of the GUIDE.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/GUIDE.md) is described, how other mods are taken into account.
 
-There is link to the Source Code, too.
+There is a link to the Source Code, too.
 
 # 3.2. since Version 2.0.9.4
 
