@@ -97,9 +97,23 @@
         before:     DeployWIP
     -->
     <Target
-        Name="DeletePreviousDistributesBinaries"
+        Name="CopyMITLicense"
         DependsOnTargets="RunModPostProcessor"
         AfterTargets="RunModPostProcessor"
+        BeforeTargets="DeletePreviousDistributesBinaries">
+        <!-- HASH-Step-00: copy MIT-License to outdir -->
+        <ItemGroup>
+            <TheMITLicense
+                Include="$(MSBuildProjectDirectory)\..\LICENSE" />
+        </ItemGroup>
+        <Copy
+            SourceFiles="@(TheMITLicense)"
+            DestinationFolder="$(OutputPath)"/>
+    </Target>
+    <Target
+        Name="DeletePreviousDistributesBinaries"
+        DependsOnTargets="CopyMITLicense"
+        AfterTargets="CopyMITLicense"
         BeforeTargets="HashDistributedFiles">
         <!-- HASH-Step-01: delete .zip and .hash for previous distributed version(s) within DistributedBinaries -->
         <ItemGroup>
@@ -122,6 +136,8 @@
             -->
             <FilesToHash
                 Include="$(OutputPath)TranslateCS2.*"/>
+            <FilesToHash
+                Include="$(OutputPath)LICENSE"/>
             <FileWithHashesProject
                 Include="$(MSBuildProjectDirectory)\$(MSBuildProjectName).hashes" />
         </ItemGroup>
