@@ -1,4 +1,5 @@
 # Version 2.0.9.5
+- added Security Section to this Mods README.md
 - updated [GUIDE.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/GUIDE.md)
     - Section 1.3
         - added where and how other mods are taken into account
