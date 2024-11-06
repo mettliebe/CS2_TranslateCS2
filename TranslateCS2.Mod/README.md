@@ -12,11 +12,17 @@ This mod is provided as is to use at your own risk.
 Please see also: [MIT-License](https://github.com/mettliebe/CS2_TranslateCS2?tab=MIT-1-ov-file)
 
 # 3. Security
+Please always ensure the github-account-name is `mettliebe`.
+
+After a a new ModVersion is released, it may take a couple of minutes, until I pushed it to github and github replicated the changes to all their servers.
+
+# 3.1. how other mods are taken into account
+
 In [Section 1.3. to create a mod of the GUIDE.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/GUIDE.md) is described, how other mods are taken into account.
 
 There is link to the Source Code, too.
 
-# 3.1. since Version 2.0.9.4
+# 3.2. since Version 2.0.9.4
 
 Since Version 2.0.9.4 there is a .hashes-file.
 
@@ -34,7 +40,7 @@ It's called `checkIntegrity.ps1` and can be found over there: https://github.com
 
 Either way you go, using the provided script or the provided .hashes-file with the tool(s) you know/trust, please ensure the github-account-name is `mettliebe`.
 
-# 3.2. since Version 2.0.9.5
+# 3.3. since Version 2.0.9.5
 
 Since Version 2.0.9.5 there is a new directory, called DistributedBinaries, that can be found over there: https://github.com/mettliebe/CS2_TranslateCS2/tree/master/TranslateCS2.Mod/DistributedBinaries
 
