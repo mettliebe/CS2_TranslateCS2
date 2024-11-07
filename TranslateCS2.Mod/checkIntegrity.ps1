@@ -72,10 +72,10 @@ if ($expectedFileCount -ne $currentFileCount) {
             Write-Host `r`n
             Write-Host "$($expectedFileName)'s Hash is another one than expected!" -ForegroundColor DarkRed
             Write-Host `r`n
-            Write-Host "Location: $($currentFile))" -ForegroundColor DarkRed
+            Write-Host "Location: $($currentFile)" -ForegroundColor DarkRed
             Write-Host `r`n
-            Write-Host "current  Hash: $($currentHash))" -ForegroundColor DarkRed
-            Write-Host "expected Hash: $($expectedHash))" -ForegroundColor DarkRed
+            Write-Host "current  Hash: $($currentHash)" -ForegroundColor DarkRed
+            Write-Host "expected Hash: $($expectedHash)" -ForegroundColor DarkRed
             Write-Host `r`n`r`n
             
             break
