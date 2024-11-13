@@ -20,9 +20,9 @@
 - add a new project to the solution
     - choose `WPF Class Library`
 - give it a name, for example: `TranslateCS2.TranslatorMyPreferredTranslatorAPI`
-- choose `.NET 8.0` as Framework
+- choose `.NET 9.0` as Framework
 - now edit the project file
-    1. change `TargetFramework` from `net8.0` to `net8.0-windows`
+    1. change `TargetFramework` from `net9.0` to `net9.0-windows`
     2. ```
        <PropertyGroup>
            <!-- to delete the modules-directory within the output directory of TranslateCS2 depending on the configuration (Debug/Release) -->
@@ -84,7 +84,7 @@
     - choose `xUnit Test Project`
 - give it a name, for example: `TranslateCS2.TranslatorMyPreferredTranslatorAPI.Tests`
 - edit the project file
-    - change `TargetFramework` from `net8.0` to `net8.0-windows`
+    - change `TargetFramework` from `net9.0` to `net9.0-windows`
 - add a Project Reference to the newly created `xUnit Test Project`
     - only select `TranslateCS2.TranslatorMyPreferredTranslatorAPI`
 - if your `TranslateCS2.TranslatorMyPreferredTranslatorAPI.MyPreferredTranslatorAPI` class is an `internal` ones and you don't want to make it `public`
