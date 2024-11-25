@@ -47,11 +47,12 @@ Since Version 2.0.9.5 there is a new directory, called DistributedBinaries, that
 It contains a [README.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/DistributedBinaries/README.md).
 
 It also contains
-    - a .zip-file related to the current ModVersion with
-        - the binaries, that are build and distributed,
-        - and the respective .hashes-file, that is NOT distributed
-    - a .hash-file related to the current ModVersion
-        - with the SHA512-Hash for the .zip-file itself
+
+* a .zip-file related to the current ModVersion with
+    * the binaries, that are build and distributed,
+    * and the respective .hashes-file, that is NOT distributed
+* a .hash-file related to the current ModVersion
+    * with the SHA512-Hash for the .zip-file itself
 
 Please ensure the github-account-name is `mettliebe`.
 
