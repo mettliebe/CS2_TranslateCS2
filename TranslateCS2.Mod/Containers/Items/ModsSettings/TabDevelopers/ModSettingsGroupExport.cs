@@ -84,6 +84,7 @@ internal partial class ModSettings {
     }
     [MyExcludeFromCoverage]
     private void ExportEntries(LocaleAsset asset) {
+        // TODO: is there a need to iterate over 'found' assets, including database.name = 'ParadoxMods'???
         Dictionary<string, string> entries = asset.data.entries;
         string path = Path.Combine(this.ExportDirectory,
                                    $"{asset.localeId}{ModConstants.JsonExtension}");

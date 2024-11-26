@@ -29,6 +29,8 @@ internal class IndexCountsProvider : IIndexCountsProvider {
     ///     returns a ref to <see cref="LocaleAsset.data"/>s <see cref="LocaleData.indexCounts"/>
     /// </summary>
     private IReadOnlyDictionary<string, int>? GetIndexCounts(string localeId) {
+        // TODO: see also: are mods included??? - as far as i remember and as far as i gathered from logs, mods, especially pdx-mods add sources...
+        // TODO: is there a need to iterate over 'found' assets, including database.name = 'ParadoxMods'???
         LocaleAsset? asset = this.localeAssetProvider.Get(localeId);
         if (asset is null) {
             return null;
