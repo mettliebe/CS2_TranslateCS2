@@ -1,3 +1,5 @@
+# Version 2.0.9.6
+- checked compatibility with Version 1.1.12f1 of [Cities: Skylines II](https://www.paradoxinteractive.com/games/cities-skylines-ii)
 # Version 2.0.9.5
 - added Security Section to this Mods README.md
 - updated [GUIDE.md](https://github.com/mettliebe/CS2_TranslateCS2/blob/master/TranslateCS2.Mod/GUIDE.md)
