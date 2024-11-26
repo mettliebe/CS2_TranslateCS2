@@ -86,7 +86,8 @@ you are welcome to leave concerns, issues, feedback and/or suggestions on the fo
     - testing
     - feedback
 
-## Morgan Toverux
+## Morgan Touverey Quilling
+- https://github.com/toverux
 - for:
     - 'working' together
     - inspiration
