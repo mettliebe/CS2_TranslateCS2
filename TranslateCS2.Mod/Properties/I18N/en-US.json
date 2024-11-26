@@ -42,6 +42,6 @@
   "GroupExportExportDirectoryLabel": "Destination",
   "GroupExportExportDirectoryDescription": "The directory the selected language gets exported to.",
   "GroupExportExportButtonLabel": "export",
-  "GroupExportExportButtonDescription": "Exports the selected languages vanilla entries\nas UTF8 encoded .json-file (Key-Value-Pairs)\nto the selected destination.\nValues are taken from the .loc-file within the LocaleAsset-Database.\nWarnings:\nIf the games respective .loc-file is manually overwritten, the export contains those values.\nExisting files within the Destination are going to be overwritten.",
-  "GroupExportExportButtonConfirmation": "Existing files are going to be overwritten.\nDo you really want to export the selected language?"
+  "GroupExportExportButtonDescription": "Exports the selected languages vanilla entries\nas UTF8 encoded .json-file (Key-Value-Pairs)\nto the selected destination.\nValues are taken from the .loc-file within the LocaleAsset-Database.\nWarnings:\nIf the games respective .loc-file is manually overwritten, the export contains those values.\nExisting files within the Destination are going to be overwritten.\nThis action may take a while.",
+  "GroupExportExportButtonConfirmation": "Existing files are going to be overwritten.\nThis action may take a while.\nDo you really want to export the selected language(s)?"
 }
