@@ -22,5 +22,7 @@ public static class StringConstants {
     public static string CommaSpace { get; } = ", ";
     public static string LocalMod { get; } = nameof(LocalMod);
     public static string UnofficialLocales { get; } = nameof(UnofficialLocales);
-    public static string All { get; set; } = nameof(All);
+    public static string All { get; } = nameof(All);
+    public static string Game { get; } = nameof(Game);
+    public static string ParadoxMods { get; } = nameof(ParadoxMods);
 }
