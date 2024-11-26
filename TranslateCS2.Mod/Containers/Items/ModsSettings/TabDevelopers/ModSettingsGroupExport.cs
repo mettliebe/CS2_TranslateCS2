@@ -37,7 +37,7 @@ internal partial class ModSettings {
             displayName = StringConstants.All
         });
         LocaleAssetProvider? localeAssetProvider = this.runtimeContainer.BuiltInLocaleIdProvider as LocaleAssetProvider;
-        IEnumerable<LocaleAsset> localeAssets = localeAssetProvider.GetLocaleAssets();
+        IEnumerable<LocaleAsset> localeAssets = localeAssetProvider.GetBuiltInBaseGameLocaleAssets();
         foreach (LocaleAsset localeAsset in localeAssets) {
             items.Add(new DropdownItem<string>() {
                 value = localeAsset.localeId,
@@ -66,7 +66,7 @@ internal partial class ModSettings {
             try {
                 LocaleAssetProvider? localeAssetProvider = this.runtimeContainer.BuiltInLocaleIdProvider as LocaleAssetProvider;
                 if (StringConstants.All.Equals(this.ExportDropDown, StringComparison.OrdinalIgnoreCase)) {
-                    IEnumerable<LocaleAsset> localeAssets = localeAssetProvider.GetLocaleAssets();
+                    IEnumerable<LocaleAsset> localeAssets = localeAssetProvider.GetBuiltInBaseGameLocaleAssets();
                     foreach (LocaleAsset localeAsset in localeAssets) {
                         this.ExportEntries(localeAsset);
                     }
