@@ -29,11 +29,20 @@ internal class IndexCountsProvider : IIndexCountsProvider {
     ///     returns a ref to <see cref="LocaleAsset.data"/>s <see cref="LocaleData.indexCounts"/>
     /// </summary>
     private IReadOnlyDictionary<string, int>? GetIndexCounts(string localeId) {
-        LocaleAsset? asset = this.localeAssetProvider.Get(localeId);
-        if (asset is null) {
+        IEnumerable<LocaleAsset>? assets = this.localeAssetProvider.Get(localeId);
+        if (assets is null) {
             return null;
         }
-        LocaleData data = asset.data;
-        return data.indexCounts;
+        Dictionary<string, int> indexCounts = [];
+        foreach (LocaleAsset asset in assets) {
+            LocaleData data = asset.data;
+            Dictionary<string, int> dataIndexCounts = data.indexCounts;
+            foreach (KeyValuePair<string, int> dataIndexCount in dataIndexCounts) {
+                string key = dataIndexCount.Key;
+                indexCounts.TryGetValue(key, out int count);
+                indexCounts[dataIndexCount.Key] = count + dataIndexCount.Value;
+            }
+        }
+        return indexCounts;
     }
 }

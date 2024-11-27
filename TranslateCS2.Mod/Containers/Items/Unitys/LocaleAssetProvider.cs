@@ -4,8 +4,11 @@ using System.Linq;
 
 using Colossal.IO.AssetDatabase;
 
+using TranslateCS2.Inf;
 using TranslateCS2.Inf.Attributes;
+using TranslateCS2.Mod.Helpers;
 using TranslateCS2.Mod.Interfaces;
+using TranslateCS2.Mod.Packs;
 
 namespace TranslateCS2.Mod.Containers.Items.Unitys;
 [MyExcludeFromCoverage]
@@ -14,28 +17,91 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
     public LocaleAssetProvider(IAssetDatabase global) {
         this.global = global;
     }
-    public LocaleAsset? Get(string localeId) {
+
+
+    public static Func<LocaleAsset, bool> BuiltInBaseGamePredicate => asset => StringConstants.DataTilde.Equals(asset.subPath) && StringConstants.Game.Equals(asset.database.name);
+    public static Func<LocaleAsset, bool> ParadoxModsPredicate => asset => StringConstants.ParadoxMods.Equals(asset.database.name);
+    public static Func<LocaleAsset, bool> UserModsPredicate => asset => StringConstants.User.Equals(asset.database.name);
+
+
+    public IEnumerable<LocaleAsset>? Get(string localeId) {
         IEnumerable<LocaleAsset> localeAssets =
             this.GetLocaleAssets()
                 .Where(item => item.localeId.Equals(localeId, StringComparison.OrdinalIgnoreCase));
         if (localeAssets.Any()) {
-            return localeAssets.First();
+            return localeAssets;
         }
         return null;
     }
 
     public IReadOnlyList<string> GetBuiltInLocaleIds() {
         IReadOnlyList<string> localeIds =
-            this.GetLocaleAssets()
+            this.GetBuiltInBaseGameLocaleAssets()
                 .Select(item => item.localeId)
                 .Distinct()
                 .ToList();
         return localeIds;
     }
 
+    /// <summary>
+    ///     only Base-Game without any Mods
+    ///     <br/>
+    ///     <br/>
+    ///     neither local/user
+    ///     <br/>
+    ///     nor online
+    /// </summary>
+    public IEnumerable<LocaleAsset> GetBuiltInBaseGameLocaleAssets() {
+        return
+            this.GetLocaleAssets()
+                .Where(BuiltInBaseGamePredicate);
+    }
+
+    /// <summary>
+    ///     only Online-Mods
+    /// </summary>
+    public IEnumerable<LocaleAsset> GetParadoxModsLocaleAssets() {
+        return
+            this.GetLocaleAssets()
+                .Where(ParadoxModsPredicate);
+    }
+
+    /// <summary>
+    ///     only Local-Mods/User-Mods
+    /// </summary>
+    public IEnumerable<LocaleAsset> GetUserModsLocaleAssets() {
+        return
+            this.GetLocaleAssets()
+                .Where(UserModsPredicate);
+    }
+
     public IEnumerable<LocaleAsset> GetLocaleAssets() {
+        // mods are included
         return
             this.global
                 .GetAssets(default(SearchFilter<LocaleAsset>));
+    }
+
+    public bool HasFrenchPack(IEnumerable<LocaleAsset>? modAssets) {
+        RegionPack pack = RegionPack.French();
+        return this.HasPack(modAssets, pack);
+    }
+
+    public bool HasGermanPack(IEnumerable<LocaleAsset>? modAssets) {
+        RegionPack pack = RegionPack.German();
+        return this.HasPack(modAssets, pack);
+    }
+
+    public bool HasUKPack(IEnumerable<LocaleAsset>? modAssets) {
+        RegionPack pack = RegionPack.UK();
+        return this.HasPack(modAssets, pack);
+    }
+
+    public bool HasPack(IEnumerable<LocaleAsset>? modAssets, RegionPack pack) {
+        return
+            modAssets is not null
+            && modAssets
+                .Where(asset => pack.Id.Equals(OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset)))
+                .Any();
     }
 }

@@ -44,7 +44,9 @@ public class Mod : IMod {
             ModManager modManager = gameManager.modManager;
             if (modManager.TryGetExecutableAsset(this,
                                                  out ExecutableAsset asset)) {
-                this.Init(gameManager, modManager, asset);
+                this.Init(gameManager,
+                          modManager,
+                          asset);
             }
         } catch (Exception ex) {
             // user LogManagers Logger

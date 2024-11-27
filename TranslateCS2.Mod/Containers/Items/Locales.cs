@@ -14,7 +14,7 @@ internal class Locales {
     public Locales(IModRuntimeContainer runtimeContainer) {
         this.runtimeContainer = runtimeContainer;
         Dictionary<string, string> dictionary = [];
-        IReadOnlyList<string> builtInLocaleIds = runtimeContainer.BuiltInLocaleIdProvider.GetBuiltInLocaleIds();
+        IReadOnlyList<string> builtInLocaleIds = this.runtimeContainer.BuiltInLocaleIdProvider.GetBuiltInLocaleIds();
         foreach (string builtInLocaleId in builtInLocaleIds) {
             string key = builtInLocaleId.ToLower();
             if (dictionary.ContainsKey(key)) {
