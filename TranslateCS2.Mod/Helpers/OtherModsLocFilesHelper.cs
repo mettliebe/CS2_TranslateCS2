@@ -111,4 +111,46 @@ internal static class OtherModsLocFilesHelper {
         }
         return false;
     }
+
+    public static Colossal.PSI.Common.Mod? GetModViaId(IModRuntimeContainer runtimeContainer,
+                                                       int id) {
+        return GetMod(runtimeContainer,
+                      id: id);
+    }
+
+    public static Colossal.PSI.Common.Mod? GetModViaName(IModRuntimeContainer runtimeContainer,
+                                                         string name) {
+        return GetMod(runtimeContainer,
+                      name: name);
+    }
+
+    private static Colossal.PSI.Common.Mod? GetMod(IModRuntimeContainer runtimeContainer,
+                                                   int? id = null,
+                                                   string? name = null) {
+        ModManager? modManager = runtimeContainer.ModManager;
+        if (modManager == null) {
+            return null;
+        }
+        IEnumerator<ModManager.ModInfo> enumerator = modManager.GetEnumerator();
+        while (enumerator.MoveNext()) {
+            ModManager.ModInfo currentModInfo = enumerator.Current;
+            ExecutableAsset asset = currentModInfo.asset;
+            if (IsToSkip(currentModInfo, asset)) {
+                continue;
+            }
+            Colossal.PSI.Common.Mod mod = asset.mod;
+            if (name is not null
+                && mod.displayName == name) {
+                return mod;
+            } else if (id is not null
+                       && mod.id == id) {
+                return mod;
+            }
+        }
+        return null;
+    }
+
+    public static string GetIdFromAssetSubPath(AssetData asset) {
+        return asset.subPath.Split('/')[1].Split('_')[0];
+    }
 }
