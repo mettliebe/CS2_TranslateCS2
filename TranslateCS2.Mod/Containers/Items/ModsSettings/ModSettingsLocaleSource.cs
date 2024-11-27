@@ -129,6 +129,11 @@ internal class ModSettingsLocaleSource : IDictionarySource {
         this.AddToDictionary(modSettings.GetOptionDescLocaleID(nameof(ModSettings.ExportDropDown)),
                              dictionary[I18NMod.GroupExportExportDropDownDescription]);
 
+        this.AddToDictionary(modSettings.GetOptionLabelLocaleID(nameof(ModSettings.ExportTypeDropDown)),
+                             dictionary[I18NMod.GroupExportExportTypeDropDownLabel]);
+        this.AddToDictionary(modSettings.GetOptionDescLocaleID(nameof(ModSettings.ExportTypeDropDown)),
+                             dictionary[I18NMod.GroupExportExportTypeDropDownDescription]);
+
         this.AddToDictionary(modSettings.GetOptionLabelLocaleID(nameof(ModSettings.ExportDirectory)),
                              dictionary[I18NMod.GroupExportExportDirectoryLabel]);
         this.AddToDictionary(modSettings.GetOptionDescLocaleID(nameof(ModSettings.ExportDirectory)),

@@ -39,6 +39,8 @@
   "GroupExportTitle": "export",
   "GroupExportExportDropDownLabel": "Language to export",
   "GroupExportExportDropDownDescription": "Select the language to export.",
+  "GroupExportExportTypeDropDownLabel": "Select the type to export.",
+  "GroupExportExportTypeDropDownDescription": "Select the type to export.\n\nAll: Base-Game and all active Mods\n\nGame: Base-Game only\n\nOnly the selected Mod",
   "GroupExportExportDirectoryLabel": "Destination",
   "GroupExportExportDirectoryDescription": "The directory the selected language gets exported to.",
   "GroupExportExportButtonLabel": "export",

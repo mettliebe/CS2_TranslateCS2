@@ -67,6 +67,7 @@ internal partial class ModSettings : ModSetting {
     }
     public override void SetDefaults() {
         this.ExportDropDown = StringConstants.All;
+        this.ExportTypeDropDown = StringConstants.All;
         this.DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         this.ExportDirectory = this.DefaultDirectory;
         this.GenerateDirectory = this.DefaultDirectory;

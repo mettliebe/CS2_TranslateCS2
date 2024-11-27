@@ -1,3 +1,9 @@
+# Version 2.0.1.0
+- export built-in base game langs correct
+- developers now have the ability to select a specific export type
+    - All: Base-Game and active Mods
+    - Game: Base-Game
+    - Mod-Specific
 # Version 2.0.9.6
 - checked compatibility with Version 1.1.12f1 of [Cities: Skylines II](https://www.paradoxinteractive.com/games/cities-skylines-ii)
 # Version 2.0.9.5
