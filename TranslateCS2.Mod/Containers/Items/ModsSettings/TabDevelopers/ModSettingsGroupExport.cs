@@ -66,13 +66,14 @@ internal partial class ModSettings {
             try {
                 LocaleAssetProvider? localeAssetProvider = this.runtimeContainer.BuiltInLocaleIdProvider as LocaleAssetProvider;
                 if (StringConstants.All.Equals(this.ExportDropDown, StringComparison.OrdinalIgnoreCase)) {
-                    IEnumerable<LocaleAsset> localeAssets = localeAssetProvider.GetBuiltInBaseGameLocaleAssets();
-                    foreach (LocaleAsset localeAsset in localeAssets) {
-                        this.ExportEntries(localeAsset);
+                    IReadOnlyList<string>? builtInLocaleIds = localeAssetProvider?.GetBuiltInLocaleIds();
+                    foreach (string builtInLocaleId in builtInLocaleIds) {
+                        IEnumerable<LocaleAsset>? localeAssetsToExport = localeAssetProvider?.Get(builtInLocaleId);
+                        this.ExportEntries(localeAssetsToExport, builtInLocaleId);
                     }
                 } else {
-                    LocaleAsset localeAsset = localeAssetProvider.Get(this.ExportDropDown);
-                    this.ExportEntries(localeAsset);
+                    IEnumerable<LocaleAsset>? localeAssets = localeAssetProvider?.Get(this.ExportDropDown);
+                    this.ExportEntries(localeAssets, this.ExportDropDown);
                 }
             } catch (Exception ex) {
                 this.runtimeContainer.ErrorMessages.DisplayErrorMessageFailedExportBuiltIn(this.ExportDirectory);
@@ -83,11 +84,20 @@ internal partial class ModSettings {
         }
     }
     [MyExcludeFromCoverage]
-    private void ExportEntries(LocaleAsset asset) {
-        // TODO: is there a need to iterate over 'found' assets, including database.name = 'ParadoxMods'???
-        Dictionary<string, string> entries = asset.data.entries;
+    private void ExportEntries(IEnumerable<LocaleAsset>? assets, string localeId) {
+        Dictionary<string, string> exportEntries = [];
+        foreach (LocaleAsset asset in assets) {
+            Dictionary<string, string> entries = asset.data.entries;
+            foreach (KeyValuePair<string, string> entry in entries) {
+                if (exportEntries.ContainsKey(entry.Key)) {
+                    continue;
+                }
+                exportEntries[entry.Key] = entry.Value;
+            }
+        }
         string path = Path.Combine(this.ExportDirectory,
-                                   $"{asset.localeId}{ModConstants.JsonExtension}");
-        JsonHelper.Write(entries, path);
+                                    $"{localeId}{ModConstants.JsonExtension}");
+        JsonHelper.Write(exportEntries, path);
+
     }
 }

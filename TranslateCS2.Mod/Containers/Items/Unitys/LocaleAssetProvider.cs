@@ -18,13 +18,12 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
 
     public static Func<LocaleAsset, bool> BuiltInBaseGamePredicate => asset => StringConstants.DataTilde.Equals(asset.subPath) && StringConstants.Game.Equals(asset.database.name);
 
-    public LocaleAsset? Get(string localeId) {
-        // TODO: are mods included??? - as far as i remember and as far as i gathered from logs, mods, especially pdx-mods add sources...
+    public IEnumerable<LocaleAsset>? Get(string localeId) {
         IEnumerable<LocaleAsset> localeAssets =
-            this.GetBuiltInBaseGameLocaleAssets()
+            this.GetLocaleAssets()
                 .Where(item => item.localeId.Equals(localeId, StringComparison.OrdinalIgnoreCase));
         if (localeAssets.Any()) {
-            return localeAssets.First();
+            return localeAssets;
         }
         return null;
     }
@@ -39,10 +38,17 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
     }
 
     public IEnumerable<LocaleAsset> GetBuiltInBaseGameLocaleAssets() {
-        // TODO: are mods included??? - as far as i remember and as far as i gathered from logs, mods, especially pdx-mods add sources...
+        // mods are not included
         return
             this.global
                 .GetAssets(default(SearchFilter<LocaleAsset>))
                 .Where(BuiltInBaseGamePredicate);
+    }
+
+    public IEnumerable<LocaleAsset> GetLocaleAssets() {
+        // mods are included
+        return
+            this.global
+                .GetAssets(default(SearchFilter<LocaleAsset>));
     }
 }
