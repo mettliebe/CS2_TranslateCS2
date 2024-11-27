@@ -2,6 +2,7 @@ namespace TranslateCS2.Inf;
 public static class StringConstants {
     public static string Underscore { get; } = "_";
     public static char UnderscoreChar { get; } = '_';
+    public static char ForwardSlashChar { get; } = '/';
     public static string Space { get; } = " ";
     public static string Low { get; } = nameof(Low);
     public static string Colossal_Order { get; } = nameof(Colossal_Order).Replace(Underscore, Space);
@@ -25,4 +26,5 @@ public static class StringConstants {
     public static string All { get; } = nameof(All);
     public static string Game { get; } = nameof(Game);
     public static string ParadoxMods { get; } = nameof(ParadoxMods);
+    public static string User { get; } = nameof(User);
 }
