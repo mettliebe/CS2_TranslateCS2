@@ -14,6 +14,7 @@ using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers.Items.Unitys;
 
 using TranslateCS2.Mod.Helpers;
+using TranslateCS2.Mod.Packs;
 
 namespace TranslateCS2.Mod.Containers.Items;
 internal partial class ModSettings {
@@ -67,38 +68,71 @@ internal partial class ModSettings {
             value = StringConstants.Game,
             displayName = StringConstants.Game
         });
-        // TODO: local mods id!!!
-        LocaleAssetProvider? localeAssetProvider = this.runtimeContainer.BuiltInLocaleIdProvider as LocaleAssetProvider;
+        LocaleAssetProvider localeAssetProvider = this.runtimeContainer.BuiltInLocaleIdProvider as LocaleAssetProvider;
         if (localeAssetProvider is not null) {
-            try {
-                IEnumerable<LocaleAsset>? modAssets = localeAssetProvider?.GetParadoxModsLocaleAssets();
-                if (modAssets is not null) {
-                    List<Colossal.PSI.Common.Mod> mods = [];
-                    IEnumerable<string> modIds = modAssets.Select(OtherModsLocFilesHelper.GetIdFromAssetSubPath).Distinct();
-                    foreach (string modId in modIds) {
-                        Colossal.PSI.Common.Mod? mod = OtherModsLocFilesHelper.GetModViaId(this.runtimeContainer, Int32.Parse(modId));
-                        if (mod is null) {
-                            continue;
-                        }
-                        mods.Add((Colossal.PSI.Common.Mod) mod);
-                    }
-                    IOrderedEnumerable<Colossal.PSI.Common.Mod> orderedMods = mods.OrderBy(mod => mod.displayName);
-                    foreach (Colossal.PSI.Common.Mod orderedMod in orderedMods) {
-                        items.Add(new DropdownItem<string>() {
-                            value = orderedMod.id.ToString(),
-                            displayName = orderedMod.displayName
-                        });
-                    }
-
-                }
-            } catch (Exception ex) {
-                int xxx = 0;
-            }
+            this.HandleExportTypeDropDownItemsForOnlineMods(items,
+                                                            localeAssetProvider);
+            this.HandleExportTypeDropDownItemsForUserMods(items,
+                                                          localeAssetProvider);
         }
         return items.ToArray();
     }
 
+    private void HandleExportTypeDropDownItemsForUserMods(List<DropdownItem<string>> items,
+                                                          LocaleAssetProvider localeAssetProvider) {
+        IEnumerable<LocaleAsset>? modAssets = localeAssetProvider.GetUserModsLocaleAssets();
+        if (modAssets is not null) {
+            List<Colossal.PSI.Common.Mod> mods = [];
+            IEnumerable<string> modNames = modAssets.Select(OtherModsLocFilesHelper.GetNameFromAssetSubPath).Distinct();
+            foreach (string modName in modNames) {
+                Colossal.PSI.Common.Mod? mod = OtherModsLocFilesHelper.GetModViaName(this.runtimeContainer, modName);
+                if (mod is null) {
+                    continue;
+                }
+                mods.Add((Colossal.PSI.Common.Mod) mod);
+            }
+            IEnumerable<Colossal.PSI.Common.Mod> orderedMods = mods.OrderBy(mod => mod.displayName);
+            foreach (Colossal.PSI.Common.Mod orderedMod in orderedMods) {
+                // Local-/User-Mods do not have an ID, so their display name (technical name) is used
+                items.Add(new DropdownItem<string>() {
+                    value = orderedMod.displayName,
+                    displayName = orderedMod.displayName
+                });
+            }
+        }
+    }
 
+    private void HandleExportTypeDropDownItemsForOnlineMods(List<DropdownItem<string>> items,
+                                                            LocaleAssetProvider localeAssetProvider) {
+        IEnumerable<LocaleAsset>? modAssets = localeAssetProvider.GetParadoxModsLocaleAssets();
+        if (localeAssetProvider.HasFrenchPack(modAssets)) {
+            items.Add(RegionPack.FrenchDropDownItem());
+        }
+        if (localeAssetProvider.HasGermanPack(modAssets)) {
+            items.Add(RegionPack.GermanDropDownItem());
+        }
+        if (localeAssetProvider.HasUKPack(modAssets)) {
+            items.Add(RegionPack.UKDropDownItem());
+        }
+        if (modAssets is not null) {
+            List<Colossal.PSI.Common.Mod> mods = [];
+            IEnumerable<string> modIds = modAssets.Select(OtherModsLocFilesHelper.GetIdFromAssetSubPath).Distinct();
+            foreach (string modId in modIds) {
+                Colossal.PSI.Common.Mod? mod = OtherModsLocFilesHelper.GetModViaId(this.runtimeContainer, Int32.Parse(modId));
+                if (mod is null) {
+                    continue;
+                }
+                mods.Add((Colossal.PSI.Common.Mod) mod);
+            }
+            IOrderedEnumerable<Colossal.PSI.Common.Mod> orderedMods = mods.OrderBy(mod => mod.displayName);
+            foreach (Colossal.PSI.Common.Mod orderedMod in orderedMods) {
+                items.Add(new DropdownItem<string>() {
+                    value = orderedMod.id.ToString(),
+                    displayName = orderedMod.displayName
+                });
+            }
+        }
+    }
 
     [Exclude]
     [SettingsUIDeveloper]
@@ -146,12 +180,25 @@ internal partial class ModSettings {
             return localeAssetsToExport;
         } else if (StringConstants.Game.Equals(this.ExportTypeDropDown)) {
             return localeAssetsToExport.Where(LocaleAssetProvider.BuiltInBaseGamePredicate);
+        } else if (!Int32.TryParse(this.ExportTypeDropDown, out _)) {
+            // export drop down could not be parsed to an integer
+            // since All and Game are handled before
+            // it has to be a local mod with its technical name as dropdownitems value
+            return
+                localeAssetsToExport
+                    .Where(LocaleAssetProvider.UserModsPredicate)
+                    .Where(asset => {
+                        string? name = OtherModsLocFilesHelper.GetNameFromAssetSubPath(asset);
+                        return this.ExportTypeDropDown.Equals(name);
+                    });
         }
-        // TODO: local mods id!!!
-        return localeAssetsToExport.Where(asset => {
-            string id = OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset);
-            return this.ExportTypeDropDown.Equals(id);
-        });
+        return
+            localeAssetsToExport
+                .Where(LocaleAssetProvider.ParadoxModsPredicate)
+                .Where(asset => {
+                    string id = OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset);
+                    return this.ExportTypeDropDown.Equals(id);
+                });
     }
 
     [MyExcludeFromCoverage]
@@ -168,7 +215,7 @@ internal partial class ModSettings {
             }
         }
         string path = Path.Combine(this.ExportDirectory,
-                                   $"{localeId}{ModConstants.JsonExtension}");
+                                   $"{localeId}_{this.ExportTypeDropDown}{ModConstants.JsonExtension}");
         JsonHelper.Write(exportEntries, path);
 
     }
