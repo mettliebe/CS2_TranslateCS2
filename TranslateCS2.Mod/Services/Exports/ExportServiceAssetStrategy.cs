@@ -29,10 +29,7 @@ internal class ExportServiceAssetStrategy : AExportServiceStrategy, IExportServi
         DropDownItemsHelper.AppendAllEntry(items);
         IEnumerable<LocaleAsset> localeAssets = this.localeAssetProvider.GetBuiltInBaseGameLocaleAssets();
         foreach (LocaleAsset localeAsset in localeAssets) {
-            items.Add(new DropdownItem<string>() {
-                value = localeAsset.localeId,
-                displayName = localeAsset.localizedName
-            });
+            items.Add(DropDownItemsHelper.Create(localeAsset.localeId, localeAsset.localizedName));
         }
         return items.ToArray();
     }
@@ -61,10 +58,7 @@ internal class ExportServiceAssetStrategy : AExportServiceStrategy, IExportServi
             IEnumerable<Colossal.PSI.Common.Mod> orderedMods = mods.OrderBy(mod => mod.displayName);
             foreach (Colossal.PSI.Common.Mod orderedMod in orderedMods) {
                 // Local-/User-Mods do not have an ID, so their display name (technical name) is used
-                items.Add(new DropdownItem<string>() {
-                    value = orderedMod.displayName,
-                    displayName = orderedMod.displayName
-                });
+                items.Add(DropDownItemsHelper.Create(orderedMod.displayName, orderedMod.displayName));
             }
         }
     }
@@ -92,10 +86,7 @@ internal class ExportServiceAssetStrategy : AExportServiceStrategy, IExportServi
             }
             IOrderedEnumerable<Colossal.PSI.Common.Mod> orderedMods = mods.OrderBy(mod => mod.displayName);
             foreach (Colossal.PSI.Common.Mod orderedMod in orderedMods) {
-                items.Add(new DropdownItem<string>() {
-                    value = orderedMod.id.ToString(),
-                    displayName = orderedMod.displayName
-                });
+                items.Add(DropDownItemsHelper.Create(orderedMod.id.ToString(), orderedMod.displayName));
             }
         }
     }
