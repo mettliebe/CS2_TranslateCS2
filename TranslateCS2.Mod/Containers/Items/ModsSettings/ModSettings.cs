@@ -10,6 +10,7 @@ using Game.Settings;
 using TranslateCS2.Inf;
 using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers.Items.ModsSettings;
+using TranslateCS2.Mod.Services.Exports;
 
 using UnityEngine;
 
@@ -33,6 +34,8 @@ internal partial class ModSettings : ModSetting {
     private readonly IModRuntimeContainer runtimeContainer;
     [Exclude]
     private readonly MyLanguages languages;
+    [Exclude]
+    private readonly ExportService exportService;
     [Exclude]
     public string? DefaultDirectory { get; private set; }
     [Exclude]
@@ -58,6 +61,7 @@ internal partial class ModSettings : ModSetting {
     public ModSettings(IModRuntimeContainer runtimeContainer) : base(runtimeContainer.Mod) {
         this.runtimeContainer = runtimeContainer;
         this.languages = this.runtimeContainer.Languages;
+        this.exportService = new ExportService(this.runtimeContainer);
         this.Locale = this.runtimeContainer.IntSettings.CurrentLocale;
         this.PreviousLocale = this.Locale;
         this.SubscribeOnFlavorChanged(this.runtimeContainer.LocManager.FlavorChanged);
