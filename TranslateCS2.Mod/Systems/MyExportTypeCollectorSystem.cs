@@ -67,6 +67,12 @@ internal partial class MyExportTypeCollectorSystem : GameSystemBase {
         } else if (!this.gameConfiguration.developerMode) {
             // only needs to be collected for devs
             return;
+        } else if (!this.gameConfiguration.qaDeveloperMode) {
+            // only needs to be collected for devs
+            return;
+        } else if (!this.gameConfiguration.uiDeveloperMode) {
+            // only needs to be collected for devs
+            return;
         } else if (this.runtimeContainer is null) {
             // no runtimeContainer = no collecting
             return;
