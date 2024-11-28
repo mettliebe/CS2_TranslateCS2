@@ -22,6 +22,7 @@ public static class ModConstants {
     public static string JsonSearchPattern => $"*{JsonExtension}";
     public static string LocExtension => ".loc";
     public static string LocSearchPattern => $"*{LocExtension}";
+    public static string CokExtension => ".cok";
     public static string DllExtension => ".dll";
     public static string DllSearchPattern => $"*{DllExtension}";
     public static int MaxDisplayNameLength => 31;
