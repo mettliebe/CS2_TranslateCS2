@@ -1,182 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using Colossal.IO.AssetDatabase;
-
 using Game.UI.Widgets;
 
-using TranslateCS2.Inf;
 using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers;
-using TranslateCS2.Mod.Containers.Items.Unitys;
-using TranslateCS2.Mod.Helpers;
-using TranslateCS2.Mod.Packs;
 
 namespace TranslateCS2.Mod.Services.Exports;
 [MyExcludeFromCoverage]
 internal class ExportService {
     private readonly IModRuntimeContainer runtimeContainer;
-    private readonly LocaleAssetProvider localeAssetProvider;
+    private readonly IExportServiceStrategy exportServiceStrategy;
     public ExportService(IModRuntimeContainer runtimeContainer) {
         this.runtimeContainer = runtimeContainer;
-        this.localeAssetProvider = this.runtimeContainer.BuiltInLocaleIdProvider as LocaleAssetProvider;
+        this.exportServiceStrategy = new ExportServiceAssetStrategy(this.runtimeContainer);
     }
 
     public DropdownItem<string>[] GetExportDropDownItems() {
-        List<DropdownItem<string>> items = [];
-        DropDownItemsHelper.AppendAllEntry(items);
-        IEnumerable<LocaleAsset> localeAssets = this.localeAssetProvider.GetBuiltInBaseGameLocaleAssets();
-        foreach (LocaleAsset localeAsset in localeAssets) {
-            items.Add(new DropdownItem<string>() {
-                value = localeAsset.localeId,
-                displayName = localeAsset.localizedName
-            });
-        }
-        return items.ToArray();
+        return this.exportServiceStrategy.GetExportDropDownItems();
     }
 
     public DropdownItem<string>[] GetExportTypeDropDownItems() {
-        List<DropdownItem<string>> items = [];
-        DropDownItemsHelper.AppendAllEntry(items);
-        DropDownItemsHelper.AppendGameEntry(items);
-        this.HandleExportTypeDropDownItemsForOnlineMods(items);
-        this.HandleExportTypeDropDownItemsForUserMods(items);
-        return items.ToArray();
-    }
-
-    private void HandleExportTypeDropDownItemsForUserMods(List<DropdownItem<string>> items) {
-        IEnumerable<LocaleAsset>? modAssets = this.localeAssetProvider.GetUserModsLocaleAssets();
-        if (modAssets is not null) {
-            List<Colossal.PSI.Common.Mod> mods = [];
-            IEnumerable<string> modNames = modAssets.Select(OtherModsLocFilesHelper.GetNameFromAssetSubPath).Distinct();
-            foreach (string modName in modNames) {
-                Colossal.PSI.Common.Mod? mod = OtherModsLocFilesHelper.GetModViaName(this.runtimeContainer, modName);
-                if (mod is null) {
-                    continue;
-                }
-                mods.Add((Colossal.PSI.Common.Mod) mod);
-            }
-            IEnumerable<Colossal.PSI.Common.Mod> orderedMods = mods.OrderBy(mod => mod.displayName);
-            foreach (Colossal.PSI.Common.Mod orderedMod in orderedMods) {
-                // Local-/User-Mods do not have an ID, so their display name (technical name) is used
-                items.Add(new DropdownItem<string>() {
-                    value = orderedMod.displayName,
-                    displayName = orderedMod.displayName
-                });
-            }
-        }
-    }
-
-    private void HandleExportTypeDropDownItemsForOnlineMods(List<DropdownItem<string>> items) {
-        IEnumerable<LocaleAsset>? modAssets = this.localeAssetProvider.GetParadoxModsLocaleAssets();
-        if (this.localeAssetProvider.HasFrenchPack(modAssets)) {
-            items.Add(RegionPack.FrenchDropDownItem());
-        }
-        if (this.localeAssetProvider.HasGermanPack(modAssets)) {
-            items.Add(RegionPack.GermanDropDownItem());
-        }
-        if (this.localeAssetProvider.HasUKPack(modAssets)) {
-            items.Add(RegionPack.UKDropDownItem());
-        }
-        if (modAssets is not null) {
-            List<Colossal.PSI.Common.Mod> mods = [];
-            IEnumerable<string> modIds = modAssets.Select(OtherModsLocFilesHelper.GetIdFromAssetSubPath).Distinct();
-            foreach (string modId in modIds) {
-                Colossal.PSI.Common.Mod? mod = OtherModsLocFilesHelper.GetModViaId(this.runtimeContainer, Int32.Parse(modId));
-                if (mod is null) {
-                    continue;
-                }
-                mods.Add((Colossal.PSI.Common.Mod) mod);
-            }
-            IOrderedEnumerable<Colossal.PSI.Common.Mod> orderedMods = mods.OrderBy(mod => mod.displayName);
-            foreach (Colossal.PSI.Common.Mod orderedMod in orderedMods) {
-                items.Add(new DropdownItem<string>() {
-                    value = orderedMod.id.ToString(),
-                    displayName = orderedMod.displayName
-                });
-            }
-        }
+        return this.exportServiceStrategy.GetExportTypeDropDownItems();
     }
 
     public void Export(string localeId,
                        string type,
                        string directory) {
-        try {
-            if (StringConstants.All.Equals(localeId, StringComparison.OrdinalIgnoreCase)) {
-                IReadOnlyList<string>? builtInLocaleIds = this.localeAssetProvider?.GetBuiltInLocaleIds();
-                foreach (string builtInLocaleId in builtInLocaleIds) {
-                    IEnumerable<LocaleAsset>? localeAssetsToExport = this.localeAssetProvider?.Get(builtInLocaleId);
-                    IEnumerable<LocaleAsset>? filteredLocaleAssetsToExport = this.FilterLocaleAssetsToExport(localeAssetsToExport,
-                                                                                                             type);
-                    this.ExportEntries(filteredLocaleAssetsToExport,
-                                       builtInLocaleId,
-                                       type,
-                                       directory);
-                }
-            } else {
-                IEnumerable<LocaleAsset>? localeAssetsToExport = this.localeAssetProvider?.Get(localeId);
-                IEnumerable<LocaleAsset>? filteredLocaleAssetsToExport = this.FilterLocaleAssetsToExport(localeAssetsToExport,
-                                                                                                         type);
-                this.ExportEntries(filteredLocaleAssetsToExport,
-                                   localeId,
-                                   type,
-                                   directory);
-            }
-        } catch (Exception ex) {
-            this.runtimeContainer.ErrorMessages.DisplayErrorMessageFailedExportBuiltIn(directory);
-            this.runtimeContainer.Logger.LogError(this.GetType(),
-                                                  LoggingConstants.FailedTo,
-                                                  [nameof(this.Export), ex]);
-        }
-    }
-
-    private IEnumerable<LocaleAsset>? FilterLocaleAssetsToExport(IEnumerable<LocaleAsset>? localeAssetsToExport,
-                                                                 string type) {
-        if (StringConstants.All.Equals(type)) {
-            return localeAssetsToExport;
-        } else if (StringConstants.Game.Equals(type)) {
-            return localeAssetsToExport.Where(LocaleAssetProvider.BuiltInBaseGamePredicate);
-        } else if (!Int32.TryParse(type, out _)) {
-            // export drop down could not be parsed to an integer
-            // since All and Game are handled before
-            // it has to be a local mod with its technical name as dropdownitems value
-            return
-                localeAssetsToExport
-                    .Where(LocaleAssetProvider.UserModsPredicate)
-                    .Where(asset => {
-                        string? name = OtherModsLocFilesHelper.GetNameFromAssetSubPath(asset);
-                        return type.Equals(name);
-                    });
-        }
-        return
-            localeAssetsToExport
-                .Where(LocaleAssetProvider.ParadoxModsPredicate)
-                .Where(asset => {
-                    string id = OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset);
-                    return type.Equals(id);
-                });
-    }
-
-
-    private void ExportEntries(IEnumerable<LocaleAsset>? assets,
-                               string localeId,
-                               string type,
-                               string directory) {
-        Dictionary<string, string> exportEntries = [];
-        foreach (LocaleAsset asset in assets) {
-            Dictionary<string, string> entries = asset.data.entries;
-            foreach (KeyValuePair<string, string> entry in entries) {
-                if (exportEntries.ContainsKey(entry.Key)) {
-                    continue;
-                }
-                exportEntries[entry.Key] = entry.Value;
-            }
-        }
-        string path = Path.Combine(directory,
-                                   $"{localeId}_{type}{ModConstants.JsonExtension}");
-        JsonHelper.Write(exportEntries, path);
-
+        this.exportServiceStrategy.Export(localeId,
+                                          type,
+                                          directory);
     }
 }
