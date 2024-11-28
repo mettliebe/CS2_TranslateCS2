@@ -17,4 +17,17 @@ internal static class DropDownItemsHelper {
         }
         return flavors;
     }
+
+    public static void AppendAllEntry(List<DropdownItem<string>> items) {
+        items.Add(new DropdownItem<string>() {
+            value = StringConstants.All,
+            displayName = StringConstants.All
+        });
+    }
+    public static void AppendGameEntry(List<DropdownItem<string>> items) {
+        items.Add(new DropdownItem<string>() {
+            value = StringConstants.Game,
+            displayName = StringConstants.Game
+        });
+    }
 }
