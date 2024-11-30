@@ -41,12 +41,4 @@ internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExp
     public override int GetHashCode() {
         return -1937169414 + EqualityComparer<string>.Default.GetHashCode(this.Value);
     }
-
-    public static bool operator ==(MyExportTypeDropDownItem? left, MyExportTypeDropDownItem? right) {
-        return EqualityComparer<MyExportTypeDropDownItem>.Default.Equals(left, right);
-    }
-
-    public static bool operator !=(MyExportTypeDropDownItem? left, MyExportTypeDropDownItem? right) {
-        return !(left == right);
-    }
 }
