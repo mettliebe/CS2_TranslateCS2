@@ -190,6 +190,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             }
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(id,
                                                                             name,
+                                                                            false,
                                                                             isColossalOrdersOne);
             this._ExportTypeDropDownItems.Add(item);
         }
