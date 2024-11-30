@@ -43,7 +43,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
     }
 
     public void CollectIfPossible(Purpose purpose, GameMode mode) {
-        if (!this.HasToBeExecutedNot(purpose, mode)) {
+        if (this.HasToBeExecutedNot(purpose, mode)) {
             return;
         }
         this.collected = true;
@@ -203,27 +203,27 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
     /// </returns>
     private bool HasToBeExecutedNot(Purpose purpose, GameMode mode) {
         if (!GameMode.MainMenu.Equals(mode)) {
-            return false;
+            return true;
         } else if (this.collected) {
-            return false;
+            return true;
         } else if (this.gameConfiguration is null) {
             // no gameConfiguration = no collecting
-            return false;
+            return true;
         } else if (!this.gameConfiguration.developerMode
                    && !this.gameConfiguration.qaDeveloperMode
                    && !this.gameConfiguration.uiDeveloperMode) {
             // only needs to be collected for devs
-            return false;
+            return true;
         } else if (this.runtimeContainer is null) {
             // no runtimeContainer = no collecting
-            return false;
+            return true;
         } else if (this.localeAssetProvider is null) {
             // no localeAssetProvider = no collecting
-            return false;
+            return true;
         } else if (this.locManagerProvider is null) {
             // no locManagerProvider = no collecting
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }
