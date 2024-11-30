@@ -30,7 +30,8 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
     private ISet<MyExportTypeDropDownItem> _ExportTypeDropDownItems { get; } = new HashSet<MyExportTypeDropDownItem>();
     public IOrderedEnumerable<MyExportTypeDropDownItem> ExportTypeDropDownItems =>
         this._ExportTypeDropDownItems
-            .OrderByDescending(item => item.IsColossalOrdersOne)
+            .OrderByDescending(item => item.IsBaseGame)
+            .ThenByDescending(item => item.IsColossalOrdersOne)
             .ThenBy(item => item.DisplayName);
 
 
@@ -63,6 +64,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
         IList<IDictionarySource> baseGameLocaleAssets = GetBaseGameLocaleAssetsFromDictionarySources(localeAssets);
         MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(StringConstants.Game,
                                                                         StringConstants.Game,
+                                                                        true,
                                                                         true);
         this._ExportTypeDropDownItems.Add(item);
     }
