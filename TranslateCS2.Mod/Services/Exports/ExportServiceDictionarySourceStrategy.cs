@@ -48,7 +48,7 @@ internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, I
     }
 
     private void AppendExportTypeDropDownItems(List<DropdownItem<string>> items) {
-        IOrderedEnumerable<DropdownItem<string>>? exportTypeDropDownItems = MyExportTypeCollectorSystem.INSTANCE?.ExportTypeDropDownItems;
+        IOrderedEnumerable<DropdownItem<string>>? exportTypeDropDownItems = MyAfterModificationEndSystem.INSTANCE?.ExportTypeDropDownItems;
         if (exportTypeDropDownItems is not null) {
             items.AddRange(exportTypeDropDownItems);
         }

@@ -18,10 +18,10 @@ using TranslateCS2.Mod.Helpers;
 using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Systems;
-internal partial class MyExportTypeCollectorSystem : GameSystemBase {
+internal partial class MyAfterModificationEndSystem : GameSystemBase {
 
 
-    public static MyExportTypeCollectorSystem? INSTANCE { get; private set; }
+    public static MyAfterModificationEndSystem? INSTANCE { get; private set; }
 
 
     private bool collected = false;
@@ -40,7 +40,7 @@ internal partial class MyExportTypeCollectorSystem : GameSystemBase {
 
     protected override void OnCreate() {
         base.OnCreate();
-        MyExportTypeCollectorSystem.INSTANCE = this;
+        MyAfterModificationEndSystem.INSTANCE = this;
         this.runtimeContainer = Mod.RuntimeContainer;
         this.localeAssetProvider = this.runtimeContainer?.BuiltInLocaleIdProvider as LocaleAssetProvider;
         this.locManagerProvider = this.runtimeContainer?.LocManager.Provider as LocManagerProvider;
@@ -48,7 +48,7 @@ internal partial class MyExportTypeCollectorSystem : GameSystemBase {
         if (false) {
             // INFO: at this very moment, i see no need to show notifications
             NotificationUISystem uiNotificator = this.World.GetOrCreateSystemManaged<NotificationUISystem>();
-            this.notificator = new MyNotificator($"{ModConstants.Name}.{nameof(MyExportTypeCollectorSystem)}",
+            this.notificator = new MyNotificator($"{ModConstants.Name}.{nameof(MyAfterModificationEndSystem)}",
                                                  $"{ModConstants.Name}",
                                                  15f,
                                                  uiNotificator);

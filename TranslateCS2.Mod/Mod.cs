@@ -54,7 +54,7 @@ public class Mod : IMod {
                 // and their locales
                 // are loaded
                 // and can be collected
-                updateSystem.UpdateAfter<MyExportTypeCollectorSystem>(SystemUpdatePhase.ModificationEnd);
+                updateSystem.UpdateAfter<MyAfterModificationEndSystem>(SystemUpdatePhase.ModificationEnd);
             }
         } catch (Exception ex) {
             // user LogManagers Logger
