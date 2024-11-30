@@ -172,6 +172,8 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             string name = id;
             bool isColossalOrdersOne = false;
             if (asset.path.EndsWith(ModConstants.CokExtension)) {
+                // TODO:
+                // INFO: for now, i, the author of this mod, assume, that only colossal order is 'able' to pack cok-files; an i keep an eye on that
                 name =
                     asset
                         .path
