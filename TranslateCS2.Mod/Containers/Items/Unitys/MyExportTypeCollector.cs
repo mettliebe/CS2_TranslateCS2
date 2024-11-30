@@ -69,6 +69,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
 
             IList<IDictionarySource> localeAssets = GetLocaleAssetsFromDictionarySources(sources);
             // TODO: each DropDownItem has to have its localeinfo related sources to not obtain and filter them again for export
+            // TODO: which mods displayName is/becomes Colossal.Localization
             this.CollectBaseGame(localeAssets);
             this.CollectParadoxAssetMods(localeAssets);
             this.CollectLocalAssetMods(localeAssets);
