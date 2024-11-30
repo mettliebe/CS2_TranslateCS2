@@ -52,6 +52,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             IList<IDictionarySource> sources = localeInfo.Sources;
             IList<IDictionarySource> localeAssets = GetLocaleAssetsFromDictionarySources(sources);
             // TODO: each DropDownItem has to have its localeinfo related sources to not obtain and filter them again for export
+            // TODO: filter out flavors, for now
             this.CollectBaseGame(localeAssets);
             this.CollectParadoxAssetMods(localeAssets);
             this.CollectLocalAssetMods(localeAssets);
