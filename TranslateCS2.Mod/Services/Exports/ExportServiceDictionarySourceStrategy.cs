@@ -10,7 +10,7 @@ using TranslateCS2.Inf;
 using TranslateCS2.Mod.Containers;
 using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Helpers;
-using TranslateCS2.Mod.Systems;
+using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Services.Exports;
 internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, IExportServiceStrategy {
@@ -42,13 +42,12 @@ internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, I
     public override DropdownItem<string>[] GetExportTypeDropDownItems() {
         List<DropdownItem<string>> items = [];
         DropDownItemsHelper.AppendAllEntry(items);
-        DropDownItemsHelper.AppendGameEntry(items);
         this.AppendExportTypeDropDownItems(items);
         return items.ToArray();
     }
 
     private void AppendExportTypeDropDownItems(List<DropdownItem<string>> items) {
-        IOrderedEnumerable<DropdownItem<string>>? exportTypeDropDownItems = MyAfterModificationEndSystem.INSTANCE?.ExportTypeDropDownItems;
+        IOrderedEnumerable<MyExportTypeDropDownItem>? exportTypeDropDownItems = this.runtimeContainer?.ExportTypeCollector?.ExportTypeDropDownItems;
         if (exportTypeDropDownItems is not null) {
             items.AddRange(exportTypeDropDownItems);
         }
