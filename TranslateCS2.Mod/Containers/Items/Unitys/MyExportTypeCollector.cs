@@ -52,7 +52,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             IList<IDictionarySource> sources = localeInfo.Sources;
             int size = sources.Count;
             {
-                // TODO:
+                // TODO: flavor-specific export?
                 // INFO: filter out flavors, for now; cause it is possible to add an en-US.json
                 //       dictionary sources are 'only' used for code-mods
                 //       base game and co's packs (at least region packs) are exported via localeasset
@@ -173,7 +173,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             string name = id;
             bool isColossalOrdersOne = false;
             if (asset.path.EndsWith(ModConstants.CokExtension)) {
-                // TODO:
+                // TODO: cok-extension
                 // INFO: for now, i, the author of this mod, assume, that only colossal order is 'able' to pack cok-files; an i keep an eye on that
                 name =
                     asset
