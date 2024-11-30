@@ -60,6 +60,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
                 //       otherwise, the person would export the provided translations, instead of the 'mod-owners' ones
                 sources =
                     sources
+                        // item cannot be assigned TO Flavor!
                         .Where(item => !typeof(Flavor).IsAssignableFrom(item.GetType()))
                         .ToList();
                 size = sources.Count;
