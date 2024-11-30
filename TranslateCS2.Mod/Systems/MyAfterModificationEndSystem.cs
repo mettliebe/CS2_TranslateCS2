@@ -9,16 +9,11 @@ using Unity.Entities;
 namespace TranslateCS2.Mod.Systems;
 internal partial class MyAfterModificationEndSystem : GameSystemBase {
 
-
-    public static MyAfterModificationEndSystem? INSTANCE { get; private set; }
-
-
     private IModRuntimeContainer? runtimeContainer;
 
 
     protected override void OnCreate() {
         base.OnCreate();
-        MyAfterModificationEndSystem.INSTANCE = this;
         this.runtimeContainer = Mod.RuntimeContainer;
     }
 
