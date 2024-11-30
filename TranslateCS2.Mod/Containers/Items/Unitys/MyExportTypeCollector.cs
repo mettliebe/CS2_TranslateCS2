@@ -42,7 +42,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
         this.gameConfiguration = GameManager.instance.configuration;
     }
 
-    public void CollectIfPossible(Purpose purpose, GameMode mode) {
+    public void TryToCollect(Purpose purpose, GameMode mode) {
         if (this.HasToBeExecutedNot(purpose, mode)) {
             return;
         }

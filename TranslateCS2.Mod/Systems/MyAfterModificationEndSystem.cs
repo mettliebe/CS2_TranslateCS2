@@ -31,7 +31,7 @@ internal partial class MyAfterModificationEndSystem : GameSystemBase {
             // would be used/needed for Notifications
             World world = this.World;
         }
-        this.runtimeContainer?.ExportTypeCollector?.CollectIfPossible(purpose, mode);
+        this.runtimeContainer?.ExportTypeCollector?.TryToCollect(purpose, mode);
     }
 
 
