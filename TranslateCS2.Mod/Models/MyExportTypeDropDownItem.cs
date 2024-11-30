@@ -7,20 +7,25 @@ namespace TranslateCS2.Mod.Models;
 internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExportTypeDropDownItem?> {
     public string Value => this.value;
     public string DisplayName => this.displayName.id;
+    public bool IsBaseGame { get; }
     public bool IsColossalOrdersOne { get; }
     private MyExportTypeDropDownItem(string value,
                                      string displayName,
+                                     bool isBaseGame,
                                      bool isColossalOrdersOne) {
         this.value = value;
         this.displayName = displayName;
+        this.IsBaseGame = isBaseGame;
         this.IsColossalOrdersOne = isColossalOrdersOne;
     }
 
     public static MyExportTypeDropDownItem Create(string value,
                                                   string displayName,
+                                                  bool isBaseGame = false,
                                                   bool isColossalOrdersOne = false) {
         return new MyExportTypeDropDownItem(value,
                                             displayName,
+                                            isBaseGame,
                                             isColossalOrdersOne);
     }
 
