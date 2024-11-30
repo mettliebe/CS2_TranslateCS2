@@ -27,7 +27,6 @@ internal partial class MyAfterModificationEndSystem : GameSystemBase {
     }
 
     protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode) {
-        base.OnGameLoadingComplete(purpose, mode);
         if (false) {
             // would be used/needed for Notifications
             World world = this.World;
