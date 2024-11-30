@@ -50,9 +50,24 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
         IList<MyLocaleInfo> localeInfos = this.locManagerProvider.GetLocaleInfos();
         foreach (MyLocaleInfo localeInfo in localeInfos) {
             IList<IDictionarySource> sources = localeInfo.Sources;
+            int size = sources.Count;
+            {
+                // TODO:
+                // INFO: filter out flavors, for now; cause it is possible to add an en-US.json
+                //       dictionary sources are 'only' used for code-mods
+                //       base game and co's packs (at least region packs) are exported via localeasset
+                //       if someone loads a translation for a code-mod, for now it has to be filtered out
+                //       otherwise, the person would export the provided translations, instead of the 'mod-owners' ones
+                sources =
+                    sources
+                        .Where(item => !typeof(Flavor).IsAssignableFrom(item.GetType()))
+                        .ToList();
+                size = sources.Count;
+            }
+
+
             IList<IDictionarySource> localeAssets = GetLocaleAssetsFromDictionarySources(sources);
             // TODO: each DropDownItem has to have its localeinfo related sources to not obtain and filter them again for export
-            // TODO: filter out flavors, for now
             this.CollectBaseGame(localeAssets);
             this.CollectParadoxAssetMods(localeAssets);
             this.CollectLocalAssetMods(localeAssets);
