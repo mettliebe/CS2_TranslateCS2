@@ -10,7 +10,6 @@ internal class ExportService {
     private readonly IExportServiceStrategy exportServiceStrategy;
     public ExportService(IModRuntimeContainer runtimeContainer) {
         this.runtimeContainer = runtimeContainer;
-        // this.exportServiceStrategy = new ExportServiceAssetStrategy(this.runtimeContainer);
         this.exportServiceStrategy = new ExportServiceDictionarySourceStrategy(this.runtimeContainer);
     }
 

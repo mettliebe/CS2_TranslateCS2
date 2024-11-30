@@ -6,9 +6,7 @@ using Colossal.IO.AssetDatabase;
 
 using TranslateCS2.Inf;
 using TranslateCS2.Inf.Attributes;
-using TranslateCS2.Mod.Helpers;
 using TranslateCS2.Mod.Interfaces;
-using TranslateCS2.Mod.Packs;
 
 namespace TranslateCS2.Mod.Containers.Items.Unitys;
 [MyExcludeFromCoverage]
@@ -80,28 +78,5 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
         return
             this.global
                 .GetAssets(default(SearchFilter<LocaleAsset>));
-    }
-
-    public bool HasFrenchPack(IEnumerable<LocaleAsset>? modAssets) {
-        RegionPack pack = RegionPack.French();
-        return this.HasPack(modAssets, pack);
-    }
-
-    public bool HasGermanPack(IEnumerable<LocaleAsset>? modAssets) {
-        RegionPack pack = RegionPack.German();
-        return this.HasPack(modAssets, pack);
-    }
-
-    public bool HasUKPack(IEnumerable<LocaleAsset>? modAssets) {
-        RegionPack pack = RegionPack.UK();
-        return this.HasPack(modAssets, pack);
-    }
-
-    public bool HasPack(IEnumerable<LocaleAsset>? modAssets, RegionPack pack) {
-        return
-            modAssets is not null
-            && modAssets
-                .Where(asset => pack.Id.Equals(OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset)))
-                .Any();
     }
 }
