@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Colossal.IO.AssetDatabase;
 
@@ -47,7 +46,7 @@ internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, I
     }
 
     private void AppendExportTypeDropDownItems(List<DropdownItem<string>> items) {
-        IOrderedEnumerable<MyExportTypeDropDownItem>? exportTypeDropDownItems = this.runtimeContainer?.ExportTypeCollector?.ExportTypeDropDownItems;
+        IEnumerable<MyExportTypeDropDownItem>? exportTypeDropDownItems = this.runtimeContainer?.ExportTypeCollector?.ExportTypeDropDownItems;
         if (exportTypeDropDownItems is not null) {
             items.AddRange(exportTypeDropDownItems);
         }

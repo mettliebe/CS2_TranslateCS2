@@ -28,11 +28,7 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
 
 
     private ISet<MyExportTypeDropDownItem> _ExportTypeDropDownItems { get; } = new HashSet<MyExportTypeDropDownItem>();
-    public IOrderedEnumerable<MyExportTypeDropDownItem> ExportTypeDropDownItems =>
-        this._ExportTypeDropDownItems
-            .OrderByDescending(item => item.IsBaseGame)
-            .ThenByDescending(item => item.IsColossalOrdersOne)
-            .ThenBy(item => item.DisplayName);
+    public IEnumerable<MyExportTypeDropDownItem> ExportTypeDropDownItems { get; private set; } = [];
 
 
     public MyExportTypeCollector(IModRuntimeContainer runtimeContainer) {
@@ -75,6 +71,11 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             this.CollectLocalAssetMods(localeAssets);
             this.CollectCodeMods(sources,
                                  localeAssets);
+            this.ExportTypeDropDownItems =
+                this._ExportTypeDropDownItems
+                    .OrderByDescending(item => item.IsBaseGame)
+                    .ThenByDescending(item => item.IsColossalOrdersOne)
+                    .ThenBy(item => item.DisplayName);
         }
     }
 

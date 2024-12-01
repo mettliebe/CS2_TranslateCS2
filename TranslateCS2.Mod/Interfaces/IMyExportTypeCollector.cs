@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 
 using Colossal.Serialization.Entities;
 
@@ -8,6 +8,6 @@ using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Interfaces;
 internal interface IMyExportTypeCollector {
-    IOrderedEnumerable<MyExportTypeDropDownItem> ExportTypeDropDownItems { get; }
+    IEnumerable<MyExportTypeDropDownItem> ExportTypeDropDownItems { get; }
     void TryToCollect(Purpose purpose, GameMode mode);
 }
