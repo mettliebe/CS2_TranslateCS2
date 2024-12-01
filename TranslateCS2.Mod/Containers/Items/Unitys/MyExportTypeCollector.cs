@@ -46,7 +46,6 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
         IList<MyLocaleInfo> localeInfos = this.locManagerProvider.GetLocaleInfos();
         foreach (MyLocaleInfo localeInfo in localeInfos) {
             IList<IDictionarySource> sources = localeInfo.Sources;
-            int size = sources.Count;
             {
                 // TODO: flavor-specific export?
                 // INFO: filter out flavors, for now; cause it is possible to add an en-US.json
@@ -59,7 +58,6 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
                         // item cannot be assigned TO Flavor!
                         .Where(item => !typeof(Flavor).IsAssignableFrom(item.GetType()))
                         .ToList();
-                size = sources.Count;
             }
 
 
