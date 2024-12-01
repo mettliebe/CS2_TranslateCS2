@@ -9,7 +9,6 @@ using TranslateCS2.Inf;
 using TranslateCS2.Inf.Loggers;
 using TranslateCS2.Inf.Models.Localizations;
 using TranslateCS2.Mod.Containers.Items;
-using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Loggers;
 
@@ -29,7 +28,7 @@ internal class ModRuntimeContainer : IModRuntimeContainer {
     public ExecutableAsset? ModAsset { get; set; }
     public ISettingsSaver? SettingsSaver { get; set; }
     public IBuiltInLocaleIdProvider BuiltInLocaleIdProvider { get; }
-    public IMyExportTypeCollector? ExportTypeCollector { get; }
+    public IList<IMySystemCollector> SystemCollectors { get; } = [];
 
     public ModRuntimeContainer(IMyLogProvider logProvider,
                                IMod mod,
@@ -45,7 +44,6 @@ internal class ModRuntimeContainer : IModRuntimeContainer {
         this.IntSettings = new IntSettings(intSettingsProvider);
         this.IndexCountsProvider = indexCountsProvider;
         this.BuiltInLocaleIdProvider = builtInLocaleIdProvider;
-        this.ExportTypeCollector = new MyExportTypeCollector(this);
         this.Paths = paths;
         // the following need the Paths to be initialized!
         this.Locales = new Locales(this);

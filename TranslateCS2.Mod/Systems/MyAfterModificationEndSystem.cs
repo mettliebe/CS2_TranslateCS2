@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+
 using Colossal.Serialization.Entities;
 
 using Game;
 
 using TranslateCS2.Mod.Containers;
+using TranslateCS2.Mod.Interfaces;
 
 using Unity.Entities;
 
@@ -26,7 +29,13 @@ internal partial class MyAfterModificationEndSystem : GameSystemBase {
             // would be used/needed for Notifications
             World world = this.World;
         }
-        this.runtimeContainer?.ExportTypeCollector?.TryToCollect(purpose, mode);
+        IList<IMySystemCollector>? systemCollectors = this.runtimeContainer?.SystemCollectors;
+        if (systemCollectors is null) {
+            return;
+        }
+        foreach (IMySystemCollector systemCollector in systemCollectors) {
+            systemCollector.TryToCollect(purpose, mode);
+        }
     }
 
 

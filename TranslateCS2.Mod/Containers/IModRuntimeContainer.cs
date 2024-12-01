@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Colossal.IO.AssetDatabase;
 
@@ -26,7 +27,7 @@ internal interface IModRuntimeContainer {
     ExecutableAsset? ModAsset { get; }
     ISettingsSaver? SettingsSaver { get; }
     IBuiltInLocaleIdProvider BuiltInLocaleIdProvider { get; }
-    IMyExportTypeCollector? ExportTypeCollector { get; }
+    IList<IMySystemCollector> SystemCollectors { get; }
     void Init(Action<string, object, object?>? loadSettings = null, bool register = false);
     void Dispose(bool unregister = false);
 }

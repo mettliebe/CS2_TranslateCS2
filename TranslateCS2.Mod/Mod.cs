@@ -111,6 +111,8 @@ public class Mod : IMod {
             ModAsset = asset,
             SettingsSaver = settingsSaver
         };
+        IMySystemCollector exportTypeCollector = new MyExportTypeCollector(runtimeContainer);
+        runtimeContainer.SystemCollectors.Add(exportTypeCollector);
         return runtimeContainer;
 
     }

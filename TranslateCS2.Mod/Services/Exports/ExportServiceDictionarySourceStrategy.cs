@@ -9,6 +9,7 @@ using TranslateCS2.Inf;
 using TranslateCS2.Mod.Containers;
 using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Helpers;
+using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Services.Exports;
@@ -46,8 +47,16 @@ internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, I
     }
 
     private void AppendExportTypeDropDownItems(List<DropdownItem<string>> items) {
-        IEnumerable<MyExportTypeDropDownItem>? exportTypeDropDownItems = this.runtimeContainer?.ExportTypeCollector?.ExportTypeDropDownItems;
-        if (exportTypeDropDownItems is not null) {
+        IList<IMySystemCollector>? systemCollectors = this.runtimeContainer?.SystemCollectors;
+        if (systemCollectors is null) {
+            return;
+        }
+        foreach (IMySystemCollector collector in systemCollectors) {
+            IMyExportTypeCollector? exportTypeCollector = collector as IMyExportTypeCollector;
+            IEnumerable<MyExportTypeDropDownItem>? exportTypeDropDownItems = exportTypeCollector?.ExportTypeDropDownItems;
+            if (exportTypeDropDownItems is null) {
+                continue;
+            }
             items.AddRange(exportTypeDropDownItems);
         }
 
