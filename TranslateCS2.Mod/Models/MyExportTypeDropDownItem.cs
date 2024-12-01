@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Colossal;
+
 using Game.UI.Widgets;
 
 namespace TranslateCS2.Mod.Models;
@@ -9,6 +11,7 @@ internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExp
     public string DisplayName => this.displayName.id;
     public bool IsBaseGame { get; }
     public bool IsColossalOrdersOne { get; }
+    public IDictionary<string, MyLocaleInfo> LocaleInfos { get; } = new Dictionary<string, MyLocaleInfo>();
     private MyExportTypeDropDownItem(string value,
                                      string displayName,
                                      bool isBaseGame,
@@ -27,6 +30,14 @@ internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExp
                                             displayName,
                                             isBaseGame,
                                             isColossalOrdersOne);
+    }
+
+    public void AddSource(string localeId,
+                          IDictionarySource dictionarySource) {
+        if (!this.LocaleInfos.ContainsKey(localeId)) {
+            this.LocaleInfos.Add(localeId, new MyLocaleInfo(localeId, []));
+        }
+        this.LocaleInfos[localeId].Sources.Add(dictionarySource);
     }
 
     public override bool Equals(object? obj) {

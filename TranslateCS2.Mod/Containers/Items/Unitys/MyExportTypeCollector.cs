@@ -28,8 +28,13 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
     private readonly GameManager.Configuration? gameConfiguration;
 
 
-    private ISet<MyExportTypeDropDownItem> _ExportTypeDropDownItems { get; } = new HashSet<MyExportTypeDropDownItem>();
-    public IEnumerable<MyExportTypeDropDownItem> ExportTypeDropDownItems { get; private set; } = [];
+    private IDictionary<string, MyExportTypeDropDownItem> _ExportTypeDropDownItems { get; } = new Dictionary<string, MyExportTypeDropDownItem>();
+    public IEnumerable<MyExportTypeDropDownItem> ExportTypeDropDownItems =>
+        this._ExportTypeDropDownItems
+            .Values
+            .OrderByDescending(item => item.IsBaseGame)
+            .ThenByDescending(item => item.IsColossalOrdersOne)
+            .ThenBy(item => item.DisplayName);
 
 
     public MyExportTypeCollector(IModRuntimeContainer runtimeContainer) {
@@ -71,27 +76,30 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
 
 
             IList<IDictionarySource> localeAssets = GetLocaleAssetsFromDictionarySources(sources);
-            // TODO: each DropDownItem has to have its localeinfo related sources to not obtain and filter them again for export
-            this.CollectBaseGame(localeAssets);
-            this.CollectParadoxAssetMods(localeAssets);
-            this.CollectLocalAssetMods(localeAssets);
-            this.CollectCodeMods(sources,
+            this.CollectBaseGame(localeInfo.Id,
                                  localeAssets);
-            this.ExportTypeDropDownItems =
-                this._ExportTypeDropDownItems
-                    .OrderByDescending(item => item.IsBaseGame)
-                    .ThenByDescending(item => item.IsColossalOrdersOne)
-                    .ThenBy(item => item.DisplayName);
+            this.CollectParadoxAssetMods(localeInfo.Id,
+                                         localeAssets);
+            this.CollectLocalAssetMods(localeInfo.Id,
+                                       localeAssets);
+            this.CollectCodeMods(localeInfo.Id,
+                                 sources,
+                                 localeAssets);
         }
     }
 
-    private void CollectBaseGame(IList<IDictionarySource> localeAssets) {
+    private void CollectBaseGame(string localeId,
+                                 IList<IDictionarySource> localeAssets) {
         IList<IDictionarySource> baseGameLocaleAssets = GetBaseGameLocaleAssetsFromDictionarySources(localeAssets);
-        MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(StringConstants.Game,
-                                                                        StringConstants.Game,
-                                                                        true,
-                                                                        true);
-        this._ExportTypeDropDownItems.Add(item);
+        foreach (IDictionarySource source in baseGameLocaleAssets) {
+            MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(StringConstants.Game,
+                                                                            StringConstants.Game,
+                                                                            true,
+                                                                            true);
+            this.AddDropDownItem(localeId,
+                                 item,
+                                 source);
+        }
     }
 
     private static IList<IDictionarySource> GetBaseGameLocaleAssetsFromDictionarySources(IList<IDictionarySource> localeAssets) {
@@ -107,7 +115,9 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
                 .ToList();
     }
 
-    private void CollectCodeMods(IList<IDictionarySource> sources, IList<IDictionarySource> localeAssets) {
+    private void CollectCodeMods(string localeId,
+                                 IList<IDictionarySource> sources,
+                                 IList<IDictionarySource> localeAssets) {
         // all dictionary sources other than localeAsset
         // belong to code-mods
         // online: should have an id, name can be gathered from modmanager
@@ -119,25 +129,18 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             sources
                 .Except(localeAssets)
                 .ToList();
-        IList<string> modNames =
-            mods
-                .Select(s =>
-                    s
-                        .GetType()
-                        .Assembly
-                        .ManifestModule
-                        .ScopeName
-                        .Replace(ModConstants.DllExtension, String.Empty))
-                .Distinct()
-                .ToList();
-        foreach (string modName in modNames) {
+        foreach (IDictionarySource mod in mods) {
+            string modName = mod.GetType().Assembly.ManifestModule.ScopeName.Replace(ModConstants.DllExtension, String.Empty);
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(modName,
                                                                             modName);
-            this._ExportTypeDropDownItems.Add(item);
+            this.AddDropDownItem(localeId,
+                                 item,
+                                 mod);
         }
     }
 
-    private void CollectLocalAssetMods(IList<IDictionarySource> localeAssets) {
+    private void CollectLocalAssetMods(string localeId,
+                                       IList<IDictionarySource> localeAssets) {
         // database.name = User
         // do not have an id
         // see ExportServiceAssetStrategy.HandleExportTypeDropDownItemsForUserMods
@@ -160,11 +163,14 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             Colossal.PSI.Common.Mod m = (Colossal.PSI.Common.Mod) mod;
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(m.displayName,
                                                                             m.displayName);
-            this._ExportTypeDropDownItems.Add(item);
+            this.AddDropDownItem(localeId,
+                                 item,
+                                 localLocaleAsset);
         }
     }
 
-    private void CollectParadoxAssetMods(IList<IDictionarySource> localeAssets) {
+    private void CollectParadoxAssetMods(string localeId,
+                                         IList<IDictionarySource> localeAssets) {
         // database.name = ParadoxMods
         // id can be extracted from subpath
         // try to get name from modmanager?
@@ -200,8 +206,19 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
                                                                             name,
                                                                             false,
                                                                             isColossalOrdersOne);
-            this._ExportTypeDropDownItems.Add(item);
+            this.AddDropDownItem(localeId,
+                                 item,
+                                 onlineLocaleAsset);
         }
+    }
+
+    private void AddDropDownItem(string localeId,
+                                 MyExportTypeDropDownItem item,
+                                 IDictionarySource source) {
+        if (!this._ExportTypeDropDownItems.ContainsKey(item.Value)) {
+            this._ExportTypeDropDownItems[item.Value] = item;
+        }
+        this._ExportTypeDropDownItems[item.Value].AddSource(localeId, source);
     }
 
     /// <param name="purpose">
