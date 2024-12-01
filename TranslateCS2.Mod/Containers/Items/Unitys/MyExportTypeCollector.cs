@@ -49,15 +49,21 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             IList<IDictionarySource> sources = localeInfo.Sources;
             {
                 // TODO: flavor-specific export?
-                // INFO: filter out flavors, for now; cause it is possible to add an en-US.json
-                //       dictionary sources are 'only' used for code-mods
-                //       base game and co's packs (at least region packs) are exported via localeasset
-                //       if someone loads a translation for a code-mod, for now it has to be filtered out
-                //       otherwise, the person would export the provided translations, instead of the 'mod-owners' ones
                 sources =
                     sources
+                        //
+                        // INFO: filter out flavors, for now; cause it is possible to add an en-US.json
+                        //       dictionary sources are 'only' used for code-mods
+                        //       base game and co's packs (at least region packs) are exported via localeasset
+                        //       if someone loads a translation for a code-mod, for now it has to be filtered out
+                        //       otherwise, the person would export the provided translations, instead of the 'mod-owners' ones
+                        //
                         // item that cannot be assigned TO Flavor!
                         .Where(item => !typeof(Flavor).IsAssignableFrom(item.GetType()))
+                        //
+                        // INFO: some use use the MemorySource-class to provide their localizations
+                        //       in those cases, its 'impossible' to assign the localizations to a speccific Mod
+                        //
                         // item that cannot be assigned TO MemorySource!
                         .Where(item => !typeof(MemorySource).IsAssignableFrom(item.GetType()))
                         .ToList();
