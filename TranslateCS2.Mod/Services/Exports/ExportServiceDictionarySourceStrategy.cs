@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using Colossal;
 using Colossal.IO.AssetDatabase;
 
 using Game.UI.Widgets;
@@ -66,7 +67,38 @@ internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, I
                                 string type,
                                 string directory) {
         try {
-            // TODO: the export
+            IList<IMySystemCollector>? systemCollectors = this.runtimeContainer?.SystemCollectors;
+            if (systemCollectors is null) {
+                return;
+            }
+            foreach (IMySystemCollector collector in systemCollectors) {
+                IMyExportTypeCollector? exportTypeCollector = collector as IMyExportTypeCollector;
+                IEnumerable<MyExportTypeDropDownItem>? exportTypeDropDownItems = exportTypeCollector?.ExportTypeDropDownItems;
+                if (exportTypeDropDownItems is null) {
+                    continue;
+                }
+                foreach (MyExportTypeDropDownItem dropDownItem in exportTypeDropDownItems) {
+                    if (!StringConstants.All.Equals(type)
+                        && !type.Equals(dropDownItem.Value)) {
+                        continue;
+                    }
+                    IDictionary<string, MyLocaleInfo> localeInfos = dropDownItem.LocaleInfos;
+                    foreach (MyLocaleInfo localeInfo in localeInfos.Values) {
+                        if (!StringConstants.All.Equals(localeId)
+                            && !localeId.Equals(localeInfo.Id)) {
+                            continue;
+                        }
+                        IDictionary<string, string> exportEntries = this.GetExportEntries(localeInfo.Sources);
+                        // localeid-param has to be localeInfo.id
+                        // type-param has to be dropdownitem.displayname
+                        // => one json per localeid and type/mod/asset
+                        this.WriteEntries(exportEntries,
+                                          localeInfo.Id,
+                                          dropDownItem.DisplayName,
+                                          directory);
+                    }
+                }
+            }
         } catch (Exception ex) {
             this.runtimeContainer.ErrorMessages.DisplayErrorMessageFailedExportBuiltIn(directory);
             this.runtimeContainer.Logger.LogError(this.GetType(),
@@ -76,14 +108,11 @@ internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, I
     }
 
 
-    private IDictionary<string, string> GetExportEntries(IEnumerable<Dictionary<string, string>>? localizations,
-                                                         string localeId) {
+    private IDictionary<string, string> GetExportEntries(IEnumerable<IDictionarySource> sources) {
         Dictionary<string, string> exportEntries = [];
-        foreach (Dictionary<string, string> entries in localizations) {
+        foreach (IDictionarySource source in sources) {
+            IEnumerable<KeyValuePair<string, string>> entries = source.ReadEntries([], []);
             foreach (KeyValuePair<string, string> entry in entries) {
-                if (exportEntries.ContainsKey(entry.Key)) {
-                    continue;
-                }
                 exportEntries[entry.Key] = entry.Value;
             }
         }
