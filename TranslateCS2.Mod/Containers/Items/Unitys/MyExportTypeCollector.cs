@@ -4,6 +4,7 @@ using System.Linq;
 
 using Colossal;
 using Colossal.IO.AssetDatabase;
+using Colossal.Localization;
 using Colossal.Serialization.Entities;
 
 using Game;
@@ -55,15 +56,16 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
                 //       otherwise, the person would export the provided translations, instead of the 'mod-owners' ones
                 sources =
                     sources
-                        // item cannot be assigned TO Flavor!
+                        // item that cannot be assigned TO Flavor!
                         .Where(item => !typeof(Flavor).IsAssignableFrom(item.GetType()))
+                        // item that cannot be assigned TO MemorySource!
+                        .Where(item => !typeof(MemorySource).IsAssignableFrom(item.GetType()))
                         .ToList();
             }
 
 
             IList<IDictionarySource> localeAssets = GetLocaleAssetsFromDictionarySources(sources);
             // TODO: each DropDownItem has to have its localeinfo related sources to not obtain and filter them again for export
-            // TODO: which mods displayName is/becomes Colossal.Localization
             this.CollectBaseGame(localeAssets);
             this.CollectParadoxAssetMods(localeAssets);
             this.CollectLocalAssetMods(localeAssets);
