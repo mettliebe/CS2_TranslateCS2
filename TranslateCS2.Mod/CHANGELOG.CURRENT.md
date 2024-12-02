@@ -1,5 +1,6 @@
 # Version 2.1.0.1
 * developer-changes: exports
+    * language(s) to export is now ordered by locale-id
     * the generated .json while exporting now contains the mods technical displayname instead of the mods id
     * now assets and code-mods localizations can be exported
     * most information is gathered while the game itself starts

@@ -52,7 +52,8 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
     public IEnumerable<LocaleAsset> GetBuiltInBaseGameLocaleAssets() {
         return
             this.GetLocaleAssets()
-                .Where(BuiltInBaseGamePredicate);
+                .Where(BuiltInBaseGamePredicate)
+                .OrderBy(asset => asset.localeId);
     }
 
     /// <summary>
