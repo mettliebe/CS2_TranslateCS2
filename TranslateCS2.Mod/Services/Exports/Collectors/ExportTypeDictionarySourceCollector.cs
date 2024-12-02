@@ -17,6 +17,29 @@ using TranslateCS2.Mod.Helpers;
 using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Services.Exports.Collectors;
+/// <summary>
+///     uses the <see cref="Game"/>s
+///     <br/>
+///     <see cref="Colossal.Localization.LocalizationManager"/>
+///     <br/>
+///     through
+///     <br/>
+///     <see cref="LocManagerProvider"/>
+///     <br/>
+///     and its <see cref="Game.Modding.ModManager"/>
+///     <br/>
+///     through
+///     <br/>
+///     <see cref="OtherModsLocFilesHelper"/>
+///     <br/>
+///     to gather information and localizations for already loaded
+///     <br/>
+///     <see cref="Game.Modding.IMod"/>s
+///     <br/>
+///     and
+///     <br/>
+///     <see cref="LocaleAsset"/>s
+/// </summary>
 [MyExcludeFromCoverage]
 internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
 

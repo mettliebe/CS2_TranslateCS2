@@ -7,6 +7,7 @@ using Colossal.Serialization.Entities;
 using Game;
 using Game.SceneFlow;
 
+using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers;
 using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Interfaces;
@@ -14,6 +15,20 @@ using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Services.Exports.Collectors;
 /// <summary>
+///     <see cref="Mod.OnLoad(UpdateSystem)"/>
+///     subscribes
+///     <see cref="GameManager.onGameLoadingComplete"/>
+///     with
+///     <see cref="TryToCollect(Purpose, GameMode)"/>
+///     <br/>
+///     <br/>
+///     for both realizations
+///     <br/>
+///     <see cref="ExportTypeAssetCollector"/>
+///     <br/>
+///     <see cref="ExportTypeDictionarySourceCollector"/>
+///     <br/>
+///     <br/>
 ///     <see cref="AssetDatabase"/>.global.databases
 ///     <br/>
 ///     returns all databases
@@ -34,6 +49,7 @@ namespace TranslateCS2.Mod.Services.Exports.Collectors;
 ///     <br/>
 ///     <see cref="AssetDatabase.EnableNotifications(Boolean)"/>
 /// </summary>
+[MyExcludeFromCoverage]
 internal abstract class AExportTypeCollector : IMyExportTypeCollector {
     protected readonly IModRuntimeContainer? runtimeContainer;
     protected readonly LocaleAssetProvider? localeAssetProvider;
