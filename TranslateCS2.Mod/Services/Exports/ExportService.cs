@@ -29,4 +29,8 @@ internal class ExportService {
                                           type,
                                           directory);
     }
+
+    public void Refresh() {
+        this.exportServiceStrategy.Refresh();
+    }
 }

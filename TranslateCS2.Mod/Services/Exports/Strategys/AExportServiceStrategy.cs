@@ -16,6 +16,8 @@ internal abstract class AExportServiceStrategy : IExportServiceStrategy {
                                 string type,
                                 string directory);
 
+    public abstract void Refresh();
+
     public void WriteEntries(IDictionary<string, string> exportEntries,
                              string localeId,
                              string type,

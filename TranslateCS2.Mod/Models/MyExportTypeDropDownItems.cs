@@ -42,4 +42,8 @@ internal class MyExportTypeDropDownItems {
         }
         this._Items[item.Value].AddLocaleDatas(localeDatas);
     }
+
+    public void ClearForRefresh() {
+        this._Items.Clear();
+    }
 }

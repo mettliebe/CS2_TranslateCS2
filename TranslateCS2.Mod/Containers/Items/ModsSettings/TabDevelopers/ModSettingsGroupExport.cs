@@ -1,4 +1,5 @@
 using Colossal.Json;
+using Colossal.UI;
 
 using Game.Settings;
 using Game.UI.Widgets;
@@ -12,6 +13,17 @@ internal partial class ModSettings {
 
 
     public const string ExportGroup = nameof(ExportGroup);
+
+
+
+    /// <inheritdoc cref="GetExportTypeValueVersion"/>
+    private int ExportTypeValueVersion { get; set; } = 0;
+    /// <summary>
+    ///     is used to trigger an update of values
+    /// </summary>
+    public int GetExportTypeValueVersion() {
+        return this.ExportTypeValueVersion;
+    }
 
 
 
@@ -32,11 +44,28 @@ internal partial class ModSettings {
     [SettingsUIDeveloper]
     [SettingsUISection(TabDevelopers, ExportGroup)]
     [SettingsUIDropdown(typeof(ModSettings), nameof(GetExportTypeDropDownItems))]
+    [SettingsUIValueVersion(typeof(ModSettings), nameof(GetExportTypeValueVersion))]
     public string ExportTypeDropDown { get; set; } = StringConstants.All;
 
     [MyExcludeFromCoverage]
     private DropdownItem<string>[] GetExportTypeDropDownItems() {
         return this.exportService.GetExportTypeDropDownItems();
+    }
+
+
+
+    [Exclude]
+    [SettingsUIDeveloper]
+    [SettingsUISection(TabDevelopers, ExportGroup)]
+    [SettingsUIButton]
+    [SettingsUIConfirmation]
+    [MyExcludeFromCoverage]
+    public bool ExportTypeRefreshButton {
+        set {
+            this.exportService.Refresh();
+            this.ExportTypeValueVersion++;
+            UIManager.instance.Update();
+        }
     }
 
 

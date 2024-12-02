@@ -7,4 +7,5 @@ internal interface IExportServiceStrategy {
     void Export(string localeId,
                 string type,
                 string directory);
+    void Refresh();
 }

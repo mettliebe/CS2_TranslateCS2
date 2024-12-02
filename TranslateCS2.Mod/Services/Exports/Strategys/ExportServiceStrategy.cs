@@ -15,7 +15,6 @@ using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Helpers;
 using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Models;
-using TranslateCS2.Mod.Services.Exports.Collectors;
 
 namespace TranslateCS2.Mod.Services.Exports.Strategys;
 internal class ExportServiceStrategy : AExportServiceStrategy, IExportServiceStrategy {
@@ -52,15 +51,7 @@ internal class ExportServiceStrategy : AExportServiceStrategy, IExportServiceStr
     }
 
     private void AppendExportTypeDropDownItems(List<DropdownItem<string>> items) {
-        IList<IMySystemCollector>? collectors = this.runtimeContainer?.SystemCollectors;
-        if (collectors is not null) {
-            foreach (IMySystemCollector collector in collectors) {
-                if (typeof(ExportTypeAssetCollector).IsAssignableFrom(collector.GetType())) {
-                    // to collect LocaleData for assets that are loaded be APM, EAI, or whatever
-                    collector.TryToCollect(Purpose.Cleanup, GameMode.MainMenu, true);
-                }
-            }
-        }
+        //this.Refresh();
         items.AddRange(this.runtimeContainer.ExportTypeDropDownItems.Items);
     }
 
@@ -102,6 +93,16 @@ internal class ExportServiceStrategy : AExportServiceStrategy, IExportServiceStr
             this.runtimeContainer.Logger.LogError(this.GetType(),
                                                   LoggingConstants.FailedTo,
                                                   [nameof(this.Export), ex]);
+        }
+    }
+
+    public override void Refresh() {
+        IList<IMySystemCollector>? collectors = this.runtimeContainer?.SystemCollectors;
+        if (collectors is not null) {
+            this.runtimeContainer?.ExportTypeDropDownItems.ClearForRefresh();
+            foreach (IMySystemCollector collector in collectors) {
+                collector.TryToCollect(Purpose.Cleanup, GameMode.MainMenu, true);
+            }
         }
     }
 
