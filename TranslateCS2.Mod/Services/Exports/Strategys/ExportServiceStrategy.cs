@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Colossal;
 using Colossal.IO.AssetDatabase;
@@ -67,6 +68,7 @@ internal class ExportServiceStrategy : AExportServiceStrategy, IExportServiceStr
                                 string type,
                                 string directory) {
         try {
+            ISet<string> builtInLocaleIds = this.localeAssetProvider.GetBuiltInLocaleIds().ToHashSet();
             MyExportTypeDropDownItems? exportTypeDropDownItems = this.runtimeContainer?.ExportTypeDropDownItems;
             if (exportTypeDropDownItems is null) {
                 return;
@@ -80,6 +82,9 @@ internal class ExportServiceStrategy : AExportServiceStrategy, IExportServiceStr
                 foreach (MyLocaleInfo localeInfo in localeInfos.Values) {
                     if (!StringConstants.All.Equals(localeId)
                         && !localeId.Equals(localeInfo.Id)) {
+                        continue;
+                    }
+                    if (!builtInLocaleIds.Contains(localeInfo.Id)) {
                         continue;
                     }
                     IDictionary<string, string> exportEntries = this.GetExportEntries(localeInfo);
