@@ -35,19 +35,7 @@ namespace TranslateCS2.Mod.Services.Exports.Collectors;
 [MyExcludeFromCoverage]
 internal class ExportTypeAssetCollector : AExportTypeCollector {
 
-    public ExportTypeAssetCollector(IModRuntimeContainer runtimeContainer) : base(runtimeContainer) {
-        // dont execute over there
-        /// <see cref="Mod.OnLoad(UpdateSystem)"/>
-        /// subscribes
-        /// <see cref="GameManager.onGameLoadingComplete"/>
-        /// with
-        /// <see cref="TryToCollect(Purpose, GameMode)"/>
-        //
-        // otherwise,
-        // asset-mods appear within the dropdown,
-        // but do not have localizations
-        this.collected = true;
-    }
+    public ExportTypeAssetCollector(IModRuntimeContainer runtimeContainer) : base(runtimeContainer) { }
 
     public override void TryToCollect(Purpose purpose, GameMode mode, bool bypassExecutionChecks) {
         if (this.HasToBeExecutedNot(purpose, mode)
