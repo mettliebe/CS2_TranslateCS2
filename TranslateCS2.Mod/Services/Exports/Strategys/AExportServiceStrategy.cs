@@ -7,6 +7,11 @@ using TranslateCS2.Inf;
 using TranslateCS2.Mod.Helpers;
 
 namespace TranslateCS2.Mod.Services.Exports.Strategys;
+/// <summary>
+///     <see langword="abstract"/> implementation and realization of <see cref="IExportServiceStrategy"/>
+///     <br/>
+///     for exchangable strategies to use with <see cref="ExportService"/>
+/// </summary>
 internal abstract class AExportServiceStrategy : IExportServiceStrategy {
     public abstract DropdownItem<string>[] GetExportDropDownItems();
 
