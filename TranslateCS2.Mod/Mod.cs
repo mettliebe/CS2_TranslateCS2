@@ -20,7 +20,6 @@ using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Loggers;
 using TranslateCS2.Mod.Services.Exports.Collectors;
-using TranslateCS2.Mod.Systems;
 
 namespace TranslateCS2.Mod;
 /// <summary>
@@ -36,7 +35,7 @@ namespace TranslateCS2.Mod;
 [MyExcludeFromCoverage]
 public class Mod : IMod {
     private static readonly ILog Logger = LogManager.GetLogger(ModConstants.Name).SetShowsErrorsInUI(false);
-    internal static IModRuntimeContainer? RuntimeContainer { get; set; }
+    private IModRuntimeContainer? RuntimeContainer { get; set; }
     public Mod() {
         // ctor. is never called/used by unity/co
     }
@@ -55,7 +54,9 @@ public class Mod : IMod {
                 // and their locales
                 // are loaded
                 // and can be collected
-                updateSystem.UpdateAfter<MyAfterModificationEndSystem>(SystemUpdatePhase.ModificationEnd);
+                foreach (IMySystemCollector collector in this.RuntimeContainer.SystemCollectors) {
+                    gameManager.onGameLoadingComplete += collector.TryToCollect;
+                }
             }
         } catch (Exception ex) {
             // user LogManagers Logger
@@ -67,19 +68,19 @@ public class Mod : IMod {
     private void Init(GameManager gameManager,
                       ModManager modManager,
                       ExecutableAsset asset) {
-        Mod.RuntimeContainer = this.CreateRuntimeContainer(gameManager,
+        this.RuntimeContainer = this.CreateRuntimeContainer(gameManager,
                                                             modManager,
                                                             asset);
-        Mod.RuntimeContainer.Init(AssetDatabase.global.LoadSettings, true);
-        if (Mod.RuntimeContainer.Languages.HasErroneous) {
-            Mod.RuntimeContainer.ErrorMessages.DisplayErrorMessageForErroneous(Mod.RuntimeContainer.Languages.GetErroneous(),
-                                                                               false);
+        this.RuntimeContainer.Init(AssetDatabase.global.LoadSettings, true);
+        if (this.RuntimeContainer.Languages.HasErroneous) {
+            this.RuntimeContainer.ErrorMessages.DisplayErrorMessageForErroneous(this.RuntimeContainer.Languages.GetErroneous(),
+                                                                                false);
         }
     }
 
     public void OnDispose() {
         try {
-            Mod.RuntimeContainer?.Dispose(true);
+            this.RuntimeContainer?.Dispose(true);
         } catch (Exception ex) {
             // user LogManagers Logger
             // runtimeContainerHandler might not be initialized

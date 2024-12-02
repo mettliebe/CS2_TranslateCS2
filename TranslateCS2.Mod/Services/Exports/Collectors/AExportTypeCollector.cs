@@ -31,6 +31,9 @@ internal abstract class AExportTypeCollector : IMyExportTypeCollector {
     }
 
 
+    public void TryToCollect(Purpose purpose, GameMode mode) {
+        this.TryToCollect(purpose, mode, false);
+    }
     public abstract void TryToCollect(Purpose purpose, GameMode mode, bool bypassExecutionChecks);
 
     /// <param name="purpose">
