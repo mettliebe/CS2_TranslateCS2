@@ -42,6 +42,7 @@ internal class ExportTypeAssetCollector : AExportTypeCollector {
             && !bypassExecutionChecks) {
             return;
         }
+        this.collected = true;
         this.HandleExportTypeDropDownItemsForExpansions();
         this.HandleExportTypeDropDownItemsForOnlineMods();
         this.HandleExportTypeDropDownItemsForUserMods();
