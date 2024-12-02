@@ -19,6 +19,7 @@ using TranslateCS2.Mod.Containers.Items.ModsSettings;
 using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Loggers;
+using TranslateCS2.Mod.Services.Exports.Collectors;
 
 namespace TranslateCS2.Mod;
 /// <summary>
@@ -47,6 +48,15 @@ public class Mod : IMod {
                 this.Init(gameManager,
                           modManager,
                           asset);
+                // after modification ended
+                // so,
+                // all mods
+                // and their locales
+                // are loaded
+                // and can be collected
+                foreach (IMySystemCollector collector in this.RuntimeContainer.SystemCollectors) {
+                    gameManager.onGameLoadingComplete += collector.TryToCollect;
+                }
             }
         } catch (Exception ex) {
             // user LogManagers Logger
@@ -70,7 +80,7 @@ public class Mod : IMod {
 
     public void OnDispose() {
         try {
-            this.RuntimeContainer.Dispose(true);
+            this.RuntimeContainer?.Dispose(true);
         } catch (Exception ex) {
             // user LogManagers Logger
             // runtimeContainerHandler might not be initialized
@@ -103,6 +113,10 @@ public class Mod : IMod {
             ModAsset = asset,
             SettingsSaver = settingsSaver
         };
+        IMySystemCollector exportTypeDictionarySourceCollector = new ExportTypeDictionarySourceCollector(runtimeContainer);
+        runtimeContainer.SystemCollectors.Add(exportTypeDictionarySourceCollector);
+        IMySystemCollector exportTypeAssetCollector = new ExportTypeAssetCollector(runtimeContainer);
+        runtimeContainer.SystemCollectors.Add(exportTypeAssetCollector);
         return runtimeContainer;
 
     }

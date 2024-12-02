@@ -1,8 +1,15 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+
 using Colossal;
 using Colossal.Localization;
+using Colossal.Reflection;
 
 using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Interfaces;
+using TranslateCS2.Mod.Models;
 
 using UnityEngine;
 
@@ -12,6 +19,15 @@ namespace TranslateCS2.Mod.Containers.Items.Unitys;
 /// </summary>
 [MyExcludeFromCoverage]
 internal class LocManagerProvider : ILocManagerProvider {
+    /// <summary>
+    ///     <see cref="LocalizationManager.m_LocaleInfos"/>
+    /// </summary>
+    private readonly string FieldNameLocaleInfos = "m_LocaleInfos";
+    /// <summary>
+    ///     <see cref="LocalizationManager.LocaleInfo.m_sources"/>
+    /// </summary>
+    private readonly string FieldNameSources = "m_Sources";
+
     private readonly LocalizationManager localizationManager;
 
     public LocManagerProvider(LocalizationManager localizationManager) {
@@ -58,5 +74,25 @@ internal class LocManagerProvider : ILocManagerProvider {
 
     public bool SupportsLocale(string localeId) {
         return this.localizationManager.SupportsLocale(localeId);
+    }
+
+    public IList<MyLocaleInfo> GetLocaleInfos() {
+        List<MyLocaleInfo> returnList = [];
+        Type type = this.localizationManager.GetType();
+        FieldInfo localeInfosField = type.GetFieldIncludingPrivateBase(this.FieldNameLocaleInfos);
+        IDictionary? localeInfos = localeInfosField.GetValue(this.localizationManager) as IDictionary;
+        if (localeInfos is not null) {
+            foreach (DictionaryEntry localeInfo in localeInfos) {
+                string? key = localeInfo.Key as string;
+                object value = localeInfo.Value;
+                FieldInfo sourcesField = value.GetType().GetFieldIncludingPrivateBase(this.FieldNameSources);
+                List<IDictionarySource>? sources = sourcesField.GetValue(localeInfo.Value) as List<IDictionarySource>;
+                if (key is not null
+                    && sources is not null) {
+                    returnList.Add(new MyLocaleInfo(key, sources));
+                }
+            }
+        }
+        return returnList;
     }
 }

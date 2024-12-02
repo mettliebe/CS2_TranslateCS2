@@ -6,9 +6,7 @@ using Colossal.IO.AssetDatabase;
 
 using TranslateCS2.Inf;
 using TranslateCS2.Inf.Attributes;
-using TranslateCS2.Mod.Helpers;
 using TranslateCS2.Mod.Interfaces;
-using TranslateCS2.Mod.Packs;
 
 namespace TranslateCS2.Mod.Containers.Items.Unitys;
 [MyExcludeFromCoverage]
@@ -18,10 +16,17 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
         this.global = global;
     }
 
+    private static ISet<string> DefaultDatabaseNames { get; } = new HashSet<string>() {
+        StringConstants.User,
+        StringConstants.ParadoxMods,
+        StringConstants.Game,
+        StringConstants.SteamCloud,
+    };
 
     public static Func<LocaleAsset, bool> BuiltInBaseGamePredicate => asset => StringConstants.DataTilde.Equals(asset.subPath) && StringConstants.Game.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> ParadoxModsPredicate => asset => StringConstants.ParadoxMods.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> UserModsPredicate => asset => StringConstants.User.Equals(asset.database.name);
+    public static Func<LocaleAsset, bool> ExtensionsPredicate => asset => !DefaultDatabaseNames.Contains(asset.database.name);
 
 
     public IEnumerable<LocaleAsset>? Get(string localeId) {
@@ -54,7 +59,8 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
     public IEnumerable<LocaleAsset> GetBuiltInBaseGameLocaleAssets() {
         return
             this.GetLocaleAssets()
-                .Where(BuiltInBaseGamePredicate);
+                .Where(BuiltInBaseGamePredicate)
+                .OrderBy(asset => asset.localeId);
     }
 
     /// <summary>
@@ -82,26 +88,9 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
                 .GetAssets(default(SearchFilter<LocaleAsset>));
     }
 
-    public bool HasFrenchPack(IEnumerable<LocaleAsset>? modAssets) {
-        RegionPack pack = RegionPack.French();
-        return this.HasPack(modAssets, pack);
-    }
-
-    public bool HasGermanPack(IEnumerable<LocaleAsset>? modAssets) {
-        RegionPack pack = RegionPack.German();
-        return this.HasPack(modAssets, pack);
-    }
-
-    public bool HasUKPack(IEnumerable<LocaleAsset>? modAssets) {
-        RegionPack pack = RegionPack.UK();
-        return this.HasPack(modAssets, pack);
-    }
-
-    public bool HasPack(IEnumerable<LocaleAsset>? modAssets, RegionPack pack) {
+    public IEnumerable<LocaleAsset> GetExpansionAssets() {
         return
-            modAssets is not null
-            && modAssets
-                .Where(asset => pack.Id.Equals(OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset)))
-                .Any();
+            this.GetLocaleAssets()
+                .Where(ExtensionsPredicate);
     }
 }

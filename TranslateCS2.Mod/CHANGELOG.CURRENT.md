@@ -1,18 +1,15 @@
-# Version 2.1.0.0
-* developer-changes
-    * fixed exporting errors
-    * developers
-        * now have the ability to select a specific export type
-            * All: Base-Game and active Mods
-            * Game: Base-Game
-            * [Region-Name] Pack: Only for the selected Region Pack
-            * Mod-Specific
-        * Warning:
-            * If a Mod does not provide Asset-Names/Translations for a certain selected Language, the generated .json does not contain Key-Value-Pairs the specific Mod!
-            * It may result in a json-file that only contains an empty json-object.
-        * The generated .json-files-names contain the locale-id and the Type (All, Game, the respective ModID or, in case of Local-Mods, the technical name).
-            * Examples:
-                * en-US_All.json
-                * en-US_Game.json
-                * en-US_91930.json (in case of the French Pack)
-                * en-US_MyNewAssetMod.json (in case local mods)
+# Version 2.1.0.1
+* developer-changes: exports
+    * language(s) to export is now ordered by locale-id
+    * the generated .json while exporting now contains the mods technical displayname instead of the mods id
+    * now assets and code-mods localizations can be exported
+    * most information is gathered while the game itself starts
+    * some information, especially for assets that are loaded by 'Extra Assets Importer (EAI)'/'Asset Packs Manager (APM)', cannot be gathered at startup
+    * therefore a button called 'refresh type(s) to export' is introduced
+        * if mods/assets are missing, it can be used to refresh the dropdown
+        * depending on the amount of activated mods/assets within the current playset, this action may take a few seconds and the User Interface is freezed
+        * if the desired asset/mod does not appear within the dropdown after a refresh, its localizations can not be gathered
+        * please take ZZZ_Uncategorized into account
+    * due to technical limitations,
+        * some asstes/code-mods localizations can not be gathered, those assets/code-mods do not appear within the respective drop-down
+        * some localizations cannot be clearly assigned, these are summarized under "ZZZ_Uncategorized"

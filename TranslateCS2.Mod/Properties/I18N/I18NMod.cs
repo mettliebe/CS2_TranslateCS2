@@ -37,6 +37,9 @@ internal static class I18NMod {
     public static string GroupExportExportDropDownDescription { get; } = nameof(GroupExportExportDropDownDescription);
     public static string GroupExportExportTypeDropDownLabel { get; } = nameof(GroupExportExportTypeDropDownLabel);
     public static string GroupExportExportTypeDropDownDescription { get; } = nameof(GroupExportExportTypeDropDownDescription);
+    public static string GroupExportExportTypeRefreshButtonLabel { get; } = nameof(GroupExportExportTypeRefreshButtonLabel);
+    public static string GroupExportExportTypeRefreshButtonDescription { get; } = nameof(GroupExportExportTypeRefreshButtonDescription);
+    public static string GroupExportExportTypeRefreshButtonConfirmation { get; } = nameof(GroupExportExportTypeRefreshButtonConfirmation);
     public static string GroupExportExportDirectoryLabel { get; } = nameof(GroupExportExportDirectoryLabel);
     public static string GroupExportExportDirectoryDescription { get; } = nameof(GroupExportExportDirectoryDescription);
     public static string GroupExportExportButtonLabel { get; } = nameof(GroupExportExportButtonLabel);

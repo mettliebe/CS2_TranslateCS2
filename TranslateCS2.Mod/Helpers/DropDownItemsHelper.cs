@@ -10,11 +10,23 @@ internal static class DropDownItemsHelper {
     public static List<DropdownItem<string>> GetDefault(bool addNone) {
         List<DropdownItem<string>> flavors = [];
         if (addNone) {
-            flavors.Add(new DropdownItem<string>() {
-                value = None,
-                displayName = None
-            });
+            flavors.Add(Create(None, None));
         }
         return flavors;
+    }
+
+    public static void AppendAllEntry(List<DropdownItem<string>> items) {
+        items.Add(Create(StringConstants.All, StringConstants.All));
+    }
+
+    public static void AppendGameEntry(List<DropdownItem<string>> items) {
+        items.Add(Create(StringConstants.Game, StringConstants.Game));
+    }
+
+    public static DropdownItem<string> Create(string value, string displayName) {
+        return new DropdownItem<string>() {
+            value = value,
+            displayName = displayName
+        };
     }
 }
