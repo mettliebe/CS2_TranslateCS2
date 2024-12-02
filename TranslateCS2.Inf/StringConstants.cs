@@ -27,6 +27,7 @@ public static class StringConstants {
     public static string Game { get; } = nameof(Game);
     public static string ParadoxMods { get; } = nameof(ParadoxMods);
     public static string User { get; } = nameof(User);
+    public static string SteamCloud { get; } = nameof(SteamCloud);
 
 
     // for ZZZ_Uncategorized it HAS to be a space!!

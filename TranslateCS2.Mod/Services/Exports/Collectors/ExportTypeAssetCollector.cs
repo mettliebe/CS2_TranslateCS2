@@ -54,8 +54,29 @@ internal class ExportTypeAssetCollector : AExportTypeCollector {
             && !bypassExecutionChecks) {
             return;
         }
+        this.HandleExportTypeDropDownItemsForExpansions();
         this.HandleExportTypeDropDownItemsForOnlineMods();
         this.HandleExportTypeDropDownItemsForUserMods();
+    }
+
+    private void HandleExportTypeDropDownItemsForExpansions() {
+        IEnumerable<LocaleAsset>? assets = this.localeAssetProvider.GetExpansionAssets();
+        if (assets is null) {
+            return;
+        }
+        IEnumerable<string> expansionNames = assets.Select(asset => asset.database.name).Distinct();
+        foreach (string expansionName in expansionNames) {
+            MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(expansionName,
+                                                                            expansionName,
+                                                                            false,
+                                                                            true);
+            IEnumerable<LocaleData> assetDatas =
+                assets
+                    .Where(asset => asset.database.name.Equals(expansionName))
+                    .Select(asset => asset.data);
+            this.ExportTypeDropDownItems.AddDropDownItem(item,
+                                                         assetDatas);
+        }
     }
 
     private void HandleExportTypeDropDownItemsForUserMods() {

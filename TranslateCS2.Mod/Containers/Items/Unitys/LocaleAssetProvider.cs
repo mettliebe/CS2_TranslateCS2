@@ -16,10 +16,17 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
         this.global = global;
     }
 
+    private static ISet<string> DefaultDatabaseNames { get; } = new HashSet<string>() {
+        StringConstants.User,
+        StringConstants.ParadoxMods,
+        StringConstants.Game,
+        StringConstants.SteamCloud,
+    };
 
     public static Func<LocaleAsset, bool> BuiltInBaseGamePredicate => asset => StringConstants.DataTilde.Equals(asset.subPath) && StringConstants.Game.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> ParadoxModsPredicate => asset => StringConstants.ParadoxMods.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> UserModsPredicate => asset => StringConstants.User.Equals(asset.database.name);
+    public static Func<LocaleAsset, bool> ExtensionsPredicate => asset => !DefaultDatabaseNames.Contains(asset.database.name);
 
 
     public IEnumerable<LocaleAsset>? Get(string localeId) {
@@ -79,5 +86,11 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
         return
             this.global
                 .GetAssets(default(SearchFilter<LocaleAsset>));
+    }
+
+    public IEnumerable<LocaleAsset> GetExpansionAssets() {
+        return
+            this.GetLocaleAssets()
+                .Where(ExtensionsPredicate);
     }
 }
