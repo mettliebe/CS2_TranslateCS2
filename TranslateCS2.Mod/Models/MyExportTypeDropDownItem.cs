@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Colossal;
+using Colossal.IO.AssetDatabase;
 
 using Game.UI.Widgets;
 
@@ -35,9 +36,17 @@ internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExp
     public void AddSource(string localeId,
                           IDictionarySource dictionarySource) {
         if (!this.LocaleInfos.ContainsKey(localeId)) {
-            this.LocaleInfos.Add(localeId, new MyLocaleInfo(localeId, []));
+            this.LocaleInfos.Add(localeId, new MyLocaleInfo(localeId));
         }
         this.LocaleInfos[localeId].Sources.Add(dictionarySource);
+    }
+
+    public void AddLocaleData(LocaleData localeData) {
+        string localeId = localeData.localeId;
+        if (!this.LocaleInfos.ContainsKey(localeId)) {
+            this.LocaleInfos.Add(localeId, new MyLocaleInfo(localeId));
+        }
+        this.LocaleInfos[localeId].LocaleDatas.Add(localeData);
     }
 
     public override bool Equals(object? obj) {

@@ -10,5 +10,5 @@ namespace TranslateCS2.Mod.Interfaces;
 ///     <see cref="Systems.MyAfterModificationEndSystem"/>
 /// </summary>
 internal interface IMySystemCollector {
-    void TryToCollect(Purpose purpose, GameMode mode);
+    void TryToCollect(Purpose purpose, GameMode mode, bool bypassExecutionChecks);
 }

@@ -11,6 +11,7 @@ using TranslateCS2.Inf.Models.Localizations;
 using TranslateCS2.Mod.Containers.Items;
 using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Loggers;
+using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Containers;
 internal class ModRuntimeContainer : IModRuntimeContainer {
@@ -29,6 +30,7 @@ internal class ModRuntimeContainer : IModRuntimeContainer {
     public ISettingsSaver? SettingsSaver { get; set; }
     public IBuiltInLocaleIdProvider BuiltInLocaleIdProvider { get; }
     public IList<IMySystemCollector> SystemCollectors { get; } = [];
+    public MyExportTypeDropDownItems ExportTypeDropDownItems { get; } = new MyExportTypeDropDownItems();
 
     public ModRuntimeContainer(IMyLogProvider logProvider,
                                IMod mod,

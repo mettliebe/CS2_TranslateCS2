@@ -33,8 +33,9 @@ internal partial class MyAfterModificationEndSystem : GameSystemBase {
         if (systemCollectors is null) {
             return;
         }
+        bool bypassExecutionChecks = false;
         foreach (IMySystemCollector systemCollector in systemCollectors) {
-            systemCollector.TryToCollect(purpose, mode);
+            systemCollector.TryToCollect(purpose, mode, bypassExecutionChecks);
         }
     }
 

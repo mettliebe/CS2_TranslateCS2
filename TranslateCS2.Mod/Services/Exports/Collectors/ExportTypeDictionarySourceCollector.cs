@@ -8,44 +8,24 @@ using Colossal.Localization;
 using Colossal.Serialization.Entities;
 
 using Game;
-using Game.SceneFlow;
 
 using TranslateCS2.Inf;
 using TranslateCS2.Inf.Attributes;
+using TranslateCS2.Mod.Containers;
+using TranslateCS2.Mod.Containers.Items;
+using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Helpers;
-using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Models;
 
-namespace TranslateCS2.Mod.Containers.Items.Unitys;
+namespace TranslateCS2.Mod.Services.Exports.Collectors;
 [MyExcludeFromCoverage]
-internal class MyExportTypeCollector : IMyExportTypeCollector {
-    private bool collected = false;
+internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
 
-    private readonly IModRuntimeContainer? runtimeContainer;
-    private readonly LocaleAssetProvider? localeAssetProvider;
-    private readonly LocManagerProvider? locManagerProvider;
+    public ExportTypeDictionarySourceCollector(IModRuntimeContainer runtimeContainer) : base(runtimeContainer) { }
 
-    private readonly GameManager.Configuration? gameConfiguration;
-
-
-    private IDictionary<string, MyExportTypeDropDownItem> _ExportTypeDropDownItems { get; } = new Dictionary<string, MyExportTypeDropDownItem>();
-    public IEnumerable<MyExportTypeDropDownItem> ExportTypeDropDownItems =>
-        this._ExportTypeDropDownItems
-            .Values
-            .OrderByDescending(item => item.IsBaseGame)
-            .ThenByDescending(item => item.IsColossalOrdersOne)
-            .ThenBy(item => item.DisplayName);
-
-
-    public MyExportTypeCollector(IModRuntimeContainer runtimeContainer) {
-        this.runtimeContainer = runtimeContainer;
-        this.localeAssetProvider = this.runtimeContainer?.BuiltInLocaleIdProvider as LocaleAssetProvider;
-        this.locManagerProvider = this.runtimeContainer?.LocManager.Provider as LocManagerProvider;
-        this.gameConfiguration = GameManager.instance.configuration;
-    }
-
-    public void TryToCollect(Purpose purpose, GameMode mode) {
-        if (this.HasToBeExecutedNot(purpose, mode)) {
+    public override void TryToCollect(Purpose purpose, GameMode mode, bool bypassExecutionChecks) {
+        if (this.HasToBeExecutedNot(purpose, mode)
+            && !bypassExecutionChecks) {
             return;
         }
         this.collected = true;
@@ -96,9 +76,9 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
                                                                             StringConstants.Game,
                                                                             true,
                                                                             true);
-            this.AddDropDownItem(localeId,
-                                 item,
-                                 source);
+            this.ExportTypeDropDownItems.AddDropDownItem(localeId,
+                                                     item,
+                                                     source);
         }
     }
 
@@ -133,9 +113,9 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             string modName = mod.GetType().Assembly.ManifestModule.ScopeName.Replace(ModConstants.DllExtension, String.Empty);
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(modName,
                                                                             modName);
-            this.AddDropDownItem(localeId,
-                                 item,
-                                 mod);
+            this.ExportTypeDropDownItems.AddDropDownItem(localeId,
+                                                     item,
+                                                     mod);
         }
     }
 
@@ -163,9 +143,9 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
             Colossal.PSI.Common.Mod m = (Colossal.PSI.Common.Mod) mod;
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(m.displayName,
                                                                             m.displayName);
-            this.AddDropDownItem(localeId,
-                                 item,
-                                 localLocaleAsset);
+            this.ExportTypeDropDownItems.AddDropDownItem(localeId,
+                                                     item,
+                                                     localLocaleAsset);
         }
     }
 
@@ -206,53 +186,9 @@ internal class MyExportTypeCollector : IMyExportTypeCollector {
                                                                             name,
                                                                             false,
                                                                             isColossalOrdersOne);
-            this.AddDropDownItem(localeId,
-                                 item,
-                                 onlineLocaleAsset);
+            this.ExportTypeDropDownItems.AddDropDownItem(localeId,
+                                                     item,
+                                                     onlineLocaleAsset);
         }
-    }
-
-    private void AddDropDownItem(string localeId,
-                                 MyExportTypeDropDownItem item,
-                                 IDictionarySource source) {
-        if (!this._ExportTypeDropDownItems.ContainsKey(item.Value)) {
-            this._ExportTypeDropDownItems[item.Value] = item;
-        }
-        this._ExportTypeDropDownItems[item.Value].AddSource(localeId, source);
-    }
-
-    /// <param name="purpose">
-    ///     <see cref="Purpose"/>
-    /// </param>
-    /// <param name="mode">
-    ///     <see cref="GameMode"/>
-    /// </param>
-    /// <returns>
-    ///     <see langword="true"/>, if the collector should NOT be executed
-    /// </returns>
-    private bool HasToBeExecutedNot(Purpose purpose, GameMode mode) {
-        if (!GameMode.MainMenu.Equals(mode)) {
-            return true;
-        } else if (this.collected) {
-            return true;
-        } else if (this.gameConfiguration is null) {
-            // no gameConfiguration = no collecting
-            return true;
-        } else if (!this.gameConfiguration.developerMode
-                   && !this.gameConfiguration.qaDeveloperMode
-                   && !this.gameConfiguration.uiDeveloperMode) {
-            // only needs to be collected for devs
-            return true;
-        } else if (this.runtimeContainer is null) {
-            // no runtimeContainer = no collecting
-            return true;
-        } else if (this.localeAssetProvider is null) {
-            // no localeAssetProvider = no collecting
-            return true;
-        } else if (this.locManagerProvider is null) {
-            // no locManagerProvider = no collecting
-            return true;
-        }
-        return false;
     }
 }

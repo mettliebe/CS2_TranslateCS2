@@ -4,10 +4,9 @@ using System.IO;
 using Game.UI.Widgets;
 
 using TranslateCS2.Inf;
-
 using TranslateCS2.Mod.Helpers;
 
-namespace TranslateCS2.Mod.Services.Exports;
+namespace TranslateCS2.Mod.Services.Exports.Strategys;
 internal abstract class AExportServiceStrategy : IExportServiceStrategy {
     public abstract DropdownItem<string>[] GetExportDropDownItems();
 

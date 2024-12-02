@@ -1,6 +1,6 @@
 using Game.UI.Widgets;
 
-namespace TranslateCS2.Mod.Services.Exports;
+namespace TranslateCS2.Mod.Services.Exports.Strategys;
 internal interface IExportServiceStrategy {
     DropdownItem<string>[] GetExportDropDownItems();
     DropdownItem<string>[] GetExportTypeDropDownItems();

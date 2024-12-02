@@ -19,6 +19,7 @@ using TranslateCS2.Mod.Containers.Items.ModsSettings;
 using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Loggers;
+using TranslateCS2.Mod.Services.Exports.Collectors;
 using TranslateCS2.Mod.Systems;
 
 namespace TranslateCS2.Mod;
@@ -111,8 +112,10 @@ public class Mod : IMod {
             ModAsset = asset,
             SettingsSaver = settingsSaver
         };
-        IMySystemCollector exportTypeCollector = new MyExportTypeCollector(runtimeContainer);
-        runtimeContainer.SystemCollectors.Add(exportTypeCollector);
+        IMySystemCollector exportTypeDictionarySourceCollector = new ExportTypeDictionarySourceCollector(runtimeContainer);
+        runtimeContainer.SystemCollectors.Add(exportTypeDictionarySourceCollector);
+        IMySystemCollector exportTypeAssetCollector = new ExportTypeAssetCollector(runtimeContainer);
+        runtimeContainer.SystemCollectors.Add(exportTypeAssetCollector);
         return runtimeContainer;
 
     }

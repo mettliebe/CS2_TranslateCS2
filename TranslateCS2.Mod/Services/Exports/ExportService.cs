@@ -2,6 +2,7 @@ using Game.UI.Widgets;
 
 using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers;
+using TranslateCS2.Mod.Services.Exports.Strategys;
 
 namespace TranslateCS2.Mod.Services.Exports;
 [MyExcludeFromCoverage]
@@ -10,7 +11,7 @@ internal class ExportService {
     private readonly IExportServiceStrategy exportServiceStrategy;
     public ExportService(IModRuntimeContainer runtimeContainer) {
         this.runtimeContainer = runtimeContainer;
-        this.exportServiceStrategy = new ExportServiceDictionarySourceStrategy(this.runtimeContainer);
+        this.exportServiceStrategy = new ExportServiceStrategy(this.runtimeContainer);
     }
 
     public DropdownItem<string>[] GetExportDropDownItems() {

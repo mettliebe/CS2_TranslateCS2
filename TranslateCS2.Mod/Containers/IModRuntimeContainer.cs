@@ -10,6 +10,7 @@ using TranslateCS2.Inf.Loggers;
 using TranslateCS2.Inf.Models.Localizations;
 using TranslateCS2.Mod.Containers.Items;
 using TranslateCS2.Mod.Interfaces;
+using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Containers;
 internal interface IModRuntimeContainer {
@@ -28,6 +29,7 @@ internal interface IModRuntimeContainer {
     ISettingsSaver? SettingsSaver { get; }
     IBuiltInLocaleIdProvider BuiltInLocaleIdProvider { get; }
     IList<IMySystemCollector> SystemCollectors { get; }
+    MyExportTypeDropDownItems ExportTypeDropDownItems { get; }
     void Init(Action<string, object, object?>? loadSettings = null, bool register = false);
     void Dispose(bool unregister = false);
 }

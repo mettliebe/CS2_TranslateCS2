@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 using Colossal;
 using Colossal.IO.AssetDatabase;
+using Colossal.Serialization.Entities;
 
+using Game;
 using Game.UI.Widgets;
 
 using TranslateCS2.Inf;
@@ -12,15 +14,16 @@ using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Helpers;
 using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Models;
+using TranslateCS2.Mod.Services.Exports.Collectors;
 
-namespace TranslateCS2.Mod.Services.Exports;
-internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, IExportServiceStrategy {
+namespace TranslateCS2.Mod.Services.Exports.Strategys;
+internal class ExportServiceStrategy : AExportServiceStrategy, IExportServiceStrategy {
     private readonly IModRuntimeContainer runtimeContainer;
     private readonly LocaleAssetProvider localeAssetProvider;
     private readonly LocManagerProvider locManagerProvider;
 
 
-    public ExportServiceDictionarySourceStrategy(IModRuntimeContainer runtimeContainer) {
+    public ExportServiceStrategy(IModRuntimeContainer runtimeContainer) {
         this.runtimeContainer = runtimeContainer;
         this.localeAssetProvider = this.runtimeContainer.BuiltInLocaleIdProvider as LocaleAssetProvider;
         this.locManagerProvider = this.runtimeContainer.LocManager.Provider as LocManagerProvider;
@@ -48,55 +51,45 @@ internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, I
     }
 
     private void AppendExportTypeDropDownItems(List<DropdownItem<string>> items) {
-        IList<IMySystemCollector>? systemCollectors = this.runtimeContainer?.SystemCollectors;
-        if (systemCollectors is null) {
-            return;
-        }
-        foreach (IMySystemCollector collector in systemCollectors) {
-            IMyExportTypeCollector? exportTypeCollector = collector as IMyExportTypeCollector;
-            IEnumerable<MyExportTypeDropDownItem>? exportTypeDropDownItems = exportTypeCollector?.ExportTypeDropDownItems;
-            if (exportTypeDropDownItems is null) {
-                continue;
+        IList<IMySystemCollector>? collectors = this.runtimeContainer?.SystemCollectors;
+        if (collectors is not null) {
+            foreach (IMySystemCollector collector in collectors) {
+                if (typeof(ExportTypeAssetCollector).IsAssignableFrom(collector.GetType())) {
+                    // to collect LocaleData for assets that are loaded be APM, EAI, or whatever
+                    collector.TryToCollect(Purpose.Cleanup, GameMode.MainMenu, true);
+                }
             }
-            items.AddRange(exportTypeDropDownItems);
         }
-
+        items.AddRange(this.runtimeContainer.ExportTypeDropDownItems.Items);
     }
 
     public override void Export(string localeId,
                                 string type,
                                 string directory) {
         try {
-            IList<IMySystemCollector>? systemCollectors = this.runtimeContainer?.SystemCollectors;
-            if (systemCollectors is null) {
+            MyExportTypeDropDownItems? exportTypeDropDownItems = this.runtimeContainer?.ExportTypeDropDownItems;
+            if (exportTypeDropDownItems is null) {
                 return;
             }
-            foreach (IMySystemCollector collector in systemCollectors) {
-                IMyExportTypeCollector? exportTypeCollector = collector as IMyExportTypeCollector;
-                IEnumerable<MyExportTypeDropDownItem>? exportTypeDropDownItems = exportTypeCollector?.ExportTypeDropDownItems;
-                if (exportTypeDropDownItems is null) {
+            foreach (MyExportTypeDropDownItem dropDownItem in exportTypeDropDownItems.Items) {
+                if (!StringConstants.All.Equals(type)
+                    && !type.Equals(dropDownItem.Value)) {
                     continue;
                 }
-                foreach (MyExportTypeDropDownItem dropDownItem in exportTypeDropDownItems) {
-                    if (!StringConstants.All.Equals(type)
-                        && !type.Equals(dropDownItem.Value)) {
+                IDictionary<string, MyLocaleInfo> localeInfos = dropDownItem.LocaleInfos;
+                foreach (MyLocaleInfo localeInfo in localeInfos.Values) {
+                    if (!StringConstants.All.Equals(localeId)
+                        && !localeId.Equals(localeInfo.Id)) {
                         continue;
                     }
-                    IDictionary<string, MyLocaleInfo> localeInfos = dropDownItem.LocaleInfos;
-                    foreach (MyLocaleInfo localeInfo in localeInfos.Values) {
-                        if (!StringConstants.All.Equals(localeId)
-                            && !localeId.Equals(localeInfo.Id)) {
-                            continue;
-                        }
-                        IDictionary<string, string> exportEntries = this.GetExportEntries(localeInfo.Sources);
-                        // localeid-param has to be localeInfo.id
-                        // type-param has to be dropdownitem.displayname
-                        // => one json per localeid and type/mod/asset
-                        this.WriteEntries(exportEntries,
-                                          localeInfo.Id,
-                                          dropDownItem.DisplayName,
-                                          directory);
-                    }
+                    IDictionary<string, string> exportEntries = this.GetExportEntries(localeInfo);
+                    // localeid-param has to be localeInfo.id
+                    // type-param has to be dropdownitem.displayname
+                    // => one json per localeid and type/mod/asset
+                    this.WriteEntries(exportEntries,
+                                      localeInfo.Id,
+                                      dropDownItem.DisplayName,
+                                      directory);
                 }
             }
         } catch (Exception ex) {
@@ -107,12 +100,24 @@ internal class ExportServiceDictionarySourceStrategy : AExportServiceStrategy, I
         }
     }
 
-
-    private IDictionary<string, string> GetExportEntries(IEnumerable<IDictionarySource> sources) {
+    private IDictionary<string, string> GetExportEntries(MyLocaleInfo localeInfo) {
+        IEnumerable<IDictionarySource> sources = localeInfo.Sources;
         Dictionary<string, string> exportEntries = [];
         foreach (IDictionarySource source in sources) {
             IEnumerable<KeyValuePair<string, string>> entries = source.ReadEntries([], []);
             foreach (KeyValuePair<string, string> entry in entries) {
+                if (exportEntries.ContainsKey(entry.Key)) {
+                    continue;
+                }
+                exportEntries[entry.Key] = entry.Value;
+            }
+        }
+        IList<LocaleData> localeDatas = localeInfo.LocaleDatas;
+        foreach (LocaleData localeData in localeDatas) {
+            foreach (KeyValuePair<string, string> entry in localeData.entries) {
+                if (exportEntries.ContainsKey(entry.Key)) {
+                    continue;
+                }
                 exportEntries[entry.Key] = entry.Value;
             }
         }
