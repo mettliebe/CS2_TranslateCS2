@@ -4,7 +4,6 @@ using System.Linq;
 
 using Colossal;
 using Colossal.IO.AssetDatabase;
-using Colossal.Localization;
 using Colossal.Serialization.Entities;
 
 using Game;
@@ -46,11 +45,12 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
                         // item that cannot be assigned TO Flavor!
                         .Where(item => !typeof(Flavor).IsAssignableFrom(item.GetType()))
                         //
+                        // INFO: Export Uncategorized Mods - see other occurances of this Tag
                         // INFO: some use use the MemorySource-class to provide their localizations
                         //       in those cases, its 'impossible' to assign the localizations to a speccific Mod
                         //
                         // item that cannot be assigned TO MemorySource!
-                        .Where(item => !typeof(MemorySource).IsAssignableFrom(item.GetType()))
+                        //.Where(item => !typeof(MemorySource).IsAssignableFrom(item.GetType()))
                         .ToList();
             }
 
@@ -70,15 +70,15 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
 
     private void CollectBaseGame(string localeId,
                                  IList<IDictionarySource> localeAssets) {
-        IList<IDictionarySource> baseGameLocaleAssets = GetBaseGameLocaleAssetsFromDictionarySources(localeAssets);
-        foreach (IDictionarySource source in baseGameLocaleAssets) {
+        IList<IDictionarySource> sources = GetBaseGameLocaleAssetsFromDictionarySources(localeAssets);
+        foreach (IDictionarySource source in sources) {
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(StringConstants.Game,
                                                                             StringConstants.Game,
                                                                             true,
                                                                             true);
             this.ExportTypeDropDownItems.AddDropDownItem(localeId,
-                                                     item,
-                                                     source);
+                                                         item,
+                                                         source);
         }
     }
 
@@ -105,17 +105,18 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
         // just work with the name as follows,
         // its more convenient to filter within the export-method,
         // instead of a to and fro
-        IList<IDictionarySource> mods =
+        IList<IDictionarySource> modSources =
             sources
                 .Except(localeAssets)
                 .ToList();
-        foreach (IDictionarySource mod in mods) {
-            string modName = mod.GetType().Assembly.ManifestModule.ScopeName.Replace(ModConstants.DllExtension, String.Empty);
+        foreach (IDictionarySource modSource in modSources) {
+            string modName = modSource.GetType().Assembly.ManifestModule.ScopeName.Replace(ModConstants.DllExtension, String.Empty);
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(modName,
                                                                             modName);
+            // this is the dictionary source collector!!!
             this.ExportTypeDropDownItems.AddDropDownItem(localeId,
                                                      item,
-                                                     mod);
+                                                     modSource);
         }
     }
 
@@ -124,12 +125,12 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
         // database.name = User
         // do not have an id
         // see ExportServiceAssetStrategy.HandleExportTypeDropDownItemsForUserMods
-        IList<IDictionarySource> localLocaleAssets =
+        IList<IDictionarySource> sources =
             localeAssets
                 .Where(item => LocaleAssetProvider.UserModsPredicate(item as LocaleAsset))
                 .ToList();
-        foreach (IDictionarySource localLocaleAsset in localLocaleAssets) {
-            if (localLocaleAssets is not LocaleAsset asset) {
+        foreach (IDictionarySource source in sources) {
+            if (sources is not LocaleAsset asset) {
                 continue;
             }
             string? name = OtherModsLocFilesHelper.GetNameFromAssetSubPath(asset);
@@ -143,9 +144,10 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
             Colossal.PSI.Common.Mod m = (Colossal.PSI.Common.Mod) mod;
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(m.displayName,
                                                                             m.displayName);
+            // this is the dictionary source collector!!!
             this.ExportTypeDropDownItems.AddDropDownItem(localeId,
                                                      item,
-                                                     localLocaleAsset);
+                                                     source);
         }
     }
 
@@ -155,15 +157,18 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
         // id can be extracted from subpath
         // try to get name from modmanager?
         // in case of .cok-files the name can be extracted from path (for region packs for example)
-        IList<IDictionarySource> onlineLocaleAssets =
+        IList<IDictionarySource> sources =
             localeAssets
                 .Where(item => LocaleAssetProvider.ParadoxModsPredicate(item as LocaleAsset))
                 .ToList();
-        foreach (IDictionarySource onlineLocaleAsset in onlineLocaleAssets) {
-            if (onlineLocaleAsset is not LocaleAsset asset) {
+        foreach (IDictionarySource source in sources) {
+            if (source is not LocaleAsset asset) {
                 continue;
             }
-            string id = OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset);
+            string? id = OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset);
+            if (id is null) {
+                continue;
+            }
             string name = id;
             bool isColossalOrdersOne = false;
             if (asset.path.EndsWith(ModConstants.CokExtension)) {
@@ -186,9 +191,10 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
                                                                             name,
                                                                             false,
                                                                             isColossalOrdersOne);
+            // this is the dictionary source collector!!!
             this.ExportTypeDropDownItems.AddDropDownItem(localeId,
                                                      item,
-                                                     onlineLocaleAsset);
+                                                     source);
         }
     }
 }

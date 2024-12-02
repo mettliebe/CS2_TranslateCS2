@@ -27,4 +27,12 @@ public static class StringConstants {
     public static string Game { get; } = nameof(Game);
     public static string ParadoxMods { get; } = nameof(ParadoxMods);
     public static string User { get; } = nameof(User);
+
+
+    // for ZZZ_Uncategorized it HAS to be a space!!
+    public static string ZZZ_Uncategorized { get; } = nameof(ZZZ_Uncategorized).Replace(Underscore, Space);
+
+
+    // for Colossal_Localization it HAS to be a dot!!!
+    public static string Colossal_Localization { get; } = nameof(Colossal_Localization).Replace(Underscore, Dot);
 }

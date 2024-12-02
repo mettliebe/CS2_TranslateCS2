@@ -6,6 +6,8 @@ using Colossal.IO.AssetDatabase;
 
 using Game.UI.Widgets;
 
+using TranslateCS2.Inf;
+
 namespace TranslateCS2.Mod.Models;
 internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExportTypeDropDownItem?> {
     public string Value => this.value;
@@ -27,8 +29,13 @@ internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExp
                                                   string displayName,
                                                   bool isBaseGame = false,
                                                   bool isColossalOrdersOne = false) {
+        string localDisplayName = displayName;
+        if (StringConstants.Colossal_Localization.Equals(localDisplayName)) {
+            // INFO: Export Uncategorized Mods - see other occurances of this Tag
+            localDisplayName = StringConstants.ZZZ_Uncategorized;
+        }
         return new MyExportTypeDropDownItem(value,
-                                            displayName,
+                                            localDisplayName,
                                             isBaseGame,
                                             isColossalOrdersOne);
     }
