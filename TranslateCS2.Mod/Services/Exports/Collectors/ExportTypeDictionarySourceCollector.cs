@@ -98,7 +98,8 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(StringConstants.Game,
                                                                             StringConstants.Game,
                                                                             true,
-                                                                            true);
+                                                                            false,
+                                                                            false);
             this.ExportTypeDropDownItems.AddDropDownItem(localeId,
                                                          item,
                                                          source);
@@ -135,7 +136,10 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
         foreach (IDictionarySource modSource in modSources) {
             string modName = modSource.GetType().Assembly.ManifestModule.ScopeName.Replace(ModConstants.DllExtension, String.Empty);
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(modName,
-                                                                            modName);
+                                                                            modName,
+                                                                            false,
+                                                                            false,
+                                                                            false);
             // this is the dictionary source collector!!!
             this.ExportTypeDropDownItems.AddDropDownItem(localeId,
                                                      item,
@@ -166,7 +170,10 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
             }
             Colossal.PSI.Common.Mod m = (Colossal.PSI.Common.Mod) mod;
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(m.displayName,
-                                                                            m.displayName);
+                                                                            m.displayName,
+                                                                            false,
+                                                                            false,
+                                                                            false);
             // this is the dictionary source collector!!!
             this.ExportTypeDropDownItems.AddDropDownItem(localeId,
                                                      item,
@@ -193,7 +200,7 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
                 continue;
             }
             string name = id;
-            bool isColossalOrdersOne = false;
+            bool isPack = false;
             if (asset.path.EndsWith(ModConstants.CokExtension)) {
                 // TODO: cok-extension
                 // INFO: for now, i, the author of this mod, assume, that only colossal order is 'able' to pack cok-files; an i keep an eye on that
@@ -203,7 +210,7 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
                         .Substring(asset.path.LastIndexOf(StringConstants.ForwardSlashChar) + 1)
                         .Replace(ModConstants.CokExtension, String.Empty)
                         .Replace(StringConstants.Space, String.Empty);
-                isColossalOrdersOne = true;
+                isPack = true;
             } else if (Int32.TryParse(id, out int idInt)) {
                 Colossal.PSI.Common.Mod? mod = OtherModsLocFilesHelper.GetModViaId(this.runtimeContainer, idInt);
                 if (mod is not null) {
@@ -214,7 +221,8 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(id,
                                                                             name,
                                                                             false,
-                                                                            isColossalOrdersOne);
+                                                                            isPack,
+                                                                            false);
             // this is the dictionary source collector!!!
             this.ExportTypeDropDownItems.AddDropDownItem(localeId,
                                                      item,

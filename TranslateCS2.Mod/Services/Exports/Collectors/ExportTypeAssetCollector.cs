@@ -57,6 +57,7 @@ internal class ExportTypeAssetCollector : AExportTypeCollector {
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(expansionName,
                                                                             expansionName,
                                                                             false,
+                                                                            false,
                                                                             true);
             IEnumerable<LocaleData> assetDatas =
                 assets
@@ -83,7 +84,10 @@ internal class ExportTypeAssetCollector : AExportTypeCollector {
             }
             Colossal.PSI.Common.Mod m = (Colossal.PSI.Common.Mod) mod;
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(m.displayName,
-                                                                            m.displayName);
+                                                                            m.displayName,
+                                                                            false,
+                                                                            false,
+                                                                            false);
             IEnumerable<LocaleData> assetDatas =
                 assets
                     .Where(asset => modName.Equals(OtherModsLocFilesHelper.GetNameFromAssetSubPath(asset)))
@@ -109,7 +113,10 @@ internal class ExportTypeAssetCollector : AExportTypeCollector {
             }
             Colossal.PSI.Common.Mod m = (Colossal.PSI.Common.Mod) mod;
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(modId,
-                                                                            m.displayName);
+                                                                            m.displayName,
+                                                                            false,
+                                                                            false,
+                                                                            false);
             IEnumerable<LocaleData> assetDatas =
                 assets
                     .Where(asset => modId.Equals(OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset)))

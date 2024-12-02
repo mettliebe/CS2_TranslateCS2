@@ -14,7 +14,8 @@ internal class MyExportTypeDropDownItems {
             .Values
             .Where(item => item.HasLocaleInfos())
             .OrderByDescending(item => item.IsBaseGame)
-            .ThenByDescending(item => item.IsColossalOrdersOne)
+            .ThenByDescending(item => item.IsPack)
+            .ThenByDescending(item => item.IsExpansion)
             .ThenBy(item => item.DisplayName);
 
     public MyExportTypeDropDownItems() { }

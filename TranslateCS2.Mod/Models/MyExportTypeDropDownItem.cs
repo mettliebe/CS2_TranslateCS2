@@ -14,22 +14,26 @@ internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExp
     public string Value => this.value;
     public string DisplayName => this.displayName.id;
     public bool IsBaseGame { get; }
-    public bool IsColossalOrdersOne { get; }
+    public bool IsPack { get; }
+    public bool IsExpansion { get; }
     public IDictionary<string, MyLocaleInfo> LocaleInfos { get; } = new Dictionary<string, MyLocaleInfo>();
     private MyExportTypeDropDownItem(string value,
                                      string displayName,
                                      bool isBaseGame,
-                                     bool isColossalOrdersOne) {
+                                     bool isPack,
+                                     bool isExpansion) {
         this.value = value;
         this.displayName = displayName;
         this.IsBaseGame = isBaseGame;
-        this.IsColossalOrdersOne = isColossalOrdersOne;
+        this.IsPack = isPack;
+        this.IsExpansion = isExpansion;
     }
 
     public static MyExportTypeDropDownItem Create(string value,
                                                   string displayName,
-                                                  bool isBaseGame = false,
-                                                  bool isColossalOrdersOne = false) {
+                                                  bool isBaseGame,
+                                                  bool isPack,
+                                                  bool isExpansion) {
         string localDisplayName = displayName;
         if (StringConstants.Colossal_Localization.Equals(localDisplayName)) {
             // INFO: Export Uncategorized Mods - see other occurances of this Tag
@@ -38,7 +42,8 @@ internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExp
         return new MyExportTypeDropDownItem(value,
                                             localDisplayName,
                                             isBaseGame,
-                                            isColossalOrdersOne);
+                                            isPack,
+                                            isExpansion);
     }
 
     public void AddSource(string localeId,
