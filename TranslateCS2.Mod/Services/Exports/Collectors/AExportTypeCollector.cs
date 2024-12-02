@@ -1,3 +1,7 @@
+using System;
+using System.Threading;
+
+using Colossal.IO.AssetDatabase;
 using Colossal.Serialization.Entities;
 
 using Game;
@@ -9,8 +13,28 @@ using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Services.Exports.Collectors;
+/// <summary>
+///     <see cref="AssetDatabase"/>.global.databases
+///     <br/>
+///     returns all databases
+///     <br/>
+///     <br/>
+///     but
+///     <br/>
+///     <see cref="AssetDatabase.onAssetDatabaseChanged"/>.Subscribe&lt;<see cref="LocaleAsset"/>>&gt;(aHandler)
+///     <br/>
+///     does not work
+///     <br/>
+///     <br/>
+///     perhaps its due to the fact,
+///     <br/>
+///     <see cref="AssetDatabase.CacheAssets(Boolean, CancellationToken)"/>
+///     <br/>
+///     disables notifications via
+///     <br/>
+///     <see cref="AssetDatabase.EnableNotifications(Boolean)"/>
+/// </summary>
 internal abstract class AExportTypeCollector : IMyExportTypeCollector {
-
     protected readonly IModRuntimeContainer? runtimeContainer;
     protected readonly LocaleAssetProvider? localeAssetProvider;
     protected readonly LocManagerProvider? locManagerProvider;
