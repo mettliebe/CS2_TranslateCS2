@@ -1,5 +1,6 @@
 # Version 2.1.0.1
-* developer-changes
+* developer-changes: exports
+    * the generated .json while exporting now contains the mods technical displayname instead of the mods id
     * now assets and code-mods localizations can be exported
     * most information is gathered while the game itself starts
     * some information, especially for assets that are loaded by 'Extra Assets Importer (EAI)'/'Asset Packs Manager (APM)', cannot be gathered at startup
