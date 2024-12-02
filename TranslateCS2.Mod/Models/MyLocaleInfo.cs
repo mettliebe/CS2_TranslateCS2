@@ -16,4 +16,20 @@ internal class MyLocaleInfo {
     public MyLocaleInfo(string id) {
         this.Id = id;
     }
+
+    public bool HasDatas() {
+        return this.LocaleDatas.Count > 0;
+    }
+
+    public bool HasSources() {
+        return this.Sources.Count > 0;
+    }
+
+    public bool HasDatasOrSources() {
+        return this.HasDatas() || this.HasSources();
+    }
+
+    public bool HasSourcesOrDatas() {
+        return this.HasDatasOrSources();
+    }
 }

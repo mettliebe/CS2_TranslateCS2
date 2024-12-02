@@ -12,6 +12,7 @@ internal class MyExportTypeDropDownItems {
     public IEnumerable<MyExportTypeDropDownItem> Items =>
         this._Items
             .Values
+            .Where(item => item.HasLocaleInfos())
             .OrderByDescending(item => item.IsBaseGame)
             .ThenByDescending(item => item.IsColossalOrdersOne)
             .ThenBy(item => item.DisplayName);

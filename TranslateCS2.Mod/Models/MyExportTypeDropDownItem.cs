@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Colossal;
 using Colossal.IO.AssetDatabase;
@@ -64,6 +65,10 @@ internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExp
             }
             this.LocaleInfos[localeId].LocaleDatas.Add(localeData);
         }
+    }
+
+    public bool HasLocaleInfos() {
+        return this.LocaleInfos.Values.Where(item => item.HasDatasOrSources()).Any();
     }
 
     public override bool Equals(object? obj) {
