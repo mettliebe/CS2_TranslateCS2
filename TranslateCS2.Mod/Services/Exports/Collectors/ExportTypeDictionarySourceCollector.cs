@@ -201,7 +201,8 @@ internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
                     asset
                         .path
                         .Substring(asset.path.LastIndexOf(StringConstants.ForwardSlashChar) + 1)
-                        .Replace(ModConstants.CokExtension, String.Empty);
+                        .Replace(ModConstants.CokExtension, String.Empty)
+                        .Replace(StringConstants.Space, String.Empty);
                 isColossalOrdersOne = true;
             } else if (Int32.TryParse(id, out int idInt)) {
                 Colossal.PSI.Common.Mod? mod = OtherModsLocFilesHelper.GetModViaId(this.runtimeContainer, idInt);
