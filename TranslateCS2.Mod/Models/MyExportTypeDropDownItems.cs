@@ -34,4 +34,12 @@ internal class MyExportTypeDropDownItems {
         }
         this.items[item.Value].AddLocaleData(localeData);
     }
+
+    public void AddDropDownItem(MyExportTypeDropDownItem item,
+                                IEnumerable<LocaleData> localeDatas) {
+        if (!this.items.ContainsKey(item.Value)) {
+            this.items[item.Value] = item;
+        }
+        this.items[item.Value].AddLocaleDatas(localeDatas);
+    }
 }

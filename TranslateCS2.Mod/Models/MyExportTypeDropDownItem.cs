@@ -49,6 +49,16 @@ internal class MyExportTypeDropDownItem : DropdownItem<string>, IEquatable<MyExp
         this.LocaleInfos[localeId].LocaleDatas.Add(localeData);
     }
 
+    public void AddLocaleDatas(IEnumerable<LocaleData> localeDatas) {
+        foreach (LocaleData localeData in localeDatas) {
+            string localeId = localeData.localeId;
+            if (!this.LocaleInfos.ContainsKey(localeId)) {
+                this.LocaleInfos.Add(localeId, new MyLocaleInfo(localeId));
+            }
+            this.LocaleInfos[localeId].LocaleDatas.Add(localeData);
+        }
+    }
+
     public override bool Equals(object? obj) {
         return this.Equals(obj as MyExportTypeDropDownItem);
     }

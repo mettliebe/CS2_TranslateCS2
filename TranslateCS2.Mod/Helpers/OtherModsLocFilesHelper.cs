@@ -150,7 +150,7 @@ internal static class OtherModsLocFilesHelper {
         return null;
     }
 
-    public static string GetIdFromAssetSubPath(AssetData asset) {
+    public static string? GetIdFromAssetSubPath(AssetData asset) {
         return asset.subPath.Split(StringConstants.ForwardSlashChar)[1].Split(StringConstants.UnderscoreChar)[0];
     }
 

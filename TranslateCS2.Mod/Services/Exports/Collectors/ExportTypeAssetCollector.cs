@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Colossal.IO.AssetDatabase;
 using Colossal.Serialization.Entities;
@@ -36,9 +37,8 @@ internal class ExportTypeAssetCollector : AExportTypeCollector {
         if (assets is null) {
             return;
         }
-        // TODO: prefilter
-        foreach (LocaleAsset asset in assets) {
-            string? modName = OtherModsLocFilesHelper.GetNameFromAssetSubPath(asset);
+        IEnumerable<string?> modNames = assets.Select(OtherModsLocFilesHelper.GetNameFromAssetSubPath).Distinct();
+        foreach (string? modName in modNames) {
             if (modName is null) {
                 continue;
             }
@@ -49,8 +49,12 @@ internal class ExportTypeAssetCollector : AExportTypeCollector {
             Colossal.PSI.Common.Mod m = (Colossal.PSI.Common.Mod) mod;
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(m.displayName,
                                                                             m.displayName);
+            IEnumerable<LocaleData> assetDatas =
+                assets
+                    .Where(asset => modName.Equals(OtherModsLocFilesHelper.GetNameFromAssetSubPath(asset)))
+                    .Select(asset => asset.data);
             this.ExportTypeDropDownItems.AddDropDownItem(item,
-                                                         asset.data);
+                                                         assetDatas);
         }
     }
 
@@ -59,9 +63,8 @@ internal class ExportTypeAssetCollector : AExportTypeCollector {
         if (assets is null) {
             return;
         }
-        // TODO: prefilter
-        foreach (LocaleAsset asset in assets) {
-            string? modId = OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset);
+        IEnumerable<string?> modIds = assets.Select(OtherModsLocFilesHelper.GetIdFromAssetSubPath).Distinct();
+        foreach (string? modId in modIds) {
             if (modId is null) {
                 continue;
             }
@@ -72,8 +75,12 @@ internal class ExportTypeAssetCollector : AExportTypeCollector {
             Colossal.PSI.Common.Mod m = (Colossal.PSI.Common.Mod) mod;
             MyExportTypeDropDownItem item = MyExportTypeDropDownItem.Create(modId,
                                                                         m.displayName);
+            IEnumerable<LocaleData> assetDatas =
+                assets
+                    .Where(asset => modId.Equals(OtherModsLocFilesHelper.GetIdFromAssetSubPath(asset)))
+                    .Select(asset => asset.data);
             this.ExportTypeDropDownItems.AddDropDownItem(item,
-                                                         asset.data);
+                                                         assetDatas);
         }
     }
 }
