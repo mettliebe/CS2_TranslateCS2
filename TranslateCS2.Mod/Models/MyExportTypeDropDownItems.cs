@@ -7,10 +7,10 @@ using Colossal.IO.AssetDatabase;
 namespace TranslateCS2.Mod.Models;
 internal class MyExportTypeDropDownItems {
 
-    private Dictionary<string, MyExportTypeDropDownItem> items { get; } = [];
+    private Dictionary<string, MyExportTypeDropDownItem> _Items { get; } = [];
 
     public IEnumerable<MyExportTypeDropDownItem> Items =>
-        this.items
+        this._Items
             .Values
             .OrderByDescending(item => item.IsBaseGame)
             .ThenByDescending(item => item.IsColossalOrdersOne)
@@ -21,25 +21,25 @@ internal class MyExportTypeDropDownItems {
     public void AddDropDownItem(string localeId,
                                 MyExportTypeDropDownItem item,
                                 IDictionarySource source) {
-        if (!this.items.ContainsKey(item.Value)) {
-            this.items[item.Value] = item;
+        if (!this._Items.ContainsKey(item.Value)) {
+            this._Items[item.Value] = item;
         }
-        this.items[item.Value].AddSource(localeId, source);
+        this._Items[item.Value].AddSource(localeId, source);
     }
 
     public void AddDropDownItem(MyExportTypeDropDownItem item,
                                 LocaleData localeData) {
-        if (!this.items.ContainsKey(item.Value)) {
-            this.items[item.Value] = item;
+        if (!this._Items.ContainsKey(item.Value)) {
+            this._Items[item.Value] = item;
         }
-        this.items[item.Value].AddLocaleData(localeData);
+        this._Items[item.Value].AddLocaleData(localeData);
     }
 
     public void AddDropDownItem(MyExportTypeDropDownItem item,
                                 IEnumerable<LocaleData> localeDatas) {
-        if (!this.items.ContainsKey(item.Value)) {
-            this.items[item.Value] = item;
+        if (!this._Items.ContainsKey(item.Value)) {
+            this._Items[item.Value] = item;
         }
-        this.items[item.Value].AddLocaleDatas(localeDatas);
+        this._Items[item.Value].AddLocaleDatas(localeDatas);
     }
 }
