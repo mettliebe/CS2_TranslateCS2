@@ -22,6 +22,13 @@ namespace TranslateCS2.Mod.Services.Exports.Collectors;
 ///     <see cref="TryToCollect(Purpose, GameMode)"/>
 ///     <br/>
 ///     <br/>
+///     that was the intention at least...
+///     <br/>
+///     see the description over there
+///     <br/>
+///     <see cref="Mod.OnLoad(UpdateSystem)"/>
+///     <br/>
+///     <br/>
 ///     for both realizations
 ///     <br/>
 ///     <see cref="ExportTypeAssetCollector"/>

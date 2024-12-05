@@ -25,33 +25,7 @@ internal partial class ModSettings {
         return this.ExportTypeValueVersion;
     }
 
-
-
-    [Exclude]
-    [SettingsUIDeveloper]
-    [SettingsUISection(TabDevelopers, ExportGroup)]
-    [SettingsUIDropdown(typeof(ModSettings), nameof(GetExportDropDownItems))]
-    public string ExportDropDown { get; set; }
-
-    [MyExcludeFromCoverage]
-    private DropdownItem<string>[] GetExportDropDownItems() {
-        return this.exportService.GetExportDropDownItems();
-    }
-
-
-
-    [Exclude]
-    [SettingsUIDeveloper]
-    [SettingsUISection(TabDevelopers, ExportGroup)]
-    [SettingsUIDropdown(typeof(ModSettings), nameof(GetExportTypeDropDownItems))]
-    [SettingsUIValueVersion(typeof(ModSettings), nameof(GetExportTypeValueVersion))]
-    public string ExportTypeDropDown { get; set; } = StringConstants.All;
-
-    [MyExcludeFromCoverage]
-    private DropdownItem<string>[] GetExportTypeDropDownItems() {
-        return this.exportService.GetExportTypeDropDownItems();
-    }
-
+    private bool IsExportDisabeld => this.GetExportTypeValueVersion() == 0;
 
 
     [Exclude]
@@ -73,7 +47,37 @@ internal partial class ModSettings {
     [Exclude]
     [SettingsUIDeveloper]
     [SettingsUISection(TabDevelopers, ExportGroup)]
+    [SettingsUIDropdown(typeof(ModSettings), nameof(GetExportDropDownItems))]
+    [SettingsUIDisableByCondition(typeof(ModSettings), nameof(IsExportDisabeld))]
+    public string ExportDropDown { get; set; }
+
+    [MyExcludeFromCoverage]
+    private DropdownItem<string>[] GetExportDropDownItems() {
+        return this.exportService.GetExportDropDownItems();
+    }
+
+
+
+    [Exclude]
+    [SettingsUIDeveloper]
+    [SettingsUISection(TabDevelopers, ExportGroup)]
+    [SettingsUIDropdown(typeof(ModSettings), nameof(GetExportTypeDropDownItems))]
+    [SettingsUIValueVersion(typeof(ModSettings), nameof(GetExportTypeValueVersion))]
+    [SettingsUIDisableByCondition(typeof(ModSettings), nameof(IsExportDisabeld))]
+    public string ExportTypeDropDown { get; set; } = StringConstants.All;
+
+    [MyExcludeFromCoverage]
+    private DropdownItem<string>[] GetExportTypeDropDownItems() {
+        return this.exportService.GetExportTypeDropDownItems();
+    }
+
+
+
+    [Exclude]
+    [SettingsUIDeveloper]
+    [SettingsUISection(TabDevelopers, ExportGroup)]
     [SettingsUIDirectoryPicker]
+    [SettingsUIDisableByCondition(typeof(ModSettings), nameof(IsExportDisabeld))]
     public string ExportDirectory { get; set; }
 
 
@@ -83,6 +87,7 @@ internal partial class ModSettings {
     [SettingsUISection(TabDevelopers, ExportGroup)]
     [SettingsUIButton]
     [SettingsUIConfirmation]
+    [SettingsUIDisableByCondition(typeof(ModSettings), nameof(IsExportDisabeld))]
     [MyExcludeFromCoverage]
     public bool ExportButton {
         set => this.exportService.Export(this.ExportDropDown,
