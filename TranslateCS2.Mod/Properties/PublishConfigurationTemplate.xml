@@ -4,7 +4,7 @@
         see also!!!
             TranslateCS2.Inf.ModConstants.ModId
     -->
-    <ModId Value="0" />
+    <ModId Value="96252" />
     <!--Name of the mod to display to players-->
     <DisplayName Value="TranslateCS2.Mod" />
     <!--Short description of the mod-->
