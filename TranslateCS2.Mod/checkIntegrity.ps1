@@ -25,7 +25,7 @@ $lines = $repoHashes.Replace("`r", "").Split("`n")
 
 # prepare access to mod-directory
 [string]$modsSubscribedPath = "$($Env:LOCALAPPDATA)Low\Colossal Order\Cities Skylines II\.cache\Mods\mods_subscribed"
-[string]$modId = "79187"
+[string]$modId = "96252"
 # the asterisk to skip co's internal counter
 $modDirectory = Get-Item "$($modsSubscribedPath)\$($modId)_*"
 
