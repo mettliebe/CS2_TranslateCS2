@@ -16,7 +16,7 @@ public static class ModConstants {
     //
     //
     //
-    public static int ModId { get; } = 79187;
+    public static int ModId { get; } = 96252;
     public static string LocaleNameLocalizedKey => $"{nameof(TranslateCS2)}.{nameof(LocaleNameLocalizedKey)}";
     public static string JsonExtension => ".json";
     public static string JsonSearchPattern => $"*{JsonExtension}";

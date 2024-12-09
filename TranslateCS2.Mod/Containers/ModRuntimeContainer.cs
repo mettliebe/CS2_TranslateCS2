@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Colossal.IO.AssetDatabase;
 
 using Game.Modding;
+using Game.SceneFlow;
 
 using TranslateCS2.Inf;
 using TranslateCS2.Inf.Loggers;
@@ -25,6 +26,7 @@ internal class ModRuntimeContainer : IModRuntimeContainer {
     public IIndexCountsProvider IndexCountsProvider { get; }
     public IMod Mod { get; }
     public ModSettings Settings { get; }
+    public GameManager? GameManager { get; set; }
     public ModManager? ModManager { get; set; }
     public ExecutableAsset? ModAsset { get; set; }
     public ISettingsSaver? SettingsSaver { get; set; }
