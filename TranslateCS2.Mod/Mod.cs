@@ -35,7 +35,16 @@ namespace TranslateCS2.Mod;
 [MyExcludeFromCoverage]
 public class Mod : IMod {
     private static readonly ILog Logger = LogManager.GetLogger(ModConstants.Name).SetShowsErrorsInUI(false);
-    private IModRuntimeContainer? RuntimeContainer { get; set; }
+
+    /// <summary>
+    ///     never ever turn to <see langword="true"/>!!!
+    ///     <br/>
+    ///     <br/>
+    ///     take a look at the description within <see cref="OnLoad(UpdateSystem)"/>!!!
+    /// </summary>
+    private bool UseOnGameLoadingComplete => false;
+
+    private ModRuntimeContainer? RuntimeContainer { get; set; }
     public Mod() {
         // ctor. is never called/used by unity/co
     }
@@ -48,14 +57,18 @@ public class Mod : IMod {
                 this.Init(gameManager,
                           modManager,
                           asset);
-                // after modification ended
-                // so,
-                // all mods
-                // and their locales
-                // are loaded
-                // and can be collected
-                foreach (IMySystemCollector collector in this.RuntimeContainer.SystemCollectors) {
-                    gameManager.onGameLoadingComplete += collector.TryToCollect;
+                if (this.UseOnGameLoadingComplete) {
+                    // causes very serious issues if the mod is updated from within the game
+                    // with other words, for those who do not use skyve
+                    //
+                    // first at all, i forgot to unsubscribe on dispose
+                    //
+                    // second
+                    /// <see cref="AssetDatabase.CacheAssets(Boolean, CancellationToken)"/>
+                    // works with a database lock
+                    // the get-methods seem to not work with a/the database lock
+                    // but i dont know if there was/is an interaction elsewhere...
+                    this.SubscribeOnGameLoadingComplete();
                 }
             }
         } catch (Exception ex) {
@@ -78,8 +91,22 @@ public class Mod : IMod {
         }
     }
 
+    private void SubscribeOnGameLoadingComplete() {
+        foreach (IMySystemCollector collector in this.RuntimeContainer.SystemCollectors) {
+            this.RuntimeContainer.GameManager.onGameLoadingComplete += collector.TryToCollect;
+        }
+    }
+    private void UnSubscribeOnGameLoadingComplete() {
+        foreach (IMySystemCollector collector in this.RuntimeContainer.SystemCollectors) {
+            this.RuntimeContainer.GameManager.onGameLoadingComplete -= collector.TryToCollect;
+        }
+    }
+
     public void OnDispose() {
         try {
+            if (this.UseOnGameLoadingComplete) {
+                this.UnSubscribeOnGameLoadingComplete();
+            }
             this.RuntimeContainer?.Dispose(true);
         } catch (Exception ex) {
             // user LogManagers Logger
@@ -89,7 +116,7 @@ public class Mod : IMod {
     }
 
 
-    private IModRuntimeContainer CreateRuntimeContainer(GameManager gameManager,
+    private ModRuntimeContainer CreateRuntimeContainer(GameManager gameManager,
                                                         ModManager modManager,
                                                         ExecutableAsset asset) {
         IMyLogProvider logProvider = new ModLogProvider(Logger);
@@ -109,6 +136,7 @@ public class Mod : IMod {
                                                                        indexCountsProvider,
                                                                        builtInLocaleIdProvider,
                                                                        paths) {
+            GameManager = gameManager,
             ModManager = modManager,
             ModAsset = asset,
             SettingsSaver = settingsSaver

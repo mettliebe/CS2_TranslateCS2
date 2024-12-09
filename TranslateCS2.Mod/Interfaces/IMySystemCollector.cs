@@ -5,6 +5,13 @@ using Game;
 namespace TranslateCS2.Mod.Interfaces;
 /// <summary>
 ///     <see langword="interface"/> to collect information via <see cref="Game.SceneFlow.GameManager.onGameLoadingComplete"/>
+///     <br/>
+///     <br/>
+///     that was the intention at least...
+///     <br/>
+///     see the description over there
+///     <br/>
+///     <see cref="Mod.OnLoad(UpdateSystem)"/>
 /// </summary>
 internal interface IMySystemCollector {
     /// <summary>
