@@ -118,7 +118,7 @@ please take a look at [Issues](https://github.com/mettliebe/CS2_TranslateCS2/iss
     - especially for those who like to:
         - create a new language, 'nl-NL' for example
         - and like to have the untranslated part in 'fr-FR', for example
-- to use with [TranslateCS2.Mod](https://mods.paradoxplaza.com/mods/79187/Windows)
+- to use with [TranslateCS2.Mod](https://mods.paradoxplaza.com/mods/96252/Windows)
     - https://forum.paradoxplaza.com/forum/threads/translatecs2-translatecs2-mod.1669371/
     - https://github.com/mettliebe/CS2_TranslateCS2/tree/main/TranslateCS2.Mod
 
