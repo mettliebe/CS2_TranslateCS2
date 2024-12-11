@@ -8,7 +8,9 @@ public class Paths {
     public string UserDataPath { get; }
     public string ModsDataPathGeneral { get; }
     public string ModsDataPathSpecific { get; }
+    [Obsolete]
     public string StreamingDataPath { get; }
+    [Obsolete]
     public string StreamingDatasDataPath { get; }
     public Paths(bool createIfNotExists,
                  string streamingDataPath,

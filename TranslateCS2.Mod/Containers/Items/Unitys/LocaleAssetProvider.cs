@@ -23,7 +23,7 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
         StringConstants.SteamCloud,
     };
 
-    public static Func<LocaleAsset, bool> BuiltInBaseGamePredicate => asset => StringConstants.DataTilde.Equals(asset.subPath) && StringConstants.Game.Equals(asset.database.name);
+    public static Func<LocaleAsset, bool> BuiltInBaseGamePredicate => asset => StringConstants.Game.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> ParadoxModsPredicate => asset => StringConstants.ParadoxMods.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> UserModsPredicate => asset => StringConstants.User.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> ExtensionsPredicate => asset => !DefaultDatabaseNames.Contains(asset.database.name);

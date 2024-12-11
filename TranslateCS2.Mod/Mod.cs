@@ -121,7 +121,7 @@ public class Mod : IMod {
                                                         ExecutableAsset asset) {
         IMyLogProvider logProvider = new ModLogProvider(Logger);
         Paths paths = new Paths(true,
-                                EnvPath.kStreamingDataPath,
+                                EnvPath.kAssetDataPathName,
                                 EnvPath.kUserDataPath);
         ILocManagerProvider locManagerProvider = new LocManagerProvider(gameManager.localizationManager);
         IIntSettingsProvider intSettingsProvider = new IntSettingsProvider(gameManager.settings.userInterface);
