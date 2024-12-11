@@ -2,11 +2,9 @@ using System.Collections.Generic;
 
 using Colossal.IO.AssetDatabase;
 
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Inf.Models.Localizations;
 
 namespace TranslateCS2.Mod.Containers.Items.Unitys;
-[MyExcludeFromCoverage]
 internal class IndexCountsProvider : IIndexCountsProvider {
     private readonly LocaleAssetProvider localeAssetProvider;
     public IndexCountsProvider(LocaleAssetProvider localeAssetProvider) {

@@ -7,7 +7,6 @@ using System.Text;
 using Game.UI.Widgets;
 
 using TranslateCS2.Inf;
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Inf.Services.Localizations;
 using TranslateCS2.Mod.Interfaces;
 
@@ -131,7 +130,6 @@ internal class MyLanguage : IReLoadAble {
         }
     }
 
-    [MyExcludeFromCoverage]
     public override string ToString() {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine($"{nameof(MyLanguage)}");

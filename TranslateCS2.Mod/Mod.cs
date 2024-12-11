@@ -10,7 +10,6 @@ using Game.Modding;
 using Game.SceneFlow;
 
 using TranslateCS2.Inf;
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Inf.Loggers;
 using TranslateCS2.Inf.Models.Localizations;
 using TranslateCS2.Mod.Containers;
@@ -32,7 +31,6 @@ namespace TranslateCS2.Mod;
 ///     <br/>
 ///     <seealso cref="Game.Modding.ModSetting.ModSetting(IMod)"/>
 /// </summary>
-[MyExcludeFromCoverage]
 public class Mod : IMod {
     private static readonly ILog Logger = LogManager.GetLogger(ModConstants.Name).SetShowsErrorsInUI(false);
 
@@ -121,7 +119,6 @@ public class Mod : IMod {
                                                         ExecutableAsset asset) {
         IMyLogProvider logProvider = new ModLogProvider(Logger);
         Paths paths = new Paths(true,
-                                EnvPath.kStreamingDataPath,
                                 EnvPath.kUserDataPath);
         ILocManagerProvider locManagerProvider = new LocManagerProvider(gameManager.localizationManager);
         IIntSettingsProvider intSettingsProvider = new IntSettingsProvider(gameManager.settings.userInterface);

@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using TranslateCS2.Inf.Attributes;
-
 namespace TranslateCS2.Inf.Models.Localizations;
 public class MyLocalization<E> : IEquatable<MyLocalization<E>?> {
     private readonly string uniquer = ModConstants.Name;
@@ -23,7 +21,6 @@ public class MyLocalization<E> : IEquatable<MyLocalization<E>?> {
         this.Source = source;
     }
 
-    [MyExcludeFromCoverage]
     public override string ToString() {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine(this.GetType().ToString());
@@ -36,12 +33,10 @@ public class MyLocalization<E> : IEquatable<MyLocalization<E>?> {
         return builder.ToString();
     }
 
-    [MyExcludeFromCoverage]
     public override bool Equals(object? obj) {
         return this.Equals(obj as MyLocalization<E>);
     }
 
-    [MyExcludeFromCoverage]
     public bool Equals(MyLocalization<E>? other) {
         return other is not null &&
                this.uniquer == other.uniquer &&
@@ -50,7 +45,6 @@ public class MyLocalization<E> : IEquatable<MyLocalization<E>?> {
                this.NameEnglish == other.NameEnglish;
     }
 
-    [MyExcludeFromCoverage]
     public override int GetHashCode() {
         int hashCode = -329714928;
         hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(this.uniquer);

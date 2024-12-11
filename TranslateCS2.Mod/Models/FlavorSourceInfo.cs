@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Enums;
 
 namespace TranslateCS2.Mod.Models;
@@ -24,12 +23,10 @@ internal class FlavorSourceInfo : IEquatable<FlavorSourceInfo?> {
         this.FlavorSourceType = flavorSourceType;
     }
 
-    [MyExcludeFromCoverage]
     public override bool Equals(object? obj) {
         return this.Equals(obj as FlavorSourceInfo);
     }
 
-    [MyExcludeFromCoverage]
     public bool Equals(FlavorSourceInfo? other) {
         return other is not null &&
                this.Id == other.Id &&
@@ -39,7 +36,6 @@ internal class FlavorSourceInfo : IEquatable<FlavorSourceInfo?> {
                this.FlavorSourceType == other.FlavorSourceType;
     }
 
-    [MyExcludeFromCoverage]
     public override int GetHashCode() {
         int hashCode = -1597829199;
         hashCode = (hashCode * -1521134295) + this.Id.GetHashCode();
@@ -50,7 +46,6 @@ internal class FlavorSourceInfo : IEquatable<FlavorSourceInfo?> {
         return hashCode;
     }
 
-    [MyExcludeFromCoverage]
     public override string ToString() {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine(nameof(FlavorSourceInfo));

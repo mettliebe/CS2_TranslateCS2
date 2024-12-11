@@ -5,7 +5,6 @@ using Game.Settings;
 using Game.UI.Widgets;
 
 using TranslateCS2.Inf;
-using TranslateCS2.Inf.Attributes;
 
 namespace TranslateCS2.Mod.Containers.Items;
 internal partial class ModSettings {
@@ -33,7 +32,6 @@ internal partial class ModSettings {
     [SettingsUISection(TabDevelopers, ExportGroup)]
     [SettingsUIButton]
     [SettingsUIConfirmation]
-    [MyExcludeFromCoverage]
     public bool ExportTypeRefreshButton {
         set {
             this.exportService.Refresh();
@@ -51,7 +49,6 @@ internal partial class ModSettings {
     [SettingsUIDisableByCondition(typeof(ModSettings), nameof(IsExportDisabeld))]
     public string ExportDropDown { get; set; }
 
-    [MyExcludeFromCoverage]
     private DropdownItem<string>[] GetExportDropDownItems() {
         return this.exportService.GetExportDropDownItems();
     }
@@ -66,7 +63,6 @@ internal partial class ModSettings {
     [SettingsUIDisableByCondition(typeof(ModSettings), nameof(IsExportDisabeld))]
     public string ExportTypeDropDown { get; set; } = StringConstants.All;
 
-    [MyExcludeFromCoverage]
     private DropdownItem<string>[] GetExportTypeDropDownItems() {
         return this.exportService.GetExportTypeDropDownItems();
     }
@@ -88,7 +84,6 @@ internal partial class ModSettings {
     [SettingsUIButton]
     [SettingsUIConfirmation]
     [SettingsUIDisableByCondition(typeof(ModSettings), nameof(IsExportDisabeld))]
-    [MyExcludeFromCoverage]
     public bool ExportButton {
         set => this.exportService.Export(this.ExportDropDown,
                                          this.ExportTypeDropDown,

@@ -7,13 +7,11 @@ using Colossal.IO.AssetDatabase;
 using Game.Modding;
 
 using TranslateCS2.Inf;
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers;
 using TranslateCS2.Mod.Enums;
 using TranslateCS2.Mod.Models;
 
 namespace TranslateCS2.Mod.Helpers;
-[MyExcludeFromCoverage]
 internal static class OtherModsLocFilesHelper {
     public static IList<ModInfoLocFiles> GetOtherModsLocFiles(IModRuntimeContainer runtimeContainer) {
         List<ModInfoLocFiles> fileInfos = [];

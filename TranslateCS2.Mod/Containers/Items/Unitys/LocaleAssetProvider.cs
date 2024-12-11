@@ -5,11 +5,9 @@ using System.Linq;
 using Colossal.IO.AssetDatabase;
 
 using TranslateCS2.Inf;
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Interfaces;
 
 namespace TranslateCS2.Mod.Containers.Items.Unitys;
-[MyExcludeFromCoverage]
 internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
     private readonly IAssetDatabase global;
     public LocaleAssetProvider(IAssetDatabase global) {
@@ -23,7 +21,7 @@ internal class LocaleAssetProvider : IBuiltInLocaleIdProvider {
         StringConstants.SteamCloud,
     };
 
-    public static Func<LocaleAsset, bool> BuiltInBaseGamePredicate => asset => StringConstants.DataTilde.Equals(asset.subPath) && StringConstants.Game.Equals(asset.database.name);
+    public static Func<LocaleAsset, bool> BuiltInBaseGamePredicate => asset => StringConstants.Game.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> ParadoxModsPredicate => asset => StringConstants.ParadoxMods.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> UserModsPredicate => asset => StringConstants.User.Equals(asset.database.name);
     public static Func<LocaleAsset, bool> ExtensionsPredicate => asset => !DefaultDatabaseNames.Contains(asset.database.name);

@@ -9,7 +9,6 @@ using Colossal.Serialization.Entities;
 using Game;
 
 using TranslateCS2.Inf;
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers;
 using TranslateCS2.Mod.Containers.Items;
 using TranslateCS2.Mod.Containers.Items.Unitys;
@@ -40,7 +39,6 @@ namespace TranslateCS2.Mod.Services.Exports.Collectors;
 ///     <br/>
 ///     <see cref="LocaleAsset"/>s
 /// </summary>
-[MyExcludeFromCoverage]
 internal class ExportTypeDictionarySourceCollector : AExportTypeCollector {
 
     public ExportTypeDictionarySourceCollector(IModRuntimeContainer runtimeContainer) : base(runtimeContainer) { }

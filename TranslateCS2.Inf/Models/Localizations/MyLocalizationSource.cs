@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using TranslateCS2.Inf.Attributes;
-
 namespace TranslateCS2.Inf.Models.Localizations;
 public class MyLocalizationSource<E> {
     public FileInfo File { get; }
@@ -12,7 +10,6 @@ public class MyLocalizationSource<E> {
     public MyLocalizationSource(FileInfo file) {
         this.File = file;
     }
-    [MyExcludeFromCoverage]
     public override string ToString() {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine(nameof(MyLocalization<E>));

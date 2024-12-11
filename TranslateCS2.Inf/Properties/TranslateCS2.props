@@ -5,7 +5,19 @@
 
 
     <PropertyGroup>
-        <ProjectAssetsDir>$(ProjectDir)Assets</ProjectAssetsDir>
-        <AssemblyVersion>2.1.0.4</AssemblyVersion>
+
+        <TargetFramework>net472</TargetFramework>
+
+        <!--
+            INFO: to publish this mod,
+                fill/change README.md if needed
+                fill/change CHANGELOG.CURRENT.md
+                set this projects AssemblyVersion to the desired ones
+        -->
+        <!-- assemblyversion is set to the publishconfigurations ModVersion via MyMod.targets-->
+        <AssemblyVersion>2.1.0.5</AssemblyVersion>
+
+        <!--The folder where Game.dll is located. Set it only if the game is not installed in the default location, otherwise keep it empty-->
+        <CustomManagedPath></CustomManagedPath>
     </PropertyGroup>
 </Project>

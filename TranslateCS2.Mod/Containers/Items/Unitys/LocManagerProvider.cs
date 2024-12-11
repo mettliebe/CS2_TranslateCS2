@@ -7,7 +7,6 @@ using Colossal;
 using Colossal.Localization;
 using Colossal.Reflection;
 
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Interfaces;
 using TranslateCS2.Mod.Models;
 
@@ -17,7 +16,6 @@ namespace TranslateCS2.Mod.Containers.Items.Unitys;
 /// <summary>
 ///     wrapper for <see cref="LocalizationManager"/>
 /// </summary>
-[MyExcludeFromCoverage]
 internal class LocManagerProvider : ILocManagerProvider {
     /// <summary>
     ///     <see cref="LocalizationManager.m_LocaleInfos"/>
