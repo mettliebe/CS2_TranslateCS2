@@ -8,7 +8,6 @@ using Game.Modding;
 using Game.Settings;
 
 using TranslateCS2.Inf;
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers.Items.ModsSettings;
 using TranslateCS2.Mod.Services.Exports;
 
@@ -127,7 +126,6 @@ internal partial class ModSettings : ModSetting {
     ///     so its excluded from coverage
     /// </summary>
     /// <param name="setting"></param>
-    [MyExcludeFromCoverage]
     private void Apply(Setting setting) {
         if (setting is not InterfaceSettings interfaceSettings) {
             return;

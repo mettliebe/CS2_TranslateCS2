@@ -1,5 +1,3 @@
-using System;
-
 namespace TranslateCS2.Inf;
 public static class StringConstants {
     public static string Underscore { get; } = "_";
@@ -15,8 +13,6 @@ public static class StringConstants {
     public static string Dot { get; } = ".";
     public static string ThreeDots { get; } = "...";
     public static string Dash { get; } = "-";
-    [Obsolete]
-    public static string DataTilde { get; } = "Data~";
     public static string None { get; } = nameof(None);
     public static string NoneLower { get; } = nameof(None).ToLower();
     public static string CarriageReturn { get; } = "\r";

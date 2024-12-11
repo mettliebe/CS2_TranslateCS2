@@ -1,11 +1,9 @@
 using Game.UI.Widgets;
 
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers;
 using TranslateCS2.Mod.Services.Exports.Strategys;
 
 namespace TranslateCS2.Mod.Services.Exports;
-[MyExcludeFromCoverage]
 internal class ExportService {
     private readonly IModRuntimeContainer runtimeContainer;
     private readonly IExportServiceStrategy exportServiceStrategy;

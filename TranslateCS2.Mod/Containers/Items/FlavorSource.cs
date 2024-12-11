@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Inf.Models.Localizations;
 using TranslateCS2.Mod.Models;
 
@@ -22,7 +21,6 @@ internal class FlavorSource : IEquatable<FlavorSource?> {
 
 
 
-    [MyExcludeFromCoverage]
     public override string ToString() {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine(this.GetType().ToString());
@@ -33,19 +31,16 @@ internal class FlavorSource : IEquatable<FlavorSource?> {
         return builder.ToString();
     }
 
-    [MyExcludeFromCoverage]
     public override bool Equals(object? obj) {
         return this.Equals(obj as FlavorSource);
     }
 
-    [MyExcludeFromCoverage]
     public bool Equals(FlavorSource? other) {
         return other is not null &&
                EqualityComparer<FlavorSourceInfo>.Default.Equals(this.FlavorSourceInfo, other.FlavorSourceInfo) &&
                EqualityComparer<MyLocalization<string>>.Default.Equals(this.Localization, other.Localization);
     }
 
-    [MyExcludeFromCoverage]
     public override int GetHashCode() {
         int hashCode = -2049087224;
         hashCode = (hashCode * -1521134295) + EqualityComparer<FlavorSourceInfo>.Default.GetHashCode(this.FlavorSourceInfo);

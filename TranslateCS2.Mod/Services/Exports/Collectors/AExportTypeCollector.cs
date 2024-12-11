@@ -7,7 +7,6 @@ using Colossal.Serialization.Entities;
 using Game;
 using Game.SceneFlow;
 
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Mod.Containers;
 using TranslateCS2.Mod.Containers.Items.Unitys;
 using TranslateCS2.Mod.Interfaces;
@@ -56,7 +55,6 @@ namespace TranslateCS2.Mod.Services.Exports.Collectors;
 ///     <br/>
 ///     <see cref="AssetDatabase.EnableNotifications(Boolean)"/>
 /// </summary>
-[MyExcludeFromCoverage]
 internal abstract class AExportTypeCollector : IMyExportTypeCollector {
     protected readonly IModRuntimeContainer? runtimeContainer;
     protected readonly LocaleAssetProvider? localeAssetProvider;

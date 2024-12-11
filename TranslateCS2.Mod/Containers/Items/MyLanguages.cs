@@ -8,7 +8,6 @@ using System.Text;
 using Colossal.IO.AssetDatabase.Internal;
 
 using TranslateCS2.Inf;
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Inf.Models.Localizations;
 using TranslateCS2.Inf.Services.Localizations;
 using TranslateCS2.Mod.Enums;
@@ -263,7 +262,6 @@ internal class MyLanguages {
         }
         return null;
     }
-    [MyExcludeFromCoverage]
     public override string ToString() {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine($"{nameof(MyLanguages)}: {this.LanguageDictionary.Count}");

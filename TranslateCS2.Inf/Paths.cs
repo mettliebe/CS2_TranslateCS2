@@ -8,21 +8,9 @@ public class Paths {
     public string UserDataPath { get; }
     public string ModsDataPathGeneral { get; }
     public string ModsDataPathSpecific { get; }
-    [Obsolete]
-    public string StreamingDataPath { get; }
-    [Obsolete]
-    public string StreamingDatasDataPath { get; }
     public Paths(bool createIfNotExists,
-                 string streamingDataPath,
                  string? userDataPath = null) {
         // paths have to end with a forwardslash!
-        if (streamingDataPath is null) {
-            throw new ArgumentNullException(nameof(streamingDataPath));
-        }
-        this.StreamingDataPath = AppendForwardSlashIfNecessary(streamingDataPath);
-        this.StreamingDatasDataPath = this.StreamingDataPath;
-        this.StreamingDatasDataPath += StringConstants.DataTilde;
-        this.StreamingDatasDataPath += StringConstants.ForwardSlash;
         this.UserDataPath = userDataPath ?? GetFallbackUserDataPathUnixFormat();
         this.UserDataPath = AppendForwardSlashIfNecessary(this.UserDataPath);
         this.ModsDataPathGeneral = $"{this.UserDataPath}{ModConstants.DataPathRawGeneral}";

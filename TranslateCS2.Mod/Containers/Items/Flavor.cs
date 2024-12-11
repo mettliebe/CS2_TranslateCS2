@@ -8,7 +8,6 @@ using Colossal;
 using Game.UI.Widgets;
 
 using TranslateCS2.Inf;
-using TranslateCS2.Inf.Attributes;
 using TranslateCS2.Inf.Services.Localizations;
 using TranslateCS2.Mod.Interfaces;
 
@@ -80,11 +79,9 @@ internal class Flavor : IReLoadAble, IDictionarySource {
         return merged;
     }
 
-    [MyExcludeFromCoverage]
     public void Unload() {
         //
     }
-    [MyExcludeFromCoverage]
     public override string ToString() {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine(this.GetType().ToString());
