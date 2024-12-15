@@ -72,7 +72,7 @@ internal class ModRuntimeContainer : IModRuntimeContainer {
         // since the whole logic changed,
         // settings no longer have to loaded after Languages are initialized
         // now they have to be loaded before Languages get initialized
-        loadSettings?.Invoke(ModConstants.NameSimple,
+        loadSettings?.Invoke(ModConstants.Name,
                              this.Settings,
                              null);
         this.Languages.Init();

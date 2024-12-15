@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace TranslateCS2.Containers.Items;
 /// <seealso href="https://cs2.paradoxwikis.com/Naming_Folder_And_Files"/>
-[FileLocation($"{ModConstants.ModsSettings}/{ModConstants.NameSimple}/{ModConstants.NameSimple}")]
+[FileLocation($"{ModConstants.ModsSettings}/{ModConstants.Name}/{ModConstants.Name}")]
 [SettingsUITabOrder(TabSettings, TabDevelopers)]
 [SettingsUIGroupOrder(FlavorGroup, SettingsGroup, ReloadGroup, GenerateGroup, ExportGroup)]
 [SettingsUIShowGroupName(FlavorGroup, SettingsGroup, ReloadGroup, GenerateGroup, ExportGroup)]

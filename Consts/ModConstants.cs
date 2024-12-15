@@ -12,6 +12,7 @@ public static class ModConstants {
     //
     //
     public const string NameSimple = nameof(TranslateCS2);
+    public const string Name = $"{NameSimple}.Mod";
     //
     //
     //
@@ -25,6 +26,6 @@ public static class ModConstants {
     public static int MaxErroneous => 5;
     public static string ModExportKeyValueJsonName { get; } = $"_{NameSimple}{JsonExtension}";
     public static string DataPathRawGeneral { get; } = $"{ModsData}{StringConstants.ForwardSlash}";
-    public static string DataPathRawSpecific { get; } = $"{DataPathRawGeneral}{NameSimple}{StringConstants.ForwardSlash}";
+    public static string DataPathRawSpecific { get; } = $"{DataPathRawGeneral}{Name}{StringConstants.ForwardSlash}";
     public static string OtherModsLocFilePath { get; } = StringConstants.UnofficialLocales;
 }

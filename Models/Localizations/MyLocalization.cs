@@ -6,7 +6,7 @@ using TranslateCS2.Consts;
 
 namespace TranslateCS2.Models.Localizations;
 public class MyLocalization<E> : IEquatable<MyLocalization<E>?> {
-    private readonly string uniquer = ModConstants.NameSimple;
+    private readonly string uniquer = ModConstants.Name;
     public string Id { get; }
     public virtual string Name { get; }
     public string NameEnglish { get; }
