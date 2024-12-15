@@ -72,7 +72,8 @@ public class Mod : IMod {
         } catch (Exception ex) {
             // user LogManagers Logger
             // runtimeContainerHandler might not be initialized
-            DisplayError(ex);
+            LogError(ex);
+            throw;
         }
     }
 
@@ -158,12 +159,10 @@ public class Mod : IMod {
     ///     <br/>
     ///     but <see cref="Logger"/> is needed...
     /// </summary>
-    private static void DisplayError(Exception exception) {
+    private static void LogError(Exception exception) {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine(ErrorMessages.Intro);
         builder.AppendLine($"The entire Mod failed to load.");
-        Mod.Logger.showsErrorsInUI = true;
         Mod.Logger.Critical(exception, builder);
-        Mod.Logger.showsErrorsInUI = false;
     }
 }
