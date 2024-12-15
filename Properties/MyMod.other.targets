@@ -1,0 +1,227 @@
+<Project>
+    <!--
+        to copy the template PublishConfiguration.xml (PublishConfigurationPathFrom) to
+        the ones (PublishConfigurationPath) that is used by Colossal Orders Mod.targets
+        
+        to fill the ones that is used by Colossal Orders Mod.targets with:
+        - ModVersion (this projects assemblyversion)
+        - LongDescription (is read from project-dir/README.md)
+        - ChangeLog (is read from project-dir/CHANGELOG.CURRENT.md)
+        
+        if the mod got published
+            to prepend the changelog-history (project-dir/CHANGELOG.md) with CHANGELOG.CURRENT.md
+        
+    -->
+    <Target Name="CopyPublishConfiguration" BeforeTargets="BeforeBuild">
+        <!-- copy template publishconfiguration to the publishconfiguration path used within Mod.targets -->
+        <Copy SourceFiles="$(PublishConfigurationPathFrom)" DestinationFiles="$(PublishConfigurationPath)" />
+    </Target>
+
+
+
+    <Target
+        Name="PokeInfosToPublishConfiguration"
+        AfterTargets="CopyPublishConfiguration">
+        <!-- fill copied publishconfiguration with required values -->
+
+        <!-- https://learn.microsoft.com/dotnet/api/microsoft.build.tasks.xmlpeek?view=msbuild-17-netcore -->
+        <!-- https://learn.microsoft.com/dotnet/api/microsoft.build.tasks.xmlpoke?view=msbuild-17-netcore -->
+
+
+        <!-- modid -->
+        <XmlPoke
+            Value="$([System.IO.File]::ReadAllText('$(ProjectDir)\Properties\modid'))"
+            XmlInputPath="$(PublishConfigurationPath)"
+            Query=".//Publish/ModId/@Value" />
+
+
+        <!-- assemblyversion to modversion -->
+        <XmlPoke
+            Value="$(AssemblyVersion)"
+            XmlInputPath="$(PublishConfigurationPath)"
+            Query=".//Publish/ModVersion/@Value" />
+
+
+        <XmlPoke
+            Value="$([System.IO.File]::ReadAllText('$(ProjectDir)\README.md'))"
+            XmlInputPath="$(PublishConfigurationPath)"
+            Query=".//Publish/LongDescription" />
+
+
+        <XmlPoke
+            Value="$([System.IO.File]::ReadAllText('$(ProjectDir)\CHANGELOG.CURRENT.md'))"
+            XmlInputPath="$(PublishConfigurationPath)"
+            Query=".//Publish/ChangeLog" />
+    </Target>
+
+
+    <Target
+        Name="WriteNewChangeLog"
+        BeforeTargets="BeforeBuild"
+        DependsOnTargets="PokeInfosToPublishConfiguration">
+        <!-- beforetarget 'Publish' indicates final publish -->
+        <!-- prepend changelog-history with current changelogs lines -->
+        <!-- uses items from depend-target -->
+        <PropertyGroup>
+            <ModChangeLogHistory>$(ProjectDir)\Properties\CHANGELOG.HISTORY.md</ModChangeLogHistory>
+            <ModChangeLog>$(ProjectDir)\CHANGELOG.md</ModChangeLog>
+        </PropertyGroup>
+        <ItemGroup>
+            <ChangeLogContent
+                Include="$([System.IO.File]::ReadAllText('$(ProjectDir)\CHANGELOG.CURRENT.md'))" />
+            <ChangeLogContent
+                Include="$([System.IO.File]::ReadAllText('$(ModChangeLogHistory)'))" />
+        </ItemGroup>
+        <WriteLinesToFile
+            File="$(ModChangeLog)"
+            Lines="@(ChangeLogContent)"
+            Overwrite="true"
+            />
+    </Target>
+
+
+    <Target
+        Name="CopyChangeLogToHistory"
+        AfterTargets="RunModPublisher">
+        <!-- aftertarget 'RunModPublisher' indicates final publish -->
+        <Copy
+            SourceFiles="$(ModChangeLog)"
+            DestinationFiles="$(ModChangeLogHistory)"/>
+    </Target>
+
+
+
+
+
+
+
+
+
+
+    <!--
+        BEGIN: Hashing and Zipping
+    -->
+    <Target
+        Name="CopyMITLicense"
+        BeforeTargets="DeployWIP">
+        <!-- HASH-Step-00: copy MIT-License to outdir so it gets distributed -->
+        <ItemGroup>
+            <TheMITLicense
+                Include="$(MSBuildProjectDirectory)\LICENSE" />
+        </ItemGroup>
+        <Copy
+            SourceFiles="@(TheMITLicense)"
+            DestinationFolder="$(OutputPath)"/>
+    </Target>
+
+    <!--
+        let
+            ModPostProcessor
+        and
+            ModPublisher
+        do their work
+        and continue after publishing
+    -->
+    <Target
+        Name="DeletePreviousDistributesBinaries"
+        AfterTargets="Publish">
+        <!-- HASH-Step-01: delete .zip and .hash for previous distributed version(s) within DistributedBinaries -->
+        <ItemGroup>
+            <PreviousDistributedBinaries
+                Include="$(MSBuildProjectDirectory)\DistributedBinaries\ModVersion_*" />
+        </ItemGroup>
+        <Delete
+            Files="@(PreviousDistributedBinaries)"/>
+    </Target>
+    <Target
+        Name="HashDistributedFiles"
+        DependsOnTargets="DeletePreviousDistributesBinaries"
+        AfterTargets="DeletePreviousDistributesBinaries"
+        BeforeTargets="CopyHashesFileToOutDir">
+        <!-- HASH-Step-02: generate the .hashes-file for the binaries that are being distributed -->
+        <ItemGroup>
+            <FilesToHash
+                Include="$(OutputPath)*.*"/>
+            <FileWithHashesProject
+                Include="$(MSBuildProjectDirectory)\$(MSBuildProjectName).hashes" />
+        </ItemGroup>
+        <GetFileHash
+            Files="@(FilesToHash)"
+            Algorithm="SHA512">
+            <Output
+                TaskParameter="Items"
+                ItemName="FileHashes" />
+        </GetFileHash>
+
+        <WriteLinesToFile
+            File="@(FileWithHashesProject)"
+            Lines="@(FileHashes->'%(Filename)%(Extension): %(FileHash)')"
+            Overwrite="true" />
+    </Target>
+    <Target
+        Name="CopyHashesFileToOutDir"
+        DependsOnTargets="HashDistributedFiles"
+        AfterTargets="HashDistributedFiles"
+        BeforeTargets="ZipDistributedFiles">
+        <!-- HASH-Step-03: copy the generated .hashes-file to outdir to zip it together with the binaries -->
+        <Copy
+            SourceFiles="@(FileWithHashesProject)"
+            DestinationFolder="$(OutputPath)"/>
+    </Target>
+    <Target
+        Name="ZipDistributedFiles"
+        DependsOnTargets="CopyHashesFileToOutDir"
+        AfterTargets="CopyHashesFileToOutDir"
+        BeforeTargets="GenerateHashForZip">
+        <!-- HASH-Step-04: zip the binaries and its respective .hashes-file -->
+        <ZipDirectory
+            SourceDirectory="$(OutputPath)"
+            DestinationFile="$(MSBuildProjectDirectory)\DistributedBinaries\ModVersion_$(AssemblyVersion).zip"
+            Overwrite="true"/>
+    </Target>
+    <Target
+        Name="GenerateHashForZip"
+        DependsOnTargets="ZipDistributedFiles"
+        AfterTargets="ZipDistributedFiles"
+        BeforeTargets="DeleteFileWithHashesInOut">
+        <!-- HASH-Step-05: generate a seperate .hash-file for the .zip-file -->
+        <ItemGroup>
+            <ZipToHash
+                Include="$(MSBuildProjectDirectory)\DistributedBinaries\ModVersion_$(AssemblyVersion).zip"/>
+            <ZipHashFile
+                Include="$(MSBuildProjectDirectory)\DistributedBinaries\ModVersion_$(AssemblyVersion).hash" />
+        </ItemGroup>
+        <GetFileHash
+            Files="@(ZipToHash)"
+            Algorithm="SHA512">
+            <Output
+                TaskParameter="Items"
+                ItemName="ZipHash" />
+        </GetFileHash>
+        <WriteLinesToFile
+            File="@(ZipHashFile)"
+            Lines="@(ZipHash->'%(Filename)%(Extension): %(FileHash)')"
+            Overwrite="true" />
+    </Target>
+    <Target
+        Name="DeleteFileWithHashesInOut"
+        DependsOnTargets="GenerateHashForZip"
+        AfterTargets="GenerateHashForZip">
+        <!-- HASH-Step-06: delete the .hashes-file that got copied within HASH-Step-03 -->
+        <!--
+            delete .hashes file
+            it does not make sense to distribute a file with hashes
+            someone who gains control over the pdx-acc
+            would simply distribute its own 'malicious' hashes file
+        -->
+        <ItemGroup>
+            <FileWithHashesOut
+                Include="$(OutputPath)\$(MSBuildProjectName).hashes" />
+        </ItemGroup>
+        <Delete
+            Files="@(FileWithHashesOut)"/>
+    </Target>
+    <!--
+        END: Hashing and Zipping
+    -->
+</Project>

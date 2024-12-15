@@ -1,0 +1,24 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+using TranslateCS2.Enums;
+
+namespace TranslateCS2.Models;
+internal class ModInfoLocFiles {
+    public FlavorSourceInfo FlavorSourceInfo { get; }
+    public IEnumerable<FileInfo> FileInfos { get; }
+    public ModInfoLocFiles(int id,
+                           string name,
+                           Version version,
+                           bool isLocal,
+                           FlavorSourceTypes flavorSourceType,
+                           IEnumerable<FileInfo> fileInfos) {
+        this.FlavorSourceInfo = new FlavorSourceInfo(id,
+                                                     name,
+                                                     version,
+                                                     isLocal,
+                                                     flavorSourceType);
+        this.FileInfos = fileInfos;
+    }
+}

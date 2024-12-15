@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <Configurations>Debug;Release</Configurations>
-    </PropertyGroup>
-    <Import Project="Properties\TranslateCS2.props" />
-</Project>
